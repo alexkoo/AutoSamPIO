@@ -13,7 +13,7 @@ const char *ssid = STASSID;
 const char *password = STAPSK;
 
 //**************************************************************************************************//Версия
-const String ver = "1.0.0"; // Версия
+const String ver = "1.0.1"; // Версия
 
 byte debug = 2;          // Редим отладки: 0 выкл 1-основное  2-подробное 3 - фильтры
 unsigned long debugTime; //период опроса
