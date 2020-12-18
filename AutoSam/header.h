@@ -47,14 +47,14 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 
-#include "settings.h"
+#include "SETTINGS.h"
 #include "time_fs.h"
 #include "http.h"
 #include "lcd.h"
 #include "logic.h"
 #include "func.h"
-#include "setup.h"
-#include "loop.h"
+#include "SETUP.h"
+#include "LOOP.h"
 
 
 
