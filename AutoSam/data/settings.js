@@ -1,4 +1,4 @@
-
+ï»¿
 <!--
 
 var xmlHttp=createXmlHttpObject();
@@ -19,7 +19,7 @@ xmlHttp.onreadystatechange=handleServerResponse;
 }
 setTimeout('process()',1000);
 }
-function handleServerResponse(){ // ÷òåíèå äàííûõ ñ ñåðâåðà
+function handleServerResponse(){ // Ñ‡Ñ‚ÐµÐ½Ð¸Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ñ ÑÐµÑ€Ð²ÐµÑ€Ð°
 if(xmlHttp.readyState==4 && xmlHttp.status==200){
 var allData=JSON.parse(xmlHttp.responseText);
 document.getElementById('CURRENTTIME').value=allData.CT;   

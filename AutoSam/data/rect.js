@@ -1,4 +1,4 @@
-
+﻿
 <!-- 
 
 var xmlHttp=createXmlHttpObject();
@@ -19,7 +19,7 @@ xmlHttp.onreadystatechange=handleServerResponse;
 }
 setTimeout('process()',1000);
 }
-function handleServerResponse(){ // ������ ������ � �������
+function handleServerResponse(){ // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 if(xmlHttp.readyState==4 && xmlHttp.status==200){
 var allData=JSON.parse(xmlHttp.responseText);
 document.getElementById('CURRENTTIME').value=allData.CT;   
@@ -77,7 +77,7 @@ else if(delta1 != 0 && auto == true) {
 else if(delta1 == 0 && auto == true) {
 //document.getElementById('SETTEMP1').value=200;
 document.getElementById('APRESS1').value="??";
-auto = false; // ��������� ����� auto
+auto = false; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ auto
 }
 server = "/Del1?delta1="+delta1+"&delay1="+delay1;
 request = new XMLHttpRequest();

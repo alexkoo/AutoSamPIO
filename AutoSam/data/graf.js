@@ -1,4 +1,4 @@
- var heap,temp1,temp2;
+п»ї var heap,temp1,temp2;
     var reloadPeriod = 1000;
     var running = true;
     
@@ -52,7 +52,7 @@
       //}
       //temp = createGraph(document.getElementById("analog"), "Temperature", 100, 128, 10, 40, false, "cyan", calcThermistor);
 
-      // хз, высота, мин, макс, заполнение
+      // С…Р·, РІС‹СЃРѕС‚Р°, РјРёРЅ, РјР°РєСЃ, Р·Р°РїРѕР»РЅРµРЅРёРµ
       temp1 = createGraph(document.getElementById("temp1"), "Analog Input", 100, 128, 0, 100, false, "cyan");
       temp2 = createGraph(document.getElementById("temp2"), "Analog Input", 100, 128, 0, 100, false, "cyan");
       heap = createGraph(document.getElementById("heap"), "Current Heap", 100, 250, 20000, 40000, true, "orange");
