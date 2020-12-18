@@ -42,7 +42,6 @@ File fsUploadFile;         // Для файловой системы
 WiFiServer telnetServer(23);
 WiFiClient telnet;
 
-
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
