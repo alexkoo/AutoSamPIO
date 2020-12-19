@@ -9,37 +9,21 @@
 </head>
 
 <BODY onload="process();">
+    <!-- вставка -->
+    <div w3-include-html="head.htm"></div>
+    <script>
+        includeHTML();
+    </script>
+    <!-- /вставка -->
     <div>
-        <!--   ШАПКА  -->
-        <h1 class="top">AutoSam v<output id="VERSION" value="??" class="top2"></h1>
-<table class="details">
-<tr>
-	<td align="center">Текущее время:</td>
-	<td align="right"><input type="submit" id="CURRENTTIME" value="??" size="8"></td>
-	<td align="center">Время работы ESP8266:</td>
-	<td align="right"><input type="submit" id="RUNTIME" value="??" size="8"></td>
-	<td align="center">Режим:</td>
-	<td align="right"><input type="submit" id="MODEI"  value="??" size="8"></td>
-	<td> </td> 
-</tr>
-<tr>
-<td colspan="6">  
-   <a href="index.htm" >1-Ректификация  </a> 
-<a href="dist.htm" >2-Дистилляция  </a> 
-  <a href="settings.htm" target="blank">Настройки </a>
 
-<a href="graf.htm" target="blank">График </a>
-<a href="graf1.htm" target="blank">График1 </a>
-</td> 
-</tr>
-</table>
- <!--   /ШАПКА  -->
-<br>
-<table class="details">
-<caption>Настройки</caption>
-<tr>
-	<td>Режим </td></td>
-	<td><output  id="MODEI" ></td>
+        <br>
+        <table class="details">
+            <caption>Настройки</caption>
+            <tr>
+                <td>Режим </td>
+                </td>
+                <td><output id="MODEI"></td>
 	<td ><input type="number" id="MODE"  value="1"min="1" max="3" step="1" size="1"></td>
 	<td  ><input type="submit" name="Set" value=" SET " onclick="SetMD()"></td>
 </tr>
