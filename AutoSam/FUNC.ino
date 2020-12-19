@@ -34,16 +34,6 @@ void findds()
   }
 }
 
-// корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
-float corrTemp(float temp)
-{ // функция принимает текущую температуру
-  if (BMP280 = true && temp > 75 && press_corr == 1)
-  {
-    temp += (760 - Apressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
-  }
-  return temp;
-}
-
 void printAddress(DeviceAddress deviceAddress) // функция печати адреса DS18B20
 {
   for (uint8_t i = 0; i < 8; i++)
@@ -53,6 +43,18 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
     Serial.print(deviceAddress[i], HEX);
   }
 }
+
+// корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
+float corrTemp(float temp)
+{ // функция принимает текущую температуру
+  if (BMP280 == true && temp > 75 && press_corr == 1)
+  {
+    temp += (760 - Apressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
+  }
+  return temp;
+}
+
+
 
 float conc_f(float t)
 { // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html
@@ -68,7 +70,7 @@ float conc_f(float t)
 
 float conc_s(float t)
 { //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/
-  float Ti, s;
+  float s;
   s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); //Содержание спирта в парах %об
   if (s <= 0 || s >= 100 || t >= 100 || t < 78)
   {

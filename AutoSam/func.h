@@ -4,7 +4,7 @@
 #include "header.h"
 
 void findds();
-float corrTemp(float temp);
+float corrTemp(float);
 void printAddress(DeviceAddress deviceAddress); // функция печати адреса DS18B20
 float conc_f(float t);
 float conc_s(float t);
