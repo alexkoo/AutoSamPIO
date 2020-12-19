@@ -172,6 +172,9 @@
 
 /* Идеи
 
+https://www.w3schools.com/howto/howto_html_include.asp включение
+
+
 Планы Оптимизация
 Если отказались от SSDP, можно убрать из кода #include Источник: https://alcodistillers.ru/forum/viewtopic.php?id=661&p=8 AlcoDistillers.ru ©
 Для упрощения была изъята страница с редактором, а также с инструментами для обновления программы "по воздуху". 

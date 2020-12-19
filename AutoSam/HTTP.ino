@@ -4,7 +4,8 @@
 void HTTP_init(void)
 {            // функция инициализации HTTP
   FS_init(); // Включаем работу с файловой системой
-  //Создание ответа,,,,
+
+  //Выполнение команды из браузера
   HTTP.on("/Del1", handle_Del1);     // обрашение к уставке SteamTemp через web интерфейс
   HTTP.on("/Del2", handle_Del2);     // обрашение к уставке PipeTemp(2/3) через web интерфейс
   HTTP.on("/SetMD", handle_setMD);   // обрашение к настройкам через web интерфейс (режим)
@@ -12,7 +13,7 @@ void HTTP_init(void)
   HTTP.on("/SetMT", handle_setMT);   // обрашение к настройкам через web интерфейс (Макс. температура бака)
   HTTP.on("/SetSM", handle_setSM);   // обрашение к настройкам через web интерфейс (Макс. температура пара)
   HTTP.on("/SetD0", handle_setD0);   // обрашение к настройкам через web интерфейс (Скорость изменения температуры))
-                                     //  HTTP.on("/press", handle_press_corr);               // Коррекция давления
+//HTTP.on("/press", handle_press_corr);               // Коррекция давления
   HTTP.on("/reset", handle_reset);   // перезагрузка
   HTTP.on("/button", handle_button); // обрашение к кнопкам через web интерфейс
   HTTP.on("/data.json", handleData); // формирование json файла для передачи данных в web интерфейс

@@ -1,50 +1,37 @@
 ﻿<!--   Ректификация  -->
+
+
+
 <!DOCTYPE html>
 <html>
+
 
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>AutoSam</title>
     <link rel="stylesheet" href="style.css">
-    <script src="/rect.js"></script>
+    <script src="/script.js"></script>
 </head>
 
 <BODY onload="process();">
+
+    <!-- вставка -->
+    <div w3-include-html="head.htm"></div>
+    <script>
+        includeHTML();
+    </script>
+    <!-- /вставка -->
     <div>
 
-        <!--   ШАПКА  -->
-        <h1 class="top">AutoSam v<output id="VERSION" value="??" class="top2"></h1>
-<table class="details">
-<tr>
-	<td align="center">Текущее время:</td>
-	<td align="right"><input type="submit" id="CURRENTTIME" value="??" size="8"></td>
-	<td align="center">Время работы ESP8266:</td>
-	<td align="right"><input type="submit" id="RUNTIME" value="??" size="8"></td>
-	<td align="center">Режим:</td>
-	<td align="right"><input type="submit" id="MODEI"  value="??" size="8"></td>
-	<td> </td> 
-</tr>
-<tr>
-<td colspan="6">  
-   <a href="index.htm" >1-Ректификация  </a> 
-<a href="dist.htm" >2-Дистилляция  </a> 
-  <a href="settings.htm" target="blank">Настройки </a>
-
-<a href="graf.htm" target="blank">График </a>
-<a href="graf1.htm" target="blank">График1 </a>
-</td> 
-</tr>
-</table>
- <!--   ШАПКА  -->
 
 
-<table class="details">
-<caption>Температура в узле отбора</caption>
-<tr>
-	<td align="right">Текущее значение, &#176C </td>
-	<td align="left"><input type="submit" id="STEAMTEMP" value="??" size="8"></td>
-	<td align="right">Уставка, &#176C</td>
-	<td align="center"><output id="SETTEMP1I" ></td>
+        <table class="details">
+            <caption>Температура в узле отбора</caption>
+            <tr>
+                <td align="right">Текущее значение, &#176C </td>
+                <td align="left"><input type="submit" id="STEAMTEMP" value="??" size="8"></td>
+                <td align="right">Уставка, &#176C</td>
+                <td align="center"><output id="SETTEMP1I"></td>
 </tr>
 <tr>
 	<td align="right">Время задержки, c</td>
