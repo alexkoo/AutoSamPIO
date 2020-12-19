@@ -143,13 +143,17 @@
   форматирование, правка кодировок
 1.1.0
   Web: Вынос шапки в отдельный файл https://www.w3schools.com/howto/howto_html_include.asp
-
+  поправил часть предупреждений компилятора
+  отключил ssdp и void handleFileUpload(), void handleFileCreate(), void handleFileDelete(), void handleFileList() 
+  (https://alcodistillers.ru/forum/viewtopic.php?id=661&p=8)
+  
  */
 
 /*Планы 
   
   Функционал
    
+   перенести на littlefs
   !! обработка ошибок
   LiquidCrystal_I2C найти совместимую библиотеку
   time_fs вынести в библиотеку
@@ -173,20 +177,7 @@
 
 /* Идеи
 
-https://www.w3schools.com/howto/howto_html_include.asp включение
-
-
-Планы Оптимизация
-Если отказались от SSDP, можно убрать из кода #include Источник: https://alcodistillers.ru/forum/viewtopic.php?id=661&p=8 AlcoDistillers.ru ©
-Для упрощения была изъята страница с редактором, а также с инструментами для обновления программы "по воздуху". 
-Следовательно, функции, содержащиеся в файле FS.ino, тоже не нужны. 
-ну я видел, что нет страницы прошивки через wi-fi (хотя это удобно) и редактора (который тоже вроде бы удобен, но неимоверно грузит систему. 
-Если не используете редакторы, то смело можно удалять из FS.ino следующее функции 
-void handleFileUpload() 
-void handleFileCreate() 
-void handleFileDelete() 
-void handleFileList() 
-  
+https://github.com/jwrw/ESP_EEPROM 
 
 Графики 
 https://esp8266.ru/forum/threads/risuem-grafiki.967/

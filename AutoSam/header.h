@@ -8,7 +8,7 @@
 #include <WiFiManager.h>      //https://github.com/tzapu/WiFiManager
 #include <DNSServer.h>        //esp8266 core  https://github.com/esp8266/Arduino
 #include <ESP8266WebServer.h> //esp8266 core
-#include <ESP8266SSDP.h>      //esp8266 core
+//#include <ESP8266SSDP.h>      //esp8266 core убран в исходнике
 #include <FS.h>               //esp8266 core
 #include <EEPROM.h>           //esp8266 core
 #include <Wire.h>             //esp8266 core
