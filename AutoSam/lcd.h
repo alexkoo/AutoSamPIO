@@ -12,7 +12,7 @@ void lcd1()
     lcd.setCursor(6, 0);
     lcd.print(millis2time());
     lcd.setCursor(15, 0);
-    lcd.print(modesam);
+    lcd.print(autosam_mode);
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
     lcd.print(AirTemp);
     lcd.print((char)223);
@@ -74,7 +74,7 @@ void lcd2()
     lcd.setCursor(6, 0);
     lcd.print(millis2time());
     lcd.setCursor(15, 0);
-    lcd.print(modesam);
+    lcd.print(autosam_mode);
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
     lcd.print(AirTemp);
     lcd.print((char)223);
@@ -144,7 +144,7 @@ void lcd10()
     lcd.setCursor(6, 0);
     lcd.print(millis2time());
     lcd.setCursor(15, 0);
-    lcd.print(modesam);
+    lcd.print(autosam_mode);
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
     lcd.print(AirTemp);
     lcd.print((char)223);

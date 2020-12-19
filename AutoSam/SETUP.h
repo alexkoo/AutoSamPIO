@@ -19,11 +19,13 @@ void setup0()
   lcd.print(ver);         // пишем версию ПО
 
   EEPROM.begin(512);
-  modesam = EEPROM.read(0);
-  minBoil = EEPROM_float_read(1);
-  deltaT0 = EEPROM_float_read(5);
-  maxTank = EEPROM_float_read(9);
-  steamMax = EEPROM_float_read(13);
+  autosam_mode = EEPROM.read(autosam_mode_addr);
+  press_corr = EEPROM.read(press_corr_addr);
+  min_hot_temp = EEPROM_float_read(min_hot_temp_addr);
+  heating_rate = EEPROM_float_read(heating_rate_addr);
+  max_tank_temp = EEPROM_float_read(max_tank_temp_addr);
+  max_steam_temp = EEPROM_float_read(max_steam_temp_addr);
+
   for (byte f = 0; f < 8; f++)
   {
     sens0[f] = EEPROM.read(18 + f);

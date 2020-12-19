@@ -144,7 +144,7 @@ void loop0()
     TankTempO = TankTemp;
   }
 
-  switch (modesam)
+  switch (autosam_mode)
   {
   case 1:
     rect(); // логика ректификации

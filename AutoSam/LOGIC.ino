@@ -11,32 +11,32 @@ void samogon()
         warning = "Не запущено";
         countsam = 0;
     }
-    if (TankTemp > 35 && TankTemp < minBoil)
+    if (TankTemp > 35 && TankTemp < min_hot_temp)
     {
         warning = "Куб нагревается";
         countsam = 1;
     }
-    if (TankTemp >= minBoil && SteamTemp < minBoil)
+    if (TankTemp >= min_hot_temp && SteamTemp < min_hot_temp)
     {
         warning = "Сухопарник нагревается";
         countsam = 2;
     }
-    if (TankTemp >= minBoil && SteamTemp >= minBoil && deltaTs >= deltaT0)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && deltaTs >= heating_rate)
     {
         warning = "Отбор голов";
         countsam = 3;
     }
-    if (TankTemp >= minBoil && SteamTemp >= minBoil && deltaTs < deltaT0)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && deltaTs < heating_rate)
     {
         warning = "Отбор тела";
         countsam = 4;
     }
-    if (TankTemp >= minBoil && SteamTemp >= minBoil && SteamTempS < 45)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempS < 45)
     {
         warning = "Отбор хвостов";
         countsam = 5;
     }
-    if (TankTemp >= minBoil && SteamTemp >= minBoil && SteamTempS < 30)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempS < 30)
     {
         warning = "Конец отбора";
         countsam = 6;
@@ -131,23 +131,23 @@ void rect()
         }
     }
 
-    if (TankTemp >= 35 && TankTemp < minBoil && SteamTemp < minBoil)
+    if (TankTemp >= 35 && TankTemp < min_hot_temp && SteamTemp < min_hot_temp)
     {
         warning = "Куб нагревается";
         countsam = 1;
     }
-    if (TankTemp >= minBoil && SteamTemp < minBoil)
+    if (TankTemp >= min_hot_temp && SteamTemp < min_hot_temp)
     {
         warning = "Колонна нагревается";
         countsam = 2;
     }
 
-    if (TankTemp >= minBoil && SteamTemp >= minBoil)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp)
     {
         warning = "Колонна нагрелась";
         countsam = 3;
     }
-    if (TankTemp >= maxTank && SteamTemp >= minBoil)
+    if (TankTemp >= max_tank_temp && SteamTemp >= min_hot_temp)
     {
         warning = "Конец отбора";
         countsam = 4;
