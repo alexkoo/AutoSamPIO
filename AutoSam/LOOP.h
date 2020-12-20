@@ -70,7 +70,7 @@ void loop0()
   { // период опроса датчиков, вычисления поправок
     time_request = millis();
     atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление
-    AirTemp = bme.readTemperature();             // и температуру воздуха
+    air_temp = bme.readTemperature();             // и температуру воздуха
     sensors.requestTemperatures();               // запрашиваем температуру у всех датчиков
 
     float TSteamTempN = sensors.getTempC(SteamSensor); // считываем температуру с датчика 0
@@ -181,7 +181,7 @@ void loop0()
       telnet.print("; ");
       telnet.print(WaterTemp);
       telnet.print("; ");
-      telnet.print(AirTemp);
+      telnet.print(air_temp);
       telnet.print("; ");
       telnet.print(atm_pressure);
       telnet.print("; ");

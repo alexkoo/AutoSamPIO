@@ -188,7 +188,7 @@ void setup0()
   tone(buz, 500, 100);
   if (debug == 1)
   {
-    telnet.println("LOG: SteamTemp; PipeTemp; TankTemp; WaterTemp; AirTemp; Pressure; Freemem; Timeloop");
+    telnet.println("LOG: SteamTemp; PipeTemp; TankTemp; WaterTemp; air_temp; Pressure; Freemem; Timeloop");
   }
 
 } //void setup

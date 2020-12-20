@@ -1,10 +1,4 @@
 ﻿//<!--
-
-
-
-
-
-
 var xmlHttp = createXmlHttpObject();
 
 function createXmlHttpObject() {
@@ -44,9 +38,9 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('AIRTEMP').value = allData.AT;
         document.getElementById('MEMFREE').value = allData.FM;
         document.getElementById('WARNING').value = allData.WA;
-        document.getElementById('DELTAS').value = allData.DS;
-        document.getElementById('DELTAP').value = allData.DP;
-        document.getElementById('DELTAT').value = allData.DT;
+        document.getElementById('DELTAS').value = allData.HS;
+        document.getElementById('DELTAP').value = allData.HP;
+        document.getElementById('DELTAT').value = allData.HT;
         document.getElementById('VALVE').value = allData.VS;
         document.getElementById('VERSION').value = allData.VR;
         document.getElementById('MODEI').value = allData.MD;
@@ -56,7 +50,7 @@ function handleServerResponse() { // чтение данных с сервера
     }
 }
 
-function sendbutton(button) {
+function sendbutton(button) { //отправка значений кнопок
     var server = "/button?state=" + button;
     request = new XMLHttpRequest();
     request.open("GET", server, false);
@@ -65,26 +59,16 @@ function sendbutton(button) {
         alert(request.status + ': ' + request.statusText);
     }
 }
-var auto = false;
 
-function setDel1() {
-    var delta1 = document.getElementById('DELTA1').value;
-    var delay1 = document.getElementById('DELAY1').value;
-    if (delta1 != 0 && auto == false) {
+function sendDelS() { // отправка уставки pipe на сервер
+    var delta_s = document.getElementById('DELTA_S').value;
+    var delay_s = document.getElementById('DELAY_S').value;
+    if (delta_s != 0 && auto == false) {
         document.getElementById('APRESS1').value = document.getElementById('APRESS2').value;
-        //document.getElementById('SETTEMP1').value=(+document.getElementById('STEAMTEMP').value + +delta1).toFixed(2);
-        //document.getElementById('SETTEMP1').value=(document.getElementById('SETTEMP1I').value;
-        auto = true;
-
-    } else if (delta1 != 0 && auto == true) {
-        //document.getElementById('SETTEMP1').value=(+document.getElementById('STEAMTEMP').value + +delta1).toFixed(2);
-        //document.getElementById('SETTEMP1').value=(document.getElementById('SETTEMP1I').value;
-    } else if (delta1 == 0 && auto == true) {
-        //document.getElementById('SETTEMP1').value=200;
+    } else if (delta_s == 0 && auto == true) {
         document.getElementById('APRESS1').value = "??";
-        auto = false; // отключаем режим auto
     }
-    server = "/Del1?delta1=" + delta1 + "&delay1=" + delay1;
+    server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
     request = new XMLHttpRequest();
     request.open("GET", server, false);
     request.send();
@@ -93,24 +77,15 @@ function setDel1() {
     }
 }
 
-function setDel2() {
-    var delta2 = document.getElementById('DELTA2').value;
-    var delay2 = document.getElementById('DELAY2').value;
-    if (delta2 != 0 && auto == false) {
+function sendDelP() { // отправка уставки pipe на сервер
+    var delta_p = document.getElementById('DELTA_P').value;
+    var delay2 = document.getElementById('DELAY_P').value;
+    if (delta_p != 0 && auto == false) {
         document.getElementById('APRESS1').value = document.getElementById('APRESS2').value;
-        //document.getElementById('SETTEMP2').value=(+document.getElementById('PIPETEMP').value + +delta2).toFixed(2);
-        //document.getElementById('SETTEMP2').value=(document.getElementById('SETTEMP2I').value;
-        auto = true;
-    } else if (delta2 != 0 && auto == true) {
-
-        //document.getElementById('SETTEMP2').value=(+document.getElementById('PIPETEMP').value + +delta2).toFixed(2);
-        //document.getElementById('SETTEMP2').value=(document.getElementById('SETTEMP2I').value;
-    } else if (delta2 == 0 && auto == true) {
-        //document.getElementById('SETTEMP2').value=200;
+    } else if (delta_p == 0 && auto == true) {
         document.getElementById('APRESS1').value = "??";
-        auto = false;
     }
-    server = "/Del2?delta2=" + delta2 + "&delay2=" + delay2;
+    server = "/Del2?delta_p=" + delta_p + "&delay_p=" + delay2;
     request = new XMLHttpRequest();
     request.open("GET", server, false);
     request.send();
@@ -122,8 +97,9 @@ function setDel2() {
 
 
 // Скрипт включения в страницу
-//https://html5css.ru/howto/howto_html_include.php
 //https://www.w3schools.com/howto/howto_html_include.asp
+//https://html5css.ru/howto/howto_html_include.php
+
 function includeHTML() {
     var z, i, elmnt, file, xhttp;
     /*loop through a collection of all HTML elements:*/

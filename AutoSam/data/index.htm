@@ -35,9 +35,9 @@
 </tr>
 <tr>
 	<td align="right">Время задержки, c</td>
-	<td align="left"><input type="number" id="DELAY1" value="30" min="30" max="300" step="30" size="5"></td>
+	<td align="left"><input type="number" id="DELAY_S" value="30" min="30" max="300" step="30" size="5"></td>
 	<td align="right">Дельта, &#176C</td>
-	<td align="center"><input type="number" id="DELTA1" value="0.0" min="0"  max="1" step="0.1" size="5"></td>
+	<td align="center"><input type="number" id="DELTA_S" value="0.0" min="0"  max="1" step="0.1" size="5"></td>
 
 
 </tr>
@@ -45,7 +45,7 @@
 	<td align="right">Конц. в жидкости / парах, %об</td>
 	<td align="left"> <table><td align="right"><output  id="STEAMTEMPF" ></td><td align="left">/ <output id="STEAMTEMPS" ></td> </table></td>
 	<td align="right">&#916 S, &#176/мин <output  id="DELTAS" ></td>  
-	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="setDel1()"></td>
+	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelS()"></td>
 </tr>
 </table>
 
@@ -59,14 +59,14 @@
 </tr>
 <tr>
 	<td align="right">Время задержки, c</td>
-	<td align="left"><input type="number" id="DELAY2" value="30" min="30" max="300" step="30" size="5"></td>
+	<td align="left"><input type="number" id="DELAY_P" value="30" min="30" max="300" step="30" size="5"></td>
 	<td align="right">Дельта, &#176C</td>
-	<td align="center"><input type="number" id="DELTA2" value="0.0" min="0"  max="1" step="0.1" size="5"></td>
+	<td align="center"><input type="number" id="DELTA_P" value="0.0" min="0"  max="1" step="0.1" size="5"></td>
 <tr>
 	<td align="right">Конц. в жидкости / парах, %об</td>
 	<td><table><td align="right"><output  id="PIPETEMPF" ></td><td align="left">/ <output id="PIPETEMPS" ></td></table></td>
 	<td align="right">&#916 P, &#176/мин <output  id="DELTAP" ></td> 
-	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="setDel2()"></td>
+	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelP()"></td>
 </tr>
 </table>
 <table class="details">

@@ -14,7 +14,7 @@ void lcd1()
     lcd.setCursor(15, 0);
     lcd.print(autosam_mode);
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
-    lcd.print(AirTemp);
+    lcd.print(air_temp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
     lcd.print(atm_pressure);
@@ -76,7 +76,7 @@ void lcd2()
     lcd.setCursor(15, 0);
     lcd.print(autosam_mode);
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
-    lcd.print(AirTemp);
+    lcd.print(air_temp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
     lcd.print(atm_pressure);
@@ -126,7 +126,7 @@ void lcd3()
     lcd.print(atm_pressure);
     lcd.print("mm");
     lcd.setCursor(9, 1);
-    lcd.print(AirTemp);
+    lcd.print(air_temp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
     lcd.print("a");
@@ -146,7 +146,7 @@ void lcd10()
     lcd.setCursor(15, 0);
     lcd.print(autosam_mode);
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
-    lcd.print(AirTemp);
+    lcd.print(air_temp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
     lcd.print(atm_pressure);
@@ -212,7 +212,7 @@ void lcd10()
     lcd.setCursor(9, 1);
     if (BMP280 == true)
     {
-      lcd.print(AirTemp); // пишем температуру воздуха
+      lcd.print(air_temp); // пишем температуру воздуха
       lcd.print((char)223);
       lcd.print("C");
     } // пишем символ градуса и символ цельсия

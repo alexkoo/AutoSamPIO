@@ -7,16 +7,15 @@ void HTTP_init(void)
 
   //Выполнение команды из браузера
   HTTP.on("/button", handle_Button);         // обрашение к кнопкам через web интерфейс
-  HTTP.on("/Del1", handle_DeltaSteam);       // обрашение к уставке SteamTemp через web интерфейс
-  HTTP.on("/Del2", handle_DeltaPipe);        // обрашение к уставке PipeTemp(2/3) через web интерфейс
+  HTTP.on("/DelS", handle_DeltaSteam);       // обрашение к уставке SteamTemp через web интерфейс
+  HTTP.on("/DelP", handle_DeltaPipe);        // обрашение к уставке PipeTemp(2/3) через web интерфейс
   HTTP.on("/SetMD", handle_setMode);         // обрашение к настройкам через web интерфейс (режим)
   HTTP.on("/SetMB", handle_setMinTemp);      // обрашение к настройкам через web интерфейс (Мин. температура бака)
   HTTP.on("/SetMT", handle_setMaxTankTemp);  // обрашение к настройкам через web интерфейс (Макс. температура бака)
   HTTP.on("/SetSM", handle_setMaxSteamTemp); // обрашение к настройкам через web интерфейс (Макс. температура пара)
   HTTP.on("/SetD0", handle_setHeatingRate);  // обрашение к настройкам через web интерфейс (Скорость изменения температуры))
   HTTP.on("/press", handle_press_corr);      // Коррекция давления
-  //HTTP.on("/reset", handle_reset);           // перезагрузка
-
+  
   HTTP.on("/data.json", handleData); // формирование json файла для передачи данных в web интерфейс
   HTTP.begin();                      // Запускаем HTTP сервер
 }
@@ -49,8 +48,8 @@ void handle_Button()
 //**************************************************************************************************
 void handle_DeltaSteam()
 {                                                   // функция изменения уставок с web страницы //SteamTemp
-  float delta_steam = HTTP.arg("delta1").toFloat(); // получаем от клиента строку с дельтой
-  delay_steam = HTTP.arg("delay1").toInt();         // получаем от клиента строку с задержкой
+  float delta_steam = HTTP.arg("delta_s").toFloat(); // получаем от клиента строку с дельтой
+  delay_steam = HTTP.arg("delay_s").toInt();         // получаем от клиента строку с задержкой
   if (delta_steam == 0)
     set_temp_steam = 0; // устанавливаем уставку 0
   else
@@ -147,20 +146,20 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"TF\":\"" + String(TankTempVolF);
   json += "\",\"TS\":\"" + String(TankTempVolS);
   json += "\",\"AP\":\"" + String(atm_pressure);
-  json += "\",\"AT\":\"" + String(AirTemp);
+  json += "\",\"AT\":\"" + String(air_temp);
   json += "\",\"FM\":\"" + String(free_mem);
   json += "\",\"WA\":\"" + String(warning);
-  json += "\",\"DS\":\"" + String(heating_rate_steam);
-  json += "\",\"DP\":\"" + String(heating_rate_pipe);
-  json += "\",\"DT\":\"" + String(heating_rate_tank);
+  json += "\",\"HS\":\"" + String(heating_rate_steam);
+  json += "\",\"HP\":\"" + String(heating_rate_pipe);
+  json += "\",\"HT\":\"" + String(heating_rate_tank);
   json += "\",\"VR\":\"" + String(VER);
   json += "\",\"MD\":\"" + String(autosam_mode);
   json += "\",\"MB\":\"" + String(min_hot_temp);
   json += "\",\"MT\":\"" + String(max_tank_temp);
   json += "\",\"D0\":\"" + String(heating_rate);
   json += "\",\"SM\":\"" + String(max_steam_temp);
-  json += "\",\"S1\":\"" + String(set_temp_steam);
-  json += "\",\"S2\":\"" + String(set_temp_pipe);
+  json += "\",\"IS\":\"" + String(set_temp_steam);
+  json += "\",\"IP\":\"" + String(set_temp_pipe);
   json += "\",\"AS\":\"" + String(auto_status);
   json += "\",\"VS\":\"" + String();
   if (digitalRead(valve))
