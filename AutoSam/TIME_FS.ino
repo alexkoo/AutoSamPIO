@@ -83,7 +83,6 @@ unsigned long sendNTPpacket(IPAddress &address) // функция посылки
   udp.beginPacket(address, 123);
   udp.write(packetBuffer, NTP_PACKET_SIZE);
   udp.endPacket();
-  return 0;                   //fix??
 }
 //**********************************************************************************************************************************
 String millis2time() // функция формирования строки "время работы модуля"
@@ -133,8 +132,8 @@ void FS_init(void)
       size_t fileSize = dir.fileSize();
     }
   }
-/*
-  //HTTP страницы для работы с FFS (не используются)
+
+  //HTTP страницы для работы с FFS
   // листинг директории
   HTTP.on("/list", HTTP_GET, handleFileList);
   // загрузка редактора editor
@@ -160,7 +159,6 @@ void FS_init(void)
     if (!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "FileNotFound");
   });
-  */
 }
 
 // Здесь функции для работы с файловой системой
@@ -214,10 +212,6 @@ bool handleFileRead(String path)
   return false;
 }
 
-
-
-
-/* редактор не используется
 void handleFileUpload()
 {
   if (HTTP.uri() != "/edit")
@@ -257,7 +251,23 @@ void handleFileDelete()
   HTTP.send(200, "text/plain", "");
   path = String();
 }
-
+void handleFileCreate()
+{
+  if (HTTP.args() == 0)
+    return HTTP.send(500, "text/plain", "BAD ARGS");
+  String path = HTTP.arg(0);
+  if (path == "/")
+    return HTTP.send(500, "text/plain", "BAD PATH");
+  if (SPIFFS.exists(path))
+    return HTTP.send(500, "text/plain", "FILE EXISTS");
+  File file = SPIFFS.open(path, "w");
+  if (file)
+    file.close();
+  else
+    return HTTP.send(500, "text/plain", "CREATE FAILED");
+  HTTP.send(200, "text/plain", "");
+  path = String();
+}
 void handleFileList()
 {
 
@@ -287,4 +297,3 @@ void handleFileList()
 
   HTTP.send(200, "text/json", output);
 }
-*/
