@@ -110,12 +110,12 @@ void loop0()
     }
 
     // вычисление крепости
-    SteamTempVolS = ConcSteam(SteamTemp);
-    SteamTempVolF = ConcFluid(SteamTemp);
-    PipeTempVolS = ConcSteam(PipeTemp);
-    PipeTempVolF = ConcFluid(PipeTemp);
-    TankTempVolS = ConcSteam(TankTemp);
-    TankTempVolF = ConcFluid(TankTemp);
+    SteamTempVolS = concSteam(SteamTemp);
+    SteamTempVolF = concFluid(SteamTemp);
+    PipeTempVolS = concSteam(PipeTemp);
+    PipeTempVolF = concFluid(PipeTemp);
+    TankTempVolS = concSteam(TankTemp);
+    TankTempVolF = concFluid(TankTemp);
   }
 
   // вычисление скорости отбора
@@ -191,7 +191,7 @@ void loop0()
       telnet.print(" Причина перезагрузки  ");
       telnet.println(ESP.getResetReason());
 
-      findds();
+      findDS();
     }
   }
 

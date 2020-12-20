@@ -1,7 +1,7 @@
 
 #include "header.h"
 
-void findds()
+void findDS()
 {
   byte i;
   byte j;
@@ -54,7 +54,7 @@ float corrTemp(float temp)
   return temp;
 }
 
-float ConcFluid(float t)
+float concFluid(float t)
 { // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html
   float Ti, f;
   Ti = (t - 89) / 6.49;
@@ -66,7 +66,7 @@ float ConcFluid(float t)
   return f;
 }
 
-float ConcSteam(float t)
+float concSteam(float t)
 { //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/
   float s;
   s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); //Содержание спирта в парах %об

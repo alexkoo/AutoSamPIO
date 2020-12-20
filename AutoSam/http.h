@@ -10,7 +10,6 @@ void handle_setMinTemp();
 void handle_setMaxTankTemp();
 void handle_setMaxSteamTemp();
 void handle_setHeatingRate();
-void handle_reset();
 void handleData();
 
 #endif

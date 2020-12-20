@@ -36,7 +36,7 @@ void handle_Button()
   }
   if (button_state == 41)
   { // если передан номер кнопки 41 "Поиск датчиков"
-    findds();
+    findDS();
   }
   if (button_state == 42)
   { // если передан номер кнопки 42 "reset"
@@ -50,7 +50,7 @@ void handle_Button()
 void handle_DeltaSteam()
 {                                                   // функция изменения уставок с web страницы //SteamTemp
   float delta_steam = HTTP.arg("delta1").toFloat(); // получаем от клиента строку с дельтой
-  float delay_steam = HTTP.arg("delay1").toInt();   // получаем от клиента строку с задержкой
+  delay_steam = HTTP.arg("delay1").toInt();         // получаем от клиента строку с задержкой
   if (delta_steam == 0)
     set_temp_steam = 0; // устанавливаем уставку 0
   else
@@ -69,7 +69,7 @@ void handle_DeltaSteam()
 void handle_DeltaPipe()
 {                                                  // функция изменения уставок с web страницы //PipeTemp(2/3)
   float delta_pipe = HTTP.arg("delta2").toFloat(); // получаем от клиента строку с дельтой
-  float delay_pipe = HTTP.arg("delay2").toInt();   // получаем от клиента строку с задержкой
+  delay_pipe = HTTP.arg("delay2").toInt();         // получаем от клиента строку с задержкой
   if (delta_pipe == 0)
     set_temp_pipe = 0; // устанавливаем уставку 0
   else
@@ -129,13 +129,7 @@ void handle_press_corr()
   EEPROM.write(press_corr_addr, press_corr);
   EEPROM.commit();
 }
-/*
-void handle_reset()
-{ // функция перезагрузки с web страницы
-  ESP.restart();
-  HTTP.send(200, "text/plain", "OK"); // передаём ответ
-}
-*/
+
 //*****************************************************************************************************
 void handleData() // функция передачи файла data.json клиенту
 {

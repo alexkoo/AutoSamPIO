@@ -3,11 +3,11 @@
 #define func_h
 #include "header.h"
 
-void findds();
+void findDS();
 float corrTemp(float); // Коррекция температуры по давлению
 void printAddress(DeviceAddress deviceAddress); // функция печати адреса DS18B20
-float ConcFluid(float t); // Концентрация спирта в жидкости
-float ConcSteam(float t); // Концентрация спирта в парах
+float concFluid(float t); // Концентрация спирта в жидкости
+float concSteam(float t); // Концентрация спирта в парах
 float EEPROM_read(int addr, byte bytn); // чтение данных из EEPROM (адрес, количесство байтов(int=2, float=4))
 //float EEPROM_int_read(int addr);
 //float EEPROM_float_read(int addr);
