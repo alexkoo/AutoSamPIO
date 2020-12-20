@@ -4,7 +4,7 @@
 
 void loop0()
 { // вынос функции loop в отдельную вкладку
-  freeMem = (ESP.getFreeHeap()); //свободная память
+  free_mem = (ESP.getFreeHeap()); //свободная память
 
   if (debug == 2)
   {                                   // выполняется каждый цикл
@@ -46,11 +46,11 @@ void loop0()
   if (digitalRead(button) == LOW && pressed == 0) //если кнопка нажата и переменная pressed равна 0 , то ...
   {
     pressed = 1;   //это нужно для того, чтобы с каждым нажатием кнопки происходило только одно действие плюс защита от "дребезга"
-    screen++;      // увеличиваем номер экрана на 1
+    lcd_num++;      // увеличиваем номер экрана на 1
     lcd.clear();   // при нажатии кнопки очищаем дисплей
     pcountsam = 0; // снимаем процесс с паузы
-    if (screen >= lcd_num)
-      screen = 0; // так как мы используем только одну кнопку, то переключать экраны будем циклично
+    if (lcd_num >= lcd_max_num)
+      lcd_num = 0; // так как мы используем только одну кнопку, то переключать экраны будем циклично
   }
   if (digitalRead(button) == HIGH && pressed == 1)
     pressed = 0; //если кнопка НЕ нажата и pressed равна 1 ,то обнуляем pressed
@@ -58,10 +58,10 @@ void loop0()
   if (millis() - lcd_timer > lcd_timer_set)
   { // автопереключение экранов
     lcd_timer = millis();
-    screen++;
+    lcd_num++;
     lcd.clear();
-    if (screen > lcd_num)
-      screen = 0;
+    if (lcd_num > lcd_max_num)
+      lcd_num = 0;
   }
 
   //*************************************************************************** // считываем температуры с датчиков
@@ -149,24 +149,24 @@ void loop0()
   case 1:
     rect(); // логика ректификации
     lcd1(); // вызываем функцию вывода на дисплей
-    lcd_num = 2;
+    lcd_max_num = 2;
     break;
   case 2:
     samogon(); // логика самогонного аппарата
     lcd2();    // вызываем функцию вывода на дисплей
-    lcd_num = 1;
+    lcd_max_num = 1;
     break;
   case 3:
     lcd3(); // вызываем функцию вывода на дисплей
-    lcd_num = 0;
+    lcd_max_num = 0;
     break;
   }
 
   if (debug == 1)
   {
-    if (millis() - debugTime >= 1000)
+    if (millis() - debug_time >= 1000)
     {                       // выполняется раз в 1000 мс
-      debugTime = millis(); // перезаводится
+      debug_time = millis(); // перезаводится
 
       // выводим температуры
       telnet.println(" ");
@@ -185,7 +185,7 @@ void loop0()
       telnet.print("; ");
       telnet.print(atm_pressure);
       telnet.print("; ");
-      telnet.print(freeMem);
+      telnet.print(free_mem);
       telnet.print("; ");
       telnet.println(timeloop1);
       telnet.print(" Причина перезагрузки  ");

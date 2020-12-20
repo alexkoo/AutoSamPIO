@@ -63,7 +63,7 @@ void rect()
         {
             digitalWrite(valve, LOW);                   // включаем клапан (лог. 0)
             telnet.println("Valve is OPENED manually"); // выводим сообщение на UART
-            AutoStatus = "Opened, Man";
+            auto_status = "Opened, Man";
         }
     {
         if (digitalRead(valve) == true) // если клапан закрыт
@@ -74,7 +74,7 @@ void rect()
                 {
                     digitalWrite(valve, LOW); // если температура ниже уставки, включаем клапан (лог. 0)
                     telnet.println("Valve is OPENED automatically");
-                    AutoStatus = "Opened, Auto";
+                    auto_status = "Opened, Auto";
                 }
                 else
                     valve_pause = millis(); // если температура всё ещё выше уставки, заводим таймер снова
@@ -86,7 +86,7 @@ void rect()
             {
                 digitalWrite(valve, HIGH); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
-                AutoStatus = "Closed, Auto";
+                auto_status = "Closed, Auto";
                 valve_pause = millis();
             } // заводим таймер
         }
@@ -100,7 +100,7 @@ void rect()
             digitalWrite(valve, HIGH); // выключаем клапан (лог. 1)
 
             telnet.println("Valve is CLOSED manually"); // выводим сообщение на UART
-            AutoStatus = "Closed, Man";
+            auto_status = "Closed, Man";
         }
 
     {
@@ -113,7 +113,7 @@ void rect()
                     digitalWrite(valve, LOW); // если температура ниже уставки, включаем клапан (лог. 0)
 
                     telnet.println("Valve is OPENED automatically");
-                    AutoStatus = "Opened, Auto";
+                    auto_status = "Opened, Auto";
                 }
                 else
                     valve_pause = millis(); // если температура всё ещё выше уставки, заводим таймер снова
@@ -125,7 +125,7 @@ void rect()
             {
                 digitalWrite(valve, HIGH); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
-                AutoStatus = "Closed, Auto";
+                auto_status = "Closed, Auto";
                 valve_pause = millis();
             } // заводим таймер
         }

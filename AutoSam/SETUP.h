@@ -9,14 +9,14 @@ void setup0()
   Serial.begin(115200); // Настраиваем вывод отладки
   delay(500);           // пауза небольшая
   Serial.print("AutoSam Version ");
-  Serial.println(ver);
+  Serial.println(VER);
 
   lcd.begin(16, 2);       // задаём размерность дисплея
   lcd.init();             // инициализируем дисплей
   lcd.backlight();        // включаем подсветку
   lcd.setCursor(0, 0);    // устанавливаем курсор на вторую позицию в верхней строке
   lcd.print("AutoSam v"); // пишем AutoSam.
-  lcd.print(ver);         // пишем версию ПО
+  lcd.print(VER);         // пишем версию ПО
 
   EEPROM.begin(512);
   autosam_mode = EEPROM.read(autosam_mode_addr);

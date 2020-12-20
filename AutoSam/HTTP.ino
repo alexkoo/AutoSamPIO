@@ -154,12 +154,12 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"TS\":\"" + String(TankTempVolS);
   json += "\",\"AP\":\"" + String(atm_pressure);
   json += "\",\"AT\":\"" + String(AirTemp);
-  json += "\",\"FM\":\"" + String(freeMem);
+  json += "\",\"FM\":\"" + String(free_mem);
   json += "\",\"WA\":\"" + String(warning);
   json += "\",\"DS\":\"" + String(heating_rate_steam);
   json += "\",\"DP\":\"" + String(heating_rate_pipe);
   json += "\",\"DT\":\"" + String(heating_rate_tank);
-  json += "\",\"VR\":\"" + String(ver);
+  json += "\",\"VR\":\"" + String(VER);
   json += "\",\"MD\":\"" + String(autosam_mode);
   json += "\",\"MB\":\"" + String(min_hot_temp);
   json += "\",\"MT\":\"" + String(max_tank_temp);
@@ -167,7 +167,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"SM\":\"" + String(max_steam_temp);
   json += "\",\"S1\":\"" + String(set_temp_steam);
   json += "\",\"S2\":\"" + String(set_temp_pipe);
-  json += "\",\"AS\":\"" + String(AutoStatus);
+  json += "\",\"AS\":\"" + String(auto_status);
   json += "\",\"VS\":\"" + String();
   if (digitalRead(valve))
     json += " ЗАКРЫТ ";
