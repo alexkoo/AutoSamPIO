@@ -19,11 +19,24 @@ function process() {
     setTimeout('process()', 1000);
 }
 
+
+function request_new(server) {
+    var request = new XMLHttpRequest();
+    request.open("GET", server, true);
+    request.send();
+    if (request.readyState != 4 && request.status != 200) {
+        alert(request.status + ': ' + request.statusText + ', status= ' + request.readyState);
+    }
+}
+
+
 function handleServerResponse() { // чтение данных с сервера
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         var allData = JSON.parse(xmlHttp.responseText);
         document.getElementById('CURRENTTIME').value = allData.CT;
         document.getElementById('RUNTIME').value = allData.RT;
+        document.getElementById('VERSION').value = allData.VR;
+        document.getElementById('MODEI').value = allData.MD;
         document.getElementById('STEAMTEMP').value = allData.ST;
         document.getElementById('STEAMTEMPF').value = allData.SF;
         document.getElementById('STEAMTEMPS').value = allData.SS;
@@ -36,63 +49,37 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('TANKTEMPS').value = allData.TS;
         document.getElementById('APRESS2').value = allData.AP;
         document.getElementById('AIRTEMP').value = allData.AT;
-        document.getElementById('MEMFREE').value = allData.FM;
-        document.getElementById('WARNING').value = allData.WA;
         document.getElementById('DELTAS').value = allData.HS;
         document.getElementById('DELTAP').value = allData.HP;
         document.getElementById('DELTAT').value = allData.HT;
         document.getElementById('VALVE').value = allData.VS;
-        document.getElementById('VERSION').value = allData.VR;
-        document.getElementById('MODEI').value = allData.MD;
-        document.getElementById('SETTEMP1I').value = allData.S1;
-        document.getElementById('SETTEMP2I').value = allData.S2;
+        document.getElementById('SETTEMP1I').value = allData.IS;
+        document.getElementById('SETTEMP2I').value = allData.IP;
+        document.getElementById('MEMFREE').value = allData.FM;
         document.getElementById('AUTOSTATUS').value = allData.AS;
+        document.getElementById('WARNING').value = allData.WA;
     }
 }
 
 function sendbutton(button) { //отправка значений кнопок
     var server = "/button?state=" + button;
-    request = new XMLHttpRequest();
-    request.open("GET", server, false);
-    request.send();
-    if (request.status != 200) {
-        alert(request.status + ': ' + request.statusText);
-    }
+    request_new(server);
 }
 
 function sendDelS() { // отправка уставки pipe на сервер
     var delta_s = document.getElementById('DELTA_S').value;
     var delay_s = document.getElementById('DELAY_S').value;
-    if (delta_s != 0 && auto == false) {
-        document.getElementById('APRESS1').value = document.getElementById('APRESS2').value;
-    } else if (delta_s == 0 && auto == true) {
-        document.getElementById('APRESS1').value = "??";
-    }
-    server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
-    request = new XMLHttpRequest();
-    request.open("GET", server, false);
-    request.send();
-    if (request.status != 200) {
-        alert(request.status + ': ' + request.statusText);
-    }
+    var serve = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
+    request_new(serve);
+
 }
 
 function sendDelP() { // отправка уставки pipe на сервер
     var delta_p = document.getElementById('DELTA_P').value;
-    var delay2 = document.getElementById('DELAY_P').value;
-    if (delta_p != 0 && auto == false) {
-        document.getElementById('APRESS1').value = document.getElementById('APRESS2').value;
-    } else if (delta_p == 0 && auto == true) {
-        document.getElementById('APRESS1').value = "??";
-    }
-    server = "/Del2?delta_p=" + delta_p + "&delay_p=" + delay2;
-    request = new XMLHttpRequest();
-    request.open("GET", server, false);
-    request.send();
+    var delay_p = document.getElementById('DELAY_P').value;
+    var server = "/DelP?delta_p=" + delta_p + "&delay_p=" + delay_p;
+    request_new(server);
 
-    if (request.status != 200) {
-        alert(request.status + ': ' + request.statusText);
-    }
 }
 
 
