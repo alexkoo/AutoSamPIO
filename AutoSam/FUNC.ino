@@ -135,7 +135,7 @@ float EEPROM_float_read(int addr)
 
 void EEPROM_write(int addr, float num, byte bytn) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
 {                                                
-  if (bytn = 2) // запись int
+  if (bytn == 2) // запись int
   { int num = num;
     if (EEPROM_read(addr, 2) != num)
     { //если сохраняемое отличается
@@ -146,7 +146,7 @@ void EEPROM_write(int addr, float num, byte bytn) // Запись данных �
     }
     EEPROM.commit();
   }
-  if (bytn = 4) // запись float
+  if (bytn == 4) // запись float
   {
     if (EEPROM_read(addr, 4) != num)
     { //если сохраняемое отличается
