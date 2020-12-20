@@ -49,14 +49,12 @@ float corrTemp(float temp)
 { // функция принимает текущую температуру
   if (BMP280 == true && temp > 75 && press_corr == 1)
   {
-    temp += (760 - Apressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
+    temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
   return temp;
 }
 
-
-
-float conc_f(float t)
+float ConcFluid(float t)
 { // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html
   float Ti, f;
   Ti = (t - 89) / 6.49;
@@ -68,7 +66,7 @@ float conc_f(float t)
   return f;
 }
 
-float conc_s(float t)
+float ConcSteam(float t)
 { //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/
   float s;
   s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); //Содержание спирта в парах %об
@@ -81,6 +79,29 @@ float conc_s(float t)
 
 // чтение EEPROM
 
+float EEPROM_read(int addr, byte bytn) // чтение данных из EEPROM (адрес, количесство байтов)
+{
+  if (bytn == 2)
+  {
+    byte raw[2];
+    for (byte i = 0; i < 2; i++)
+      raw[i] = EEPROM.read(addr + i);
+    int &num = (int &)raw;
+    return num;
+  }
+
+  if (bytn == 4)
+  {
+    byte raw[4];
+    for (byte i = 0; i < 4; i++)
+      raw[i] = EEPROM.read(addr + i);
+    float &num = (float &)raw;
+    return num;
+  }
+  else
+    return 0;
+}
+/*
 float EEPROM_int_read(int addr)
 {
   byte raw[2];
@@ -99,7 +120,6 @@ float EEPROM_float_read(int addr)
   return num;
 }
 
-/*
   void EEPROM_addr_read(int ad ) // на вход адрес eeprom и индекс датчика
   {
   for (byte f = 0; f < 8; f++) {
@@ -107,25 +127,45 @@ float EEPROM_float_read(int addr)
    // addr[i][f] = EEPROM.read(ad + f);
   }
   }
+
+
 */
 
 // запись EEPROM
 
-void EEPROM_int_write(int addr, int num)
-{ // запись int
-  if (EEPROM_int_read(addr) != num)
-  { //если сохраняемое отличается
-    byte raw[2];
-    (int &)raw = num;
-    for (byte i = 0; i < 2; i++)
-      EEPROM.write(addr + i, raw[i]);
+void EEPROM_write(int addr, float num, byte bytn) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
+{                                                
+  if (bytn = 2) // запись int
+  { int num = num;
+    if (EEPROM_read(addr, 2) != num)
+    { //если сохраняемое отличается
+      byte raw[2];
+      (int &)raw = num;
+      for (byte i = 0; i < 2; i++)
+        EEPROM.write(addr + i, raw[i]);
+    }
+    EEPROM.commit();
   }
-  EEPROM.commit();
+  if (bytn = 4) // запись float
+  {
+    if (EEPROM_read(addr, 4) != num)
+    { //если сохраняемое отличается
+      byte raw[4];
+      (float &)raw = num;
+      for (byte i = 0; i < 4; i++)
+        EEPROM.write(addr + i, raw[i]);
+    }
+    EEPROM.commit();
+  }
+}
+/*
+void EEPROM_int_write(int addr, int num) // Запись данных в EEPROM (адрес, число, количесство байтов)
+{                                        // запись int
 }
 
 void EEPROM_float_write(int addr, float num)
 { // запись float
-  if (EEPROM_float_read(addr) != num)
+  if (EEPROM_read(addr, 4) != num)
   { //если сохраняемое отличается
     byte raw[4];
     (float &)raw = num;
@@ -135,6 +175,7 @@ void EEPROM_float_write(int addr, float num)
   EEPROM.commit();
 }
 
+*/
 void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom и адрес датчика
 {
   for (int i = 0; i < 8; i++)

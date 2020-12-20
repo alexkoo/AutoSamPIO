@@ -21,22 +21,22 @@ void samogon()
         warning = "Сухопарник нагревается";
         countsam = 2;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && deltaTs >= heating_rate)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && heating_rate_steam >= heating_rate)
     {
         warning = "Отбор голов";
         countsam = 3;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && deltaTs < heating_rate)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && heating_rate_steam < heating_rate)
     {
         warning = "Отбор тела";
         countsam = 4;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempS < 45)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempVolS < 45)
     {
         warning = "Отбор хвостов";
         countsam = 5;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempS < 30)
+    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempVolS < 30)
     {
         warning = "Конец отбора";
         countsam = 6;
@@ -57,9 +57,9 @@ void samogon()
 void rect()
 {
     // Управляем клапаном отбора по температуре пара перед дефлегматором SteamTemp
-    if (SetTemp1 != 0) // если не ручной режим управления клапаном
+    if (set_temp_steam != 0) // если не ручной режим управления клапаном
 
-        if (valveset == true && SetTemp1 == 0 && SetTemp2 == 0) // если передан номер кнопки 6 и обе уставки равны 0 (ручное управление)
+        if (valve_manual == true && set_temp_steam == 0 && set_temp_pipe == 0) // если передан номер кнопки 6 и обе уставки равны 0 (ручное управление)
         {
             digitalWrite(valve, LOW);                   // включаем клапан (лог. 0)
             telnet.println("Valve is OPENED manually"); // выводим сообщение на UART
@@ -68,9 +68,9 @@ void rect()
     {
         if (digitalRead(valve) == true) // если клапан закрыт
         {
-            if (millis() - valve_pause >= Delay1 * 1000) // если время задержки вышло (Delay1 задаётся в секундах),
+            if (millis() - valve_pause >= delay_steam * 1000) // если время задержки вышло (delay_steam задаётся в секундах),
             {
-                if (SteamTemp < SetTemp1)
+                if (SteamTemp < set_temp_steam)
                 {
                     digitalWrite(valve, LOW); // если температура ниже уставки, включаем клапан (лог. 0)
                     telnet.println("Valve is OPENED automatically");
@@ -82,7 +82,7 @@ void rect()
         }
         else // если клапан открыт
         {
-            if (SteamTemp >= SetTemp1) // если температура выше уставки,
+            if (SteamTemp >= set_temp_steam) // если температура выше уставки,
             {
                 digitalWrite(valve, HIGH); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
@@ -93,9 +93,9 @@ void rect()
     }
     //***************************************************************************************************************************
     // Управляем клапаном отбора по температуре пара в царге на 2/3 колонны PipeTemp
-    if (SetTemp2 != 0) // если не ручной режим управления клапаном
+    if (set_temp_pipe != 0) // если не ручной режим управления клапаном
 
-        if (valveset == true && SetTemp1 == 0 && SetTemp2 == 0) // если передан номер кнопки 7 и обе уставки равны 0 (ручное управление)
+        if (valve_manual == true && set_temp_steam == 0 && set_temp_pipe == 0) // если передан номер кнопки 7 и обе уставки равны 0 (ручное управление)
         {
             digitalWrite(valve, HIGH); // выключаем клапан (лог. 1)
 
@@ -106,9 +106,9 @@ void rect()
     {
         if (digitalRead(valve) == true) // если клапан закрыт
         {
-            if (millis() - valve_pause >= Delay2 * 1000) // если время задержки вышло (Delay2 задаётся в секундах),
+            if (millis() - valve_pause >= delay_pipe * 1000) // если время задержки вышло (delay_pipe задаётся в секундах),
             {
-                if (PipeTemp < SetTemp2)
+                if (PipeTemp < set_temp_pipe)
                 {
                     digitalWrite(valve, LOW); // если температура ниже уставки, включаем клапан (лог. 0)
 
@@ -121,7 +121,7 @@ void rect()
         }
         else // если клапан открыт
         {
-            if (PipeTemp >= SetTemp2) // если температура выше уставки,
+            if (PipeTemp >= set_temp_pipe) // если температура выше уставки,
             {
                 digitalWrite(valve, HIGH); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
@@ -153,13 +153,13 @@ void rect()
         countsam = 4;
     }
 
-    if (SetTemp1 != 0 && SteamTemp >= SetTemp1)
+    if (set_temp_steam != 0 && SteamTemp >= set_temp_steam)
     {
         warning = "Уменьшить отбор (Отбор)";
         countsam = 5;
     }
 
-    if (SetTemp2 != 0 && PipeTemp >= SetTemp2)
+    if (set_temp_pipe != 0 && PipeTemp >= set_temp_pipe)
     {
         warning = "Уменьшить отбор (Царга)";
         countsam = 6;

@@ -146,13 +146,16 @@
   поправил часть предупреждений компилятора
   отключил ssdp и void handleFileUpload(), void handleFileCreate(), void handleFileDelete(), void handleFileList() 
   (https://alcodistillers.ru/forum/viewtopic.php?id=661&p=8)
-  
+1.1.1
+переименование функций
+переделка функций eeprom
+reset из функции в кнопку
  */
 
 /*Планы 
   
   Функционал
-   
+   управление debug из веб
    перенести на littlefs
   !! обработка ошибок
   LiquidCrystal_I2C найти совместимую библиотеку

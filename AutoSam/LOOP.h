@@ -49,27 +49,27 @@ void loop0()
     screen++;      // увеличиваем номер экрана на 1
     lcd.clear();   // при нажатии кнопки очищаем дисплей
     pcountsam = 0; // снимаем процесс с паузы
-    if (screen >= lcd_n)
+    if (screen >= lcd_num)
       screen = 0; // так как мы используем только одну кнопку, то переключать экраны будем циклично
   }
   if (digitalRead(button) == HIGH && pressed == 1)
     pressed = 0; //если кнопка НЕ нажата и pressed равна 1 ,то обнуляем pressed
 
-  if (millis() - tims > timescr)
+  if (millis() - lcd_timer > lcd_timer_set)
   { // автопереключение экранов
-    tims = millis();
+    lcd_timer = millis();
     screen++;
     lcd.clear();
-    if (screen > lcd_n)
+    if (screen > lcd_num)
       screen = 0;
   }
 
   //*************************************************************************** // считываем температуры с датчиков
 
-  if (millis() - timedat > 1000)
+  if (millis() - time_request > 1000)
   { // период опроса датчиков, вычисления поправок
-    timedat = millis();
-    Apressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление
+    time_request = millis();
+    atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление
     AirTemp = bme.readTemperature();             // и температуру воздуха
     sensors.requestTemperatures();               // запрашиваем температуру у всех датчиков
 
@@ -81,11 +81,11 @@ void loop0()
     if (TSteamTempN >= -30)
     { // проверка на ошибочные значения
       SteamError = false;
-      SteamTempN = TSteamTempN;
+      SteamTempNC = TSteamTempN;
     }
     if (TPipeTempN >= -30)
     {
-      PipeTempN = TPipeTempN;
+      PipeTempNC = TPipeTempN;
     }
     if (TWaterTemp >= -30)
     {
@@ -93,13 +93,13 @@ void loop0()
     }
     if (TTankTempN >= -30)
     {
-      TankTempN = TTankTempN;
+      TankTempNC = TTankTempN;
     }
 
     // поправки на давление и ручные
-    SteamTemp = corrTemp(SteamTempN) + 0.75; //  поправка. У меня  один из датчиков брешет
-    PipeTemp = corrTemp(PipeTempN) + 0.5;
-    TankTemp = corrTemp(TankTempN);
+    SteamTemp = corrTemp(SteamTempNC) + 0.75; //  поправка. У меня  один из датчиков брешет
+    PipeTemp = corrTemp(PipeTempNC) + 0.5;
+    TankTemp = corrTemp(TankTempNC);
 
     // фильтрация
     if (filter_enable == 1)
@@ -110,36 +110,36 @@ void loop0()
     }
 
     // вычисление крепости
-    SteamTempS = conc_s(SteamTemp);
-    SteamTempF = conc_f(SteamTemp);
-    PipeTempS = conc_s(PipeTemp);
-    PipeTempF = conc_f(PipeTemp);
-    TankTempS = conc_s(TankTemp);
-    TankTempF = conc_f(TankTemp);
+    SteamTempVolS = ConcSteam(SteamTemp);
+    SteamTempVolF = ConcFluid(SteamTemp);
+    PipeTempVolS = ConcSteam(PipeTemp);
+    PipeTempVolF = ConcFluid(PipeTemp);
+    TankTempVolS = ConcSteam(TankTemp);
+    TankTempVolF = ConcFluid(TankTemp);
   }
 
   // вычисление скорости отбора
-  if (millis() - dtim >= dint)
-  {                                                      // таймер dtim сбрасывается каждые dint миллисекунд
-    dtim = millis();                                     // перезаводится
-    deltaTs = (SteamTemp - SteamTempO) * (60000 / dint); // deltaTs - скорость нагрева град/мин
-    if (deltaTs > 40 || deltaTs < -40)
+  if (millis() - heating_rate_timer >= heating_rate_int)
+  {                                                      // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
+    heating_rate_timer = millis();                                     // перезаводится
+    heating_rate_steam = (SteamTemp - SteamTempO) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
+    if (heating_rate_steam > 40 || heating_rate_steam < -40)
     {
-      deltaTs = 0;
+      heating_rate_steam = 0;
     }
     SteamTempO = SteamTemp;
 
-    deltaTp = (PipeTemp - PipeTempO) * (60000 / dint); // deltaTp - скорость нагрева град/мин
-    if (deltaTp > 40 || deltaTp < -40)
+    heating_rate_pipe = (PipeTemp - PipeTempO) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
+    if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
     {
-      deltaTp = 0;
+      heating_rate_pipe = 0;
     }
     PipeTempO = PipeTemp;
 
-    deltaTt = (TankTemp - TankTempO) * (60000 / dint); // deltaTp - скорость нагрева град/мин
-    if (deltaTp > 40 || deltaTp < -40)
+    heating_rate_tank = (TankTemp - TankTempO) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
+    if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
     {
-      deltaTp = 0;
+      heating_rate_pipe = 0;
     }
     TankTempO = TankTemp;
   }
@@ -149,16 +149,16 @@ void loop0()
   case 1:
     rect(); // логика ректификации
     lcd1(); // вызываем функцию вывода на дисплей
-    lcd_n = 2;
+    lcd_num = 2;
     break;
   case 2:
     samogon(); // логика самогонного аппарата
     lcd2();    // вызываем функцию вывода на дисплей
-    lcd_n = 1;
+    lcd_num = 1;
     break;
   case 3:
     lcd3(); // вызываем функцию вывода на дисплей
-    lcd_n = 0;
+    lcd_num = 0;
     break;
   }
 
@@ -183,7 +183,7 @@ void loop0()
       telnet.print("; ");
       telnet.print(AirTemp);
       telnet.print("; ");
-      telnet.print(Apressure);
+      telnet.print(atm_pressure);
       telnet.print("; ");
       telnet.print(freeMem);
       telnet.print("; ");

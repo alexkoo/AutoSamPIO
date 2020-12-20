@@ -17,7 +17,7 @@ void lcd1()
     lcd.print(AirTemp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
-    lcd.print(Apressure);
+    lcd.print(atm_pressure);
     lcd.print("mm");
   }
 
@@ -30,7 +30,7 @@ void lcd1()
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 0);
     lcd.print("F");
-    lcd.print(SteamTempS);
+    lcd.print(SteamTempVolS);
     lcd.setCursor(15, 0);
     lcd.print("%");
     lcd.setCursor(0, 1);
@@ -40,7 +40,7 @@ void lcd1()
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 1);
     lcd.print("F");
-    lcd.print(PipeTempS);
+    lcd.print(PipeTempVolS);
     lcd.setCursor(15, 1);
     lcd.print("%");
   }
@@ -53,7 +53,7 @@ void lcd1()
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 0);
     lcd.print("S");
-    lcd.print(TankTempF);
+    lcd.print(TankTempVolF);
     lcd.setCursor(15, 0);
     lcd.print("%");
     lcd.setCursor(0, 1);
@@ -79,7 +79,7 @@ void lcd2()
     lcd.print(AirTemp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
-    lcd.print(Apressure);
+    lcd.print(atm_pressure);
     lcd.print("mm");
   }
 
@@ -92,7 +92,7 @@ void lcd2()
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 0);
     lcd.print("F");
-    lcd.print(SteamTempS);
+    lcd.print(SteamTempVolS);
     lcd.setCursor(15, 0);
     lcd.print("%");
 
@@ -103,7 +103,7 @@ void lcd2()
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 1);
     lcd.print("S");
-    lcd.print(TankTempF);
+    lcd.print(TankTempVolF);
     lcd.setCursor(15, 1);
     lcd.print("%");
   }
@@ -123,7 +123,7 @@ void lcd3()
     lcd.print("s");
 
     lcd.setCursor(0, 1); // устанавливаем курсор на первую позицию в нижней строке
-    lcd.print(Apressure);
+    lcd.print(atm_pressure);
     lcd.print("mm");
     lcd.setCursor(9, 1);
     lcd.print(AirTemp);
@@ -149,7 +149,7 @@ void lcd10()
     lcd.print(AirTemp);
     lcd.print((char)223);
     lcd.print("C "); // пишем символ градуса и символ цельсия
-    lcd.print(Apressure);
+    lcd.print(atm_pressure);
     lcd.print("mm");
   }
 
@@ -161,15 +161,15 @@ void lcd10()
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(12, 0);
-    lcd.print(deltaTs);
+    lcd.print(heating_rate_steam);
 
     lcd.setCursor(0, 1);
     lcd.print("F");
-    lcd.print(SteamTempF);
+    lcd.print(SteamTempVolF);
     lcd.print("%");
     lcd.setCursor(9, 1);
     lcd.print("S");
-    lcd.print(SteamTempS);
+    lcd.print(SteamTempVolS);
     lcd.print("%");
   }
 
@@ -181,15 +181,15 @@ void lcd10()
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(12, 0);
-    lcd.print(deltaTs);
+    lcd.print(heating_rate_steam);
 
     lcd.setCursor(0, 1);
     lcd.print("F");
-    lcd.print(TankTempF);
+    lcd.print(TankTempVolF);
     lcd.print("%");
     lcd.setCursor(9, 1);
     lcd.print("S");
-    lcd.print(TankTempS);
+    lcd.print(TankTempVolS);
     lcd.print("%");
   }
 
@@ -200,7 +200,7 @@ void lcd10()
     lcd.setCursor(9, 0);
     if (BMP280 == true)
     {
-      lcd.print(Apressure); // пишем атмосферное давление
+      lcd.print(atm_pressure); // пишем атмосферное давление
     }
     else
     {

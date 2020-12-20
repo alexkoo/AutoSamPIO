@@ -21,10 +21,10 @@ void setup0()
   EEPROM.begin(512);
   autosam_mode = EEPROM.read(autosam_mode_addr);
   press_corr = EEPROM.read(press_corr_addr);
-  min_hot_temp = EEPROM_float_read(min_hot_temp_addr);
-  heating_rate = EEPROM_float_read(heating_rate_addr);
-  max_tank_temp = EEPROM_float_read(max_tank_temp_addr);
-  max_steam_temp = EEPROM_float_read(max_steam_temp_addr);
+  min_hot_temp = EEPROM_read(min_hot_temp_addr, 4);
+  heating_rate = EEPROM_read(heating_rate_addr, 4);
+  max_tank_temp = EEPROM_read(max_tank_temp_addr, 4);
+  max_steam_temp = EEPROM_read(max_steam_temp_addr, 4);
 
   for (byte f = 0; f < 8; f++)
   {
