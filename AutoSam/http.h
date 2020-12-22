@@ -5,11 +5,7 @@ void HTTP_init(void);
 void handle_DeltaSteam();
 void handle_DeltaPipe();
 void handle_Button();
-void handle_setMode();
-void handle_setMinTemp();
-void handle_setMaxTankTemp();
-void handle_setMaxSteamTemp();
-void handle_setHeatingRate();
+void handle_SetForm();
 void handleData();
 
 #endif

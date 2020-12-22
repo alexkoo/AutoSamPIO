@@ -19,17 +19,6 @@ function process() {
     setTimeout('process()', 1000);
 }
 
-
-function request_new(server) {
-    var request = new XMLHttpRequest();
-    request.open("GET", server, true);
-    request.send();
-    if (request.readyState != 4 && request.status != 200) {
-        // alert(request.status + ': ' + request.statusText + ', status= ' + request.readyState);
-    }
-}
-
-
 function handleServerResponse() { // чтение данных с сервера
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         var allData = JSON.parse(xmlHttp.responseText);
@@ -61,14 +50,10 @@ function handleServerResponse() { // чтение данных с сервера
     }
 }
 
-function sendbutton(button) { //отправка значений кнопок
-    var server = "/button?state=" + button;
-    request_new(server);
-}
-
-function sendDelS() { // отправка уставки pipe на сервер
+function sendDelS() { // отправка уставки steam на сервер
     var delta_s = document.getElementById('DELTA_S').value;
     var delay_s = document.getElementById('DELAY_S').value;
+
     var server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
     request_new(server);
 
@@ -81,40 +66,3 @@ function sendDelP() { // отправка уставки pipe на сервер
     request_new(server);
 
 }
-
-
-// Скрипт включения в страницу
-//https://www.w3schools.com/howto/howto_html_include.asp
-//https://html5css.ru/howto/howto_html_include.php
-
-function includeHTML() {
-    var z, i, elmnt, file, xhttp;
-    /*loop through a collection of all HTML elements:*/
-    z = document.getElementsByTagName("*");
-    for (i = 0; i < z.length; i++) {
-        elmnt = z[i];
-        /*search for elements with a certain atrribute:*/
-        file = elmnt.getAttribute("w3-include-html");
-        if (file) {
-            /*make an HTTP request using the attribute value as the file name:*/
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                    if (this.status == 200) {
-                        elmnt.innerHTML = this.responseText;
-                    }
-                    if (this.status == 404) {
-                        elmnt.innerHTML = "Page not found.";
-                    }
-                    /*remove the attribute, and call this function once more:*/
-                    elmnt.removeAttribute("w3-include-html");
-                    includeHTML();
-                }
-            }
-            xhttp.open("GET", file, true);
-            xhttp.send();
-            /*exit the function:*/
-            return;
-        }
-    }
-};

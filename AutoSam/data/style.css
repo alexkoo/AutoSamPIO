@@ -14,6 +14,20 @@ input {
     font-style: bold;
 }
 
+form.details {
+    font-size: 17pt;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 0 10px 0;
+    border-radius: 5px;
+    white-space: nowrap;
+    border: #aaa 0px solid;
+    padding: 1px 2px;
+    background: #B9F7BD;
+    font-weight: bold;
+    text-align: right;
+}
+
 table.details {
     font-size: 17pt;
     border-collapse: collapse;

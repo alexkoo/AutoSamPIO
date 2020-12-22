@@ -5,6 +5,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>AutoSam</title>
     <link rel="stylesheet" href="style.css">
+    <script src="/head.js"></script>
     <script src="/settings.js"></script>
 </head>
 
@@ -20,55 +21,35 @@
     <div>
         <br>
         <table class="details">
-            <caption>Настройки</caption>
             <tr>
-                <td>Режим </td>
-                <td><input type="number" id="MODE" value="id" min="1" max="3" step="1" size="1"></td>
-                <td><input type="submit" name="Set" value=" SET " onclick="SetMODE()"></td>
+                <td> Режим</td>
+                <td> <input type="number" id="MODE" min="1" max="3" step="1" size="2"></td>
             </tr>
             <tr>
-                <td colspan="4" align="left"> 1 - ректификация; 2 - дистилляция; 3 - погода. </td>
+                <td> Минимальная температур</td>
+                <td> <input type="number" id="MINT" value="78" min="0" max="100" step="0.5" size="2"> </td>
             </tr>
+            <tr>
+                <td> Макс температура бака</td>
+                <td> <input type="number" id="MAXT" value="98" min="70" max="100" step="0.5" size="2"></td>
+            </tr>
+            <tr>
+                <td> Макс температура пара</td>
+                <td> <input type="number" id="MAXS" value="90" min="70" max="100" step="0.5" size="2"></td>
+            </tr>
+            <tr>
+                <td> Скорость изменения температуры</td>
+                <td> <input type="number" id="HEATR" value="1" min="0" max="3" step="0.1" size="2"></td>
+            </tr>
+            <tr>
+                <td align="left"> <input type="submit" name="reset" value=" Reset " onclick="sendbutton(42)"> </td>
+                <td align="left"> <input type="submit" name="Reload" value=" Обновить " onclick="load_once()"> </td>
 
-            <tr>
-                <td>Минимальная температура</td>
-
-                <td><input type="number" id="MINT" value="78" min="0" max="100" step="0.5" size="2"></td>
-                <td><input type="submit" name="Set" value=" SET " onclick="SetMINT()"></td>
             </tr>
             <tr>
-                <td>Макс температура бака</td>
-
-                <td><input type="number" id="MAXT" value="95" min="0" max="100" step="0.5" size="2"></td>
-                <td><input type="submit" name="Set" value=" SET " onclick="SetMTT()"></td>
+                <td align="left"> <input type="submit" name="init_sens" value=" Init Sensors" onclick="sendbutton(41);"></td>
+                <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="SendForm()"> </td>
             </tr>
-
-            <tr>
-                <td>Макс температура пара</td>
-                <td><input type="number" id="MAXS" value="90" min="70" max="100" step="0.5" size="2"></td>
-                <td><input type="submit" name="Set" value=" SET " onclick="SetMST()"></td>
-            </tr>
-
-            <tr>
-                <td>Скорость изменения температуры </td>
-                <td><input type="number" id="HEATR" value="1" min="0" max="3" step="0.1" size="2"></td>
-                <td><input type="submit" name="Set" value=" SET " onclick="SetHR()"></td>
-            </tr>
-            <tr>
-                <td colspan="4" align="left"> <input type="submit" name="init sensors 1" value=" Init sensors " onclick="Seti()"> </td>
-            </tr>
-            <tr>
-                <td colspan="4" align="left"> <input type="submit" name="init_sens" value=" Init Sensors 2" onclick="sendbutton(41);"></td>
-            </tr>
-            <tr>
-                <td colspan="4" align="left"> <input type="submit" name="reset" value=" Reset " onclick="sendbutton(42)"> </td>
-            </tr>
-
-            <tr>
-                <td colspan="4" align="left"> <input type="submit" name="Reload" value=" Перезагрузка " onclick="load_once()"> </td>
-            </tr>
-
-
         </table>
 
         <br>
@@ -76,6 +57,10 @@
             Использованы материалы сайта <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a>
         </div>
     </div>
+
+
+
+
 </body>
 
 <script>

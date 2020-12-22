@@ -7,19 +7,43 @@ void HTTP_init(void)
 
   //Выполнение команды из браузера
   HTTP.on("/button", handle_Button);   // обрашение к кнопкам через web интерфейс
+  HTTP.on("/SetForm", handle_SetForm);
   HTTP.on("/DelS", handle_DeltaSteam); // обрашение к уставке SteamTemp через web интерфейс
   HTTP.on("/DelP", handle_DeltaPipe);  // обрашение к уставке PipeTemp(2/3) через web интерфейс
-
-  HTTP.on("/SetMD", handle_setMode);         // обрашение к настройкам через web интерфейс (режим)
-  HTTP.on("/SetMB", handle_setMinTemp);      // обрашение к настройкам через web интерфейс (Мин. температура бака)
-  HTTP.on("/SetMT", handle_setMaxTankTemp);  // обрашение к настройкам через web интерфейс (Макс. температура бака)
-  HTTP.on("/SetSM", handle_setMaxSteamTemp); // обрашение к настройкам через web интерфейс (Макс. температура пара)
-  HTTP.on("/SetD0", handle_setHeatingRate);  // обрашение к настройкам через web интерфейс (Скорость изменения температуры))
-  HTTP.on("/press", handle_press_corr);      // Коррекция давления
 
   HTTP.on("/data.json", handleData); // формирование json файла для передачи данных в web интерфейс
   HTTP.begin();                      // Запускаем HTTP сервер
 }
+
+
+
+void handle_SetForm(){
+                                        
+  autosam_mode = HTTP.arg("modesam").toInt(); // получаем от клиента строку с режимом
+ EEPROM.write(autosam_mode_addr, autosam_mode);
+                                           
+  min_hot_temp = HTTP.arg("minboil").toFloat(); 
+  EEPROM_write(min_hot_temp_addr, min_hot_temp, 4);
+
+  max_tank_temp = HTTP.arg("maxtank").toFloat(); // получаем от клиента строку с максимальной температурой бака
+  EEPROM_write(max_tank_temp_addr, max_tank_temp, 4);
+                                           // функция изменения настроек с web страницы
+  max_steam_temp = HTTP.arg("stmax").toFloat(); // получаем от клиента строку с максимальной температурой Пара
+  EEPROM_write(max_steam_temp_addr, max_steam_temp, 4);
+                                      // функция изменения настроек с web страницы (скорость изменения температуры)
+  heating_rate = HTTP.arg("delta0").toFloat(); // получаем от клиента строку с дельтой (скорость изменения температуры)
+  EEPROM_write(heating_rate_addr, heating_rate, 4);
+
+ // press_corr = HTTP.arg("press_corr").toInt(); // получаем от клиента строку с режимом
+ // EEPROM.write(press_corr_addr, press_corr);
+
+  HTTP.send(200, "text/plain", "OK");          // передаём ответ
+  EEPROM.commit();
+
+
+}
+
+
 
 //***************************************************************************************************
 void handle_Button()
@@ -85,52 +109,9 @@ void handle_DeltaPipe()
 }
 //***************************************************************************************************
 
-void handle_setMode()
-{                                             // функция изменения настроек с web страницы (режим)
-  autosam_mode = HTTP.arg("modesam").toInt(); // получаем от клиента строку с режимом
-  HTTP.send(200, "text/plain", "OK");         // передаём ответ
-  EEPROM.write(autosam_mode_addr, autosam_mode);
-  EEPROM.commit();
-}
-//***************************************************************************************************
 
-void handle_setMinTemp()
-{                                               // функция изменения настроек с web страницы (Мин. температура)
-  min_hot_temp = HTTP.arg("minboil").toFloat(); // получаем от клиента строку с температурой
-  HTTP.send(200, "text/plain", "OK");           // передаём ответ
-  EEPROM_write(min_hot_temp_addr, min_hot_temp, 4);
-}
 
-void handle_setMaxTankTemp()
-{                                                // функция изменения настроек с web страницы (Макс. температура бака)
-  max_tank_temp = HTTP.arg("maxtank").toFloat(); // получаем от клиента строку с максимальной температурой бака
-  HTTP.send(200, "text/plain", "OK");            // передаём ответ
-  EEPROM_write(max_tank_temp_addr, max_tank_temp, 4);
-}
 
-void handle_setMaxSteamTemp()
-{                                               // функция изменения настроек с web страницы
-  max_steam_temp = HTTP.arg("stmax").toFloat(); // получаем от клиента строку с максимальной температурой Пара
-  HTTP.send(200, "text/plain", "OK");           // передаём ответ
-  EEPROM_write(max_steam_temp_addr, max_steam_temp, 4);
-}
-
-void handle_setHeatingRate()
-{                                              // функция изменения настроек с web страницы (скорость изменения температуры)
-  heating_rate = HTTP.arg("delta0").toFloat(); // получаем от клиента строку с дельтой (скорость изменения температуры)
-  HTTP.send(200, "text/plain", "OK");          // передаём ответ
-  EEPROM_write(heating_rate_addr, heating_rate, 4);
-}
-
-void handle_press_corr()
-{                                              // функция изменения настроек с web страницы (Коррекция давления)
-  press_corr = HTTP.arg("press_corr").toInt(); // получаем от клиента строку с режимом
-  HTTP.send(200, "text/plain", "OK");          // передаём ответ
-  EEPROM.write(press_corr_addr, press_corr);
-  EEPROM.commit();
-}
-
-//*****************************************************************************************************
 void handleData() // функция передачи файла data.json клиенту
 {
   String json = "{";                                // начинаем с открывающейся фигурной скобки
