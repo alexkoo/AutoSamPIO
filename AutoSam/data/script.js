@@ -25,7 +25,7 @@ function request_new(server) {
     request.open("GET", server, true);
     request.send();
     if (request.readyState != 4 && request.status != 200) {
-        alert(request.status + ': ' + request.statusText + ', status= ' + request.readyState);
+        // alert(request.status + ': ' + request.statusText + ', status= ' + request.readyState);
     }
 }
 
@@ -33,31 +33,31 @@ function request_new(server) {
 function handleServerResponse() { // чтение данных с сервера
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         var allData = JSON.parse(xmlHttp.responseText);
-        document.getElementById('CURRENTTIME').value = allData.CT;
-        document.getElementById('RUNTIME').value = allData.RT;
-        document.getElementById('VERSION').value = allData.VR;
-        document.getElementById('MODEI').value = allData.MD;
+        document.getElementById('CURRENTTIME').value = allData.TIME;
+        document.getElementById('RUNTIME').value = allData.RTIM;
+        document.getElementById('VERSION').value = allData.VER;
+        document.getElementById('MODEI').value = allData.MOD;
         document.getElementById('STEAMTEMP').value = allData.ST;
         document.getElementById('STEAMTEMPF').value = allData.SF;
         document.getElementById('STEAMTEMPS').value = allData.SS;
         document.getElementById('PIPETEMP').value = allData.PT;
         document.getElementById('PIPETEMPF').value = allData.PF;
         document.getElementById('PIPETEMPS').value = allData.PS;
-        document.getElementById('WATERTEMP').value = allData.WT;
         document.getElementById('TANKTEMP').value = allData.TT;
         document.getElementById('TANKTEMPF').value = allData.TF;
         document.getElementById('TANKTEMPS').value = allData.TS;
-        document.getElementById('APRESS2').value = allData.AP;
-        document.getElementById('AIRTEMP').value = allData.AT;
+        document.getElementById('WATERTEMP').value = allData.WT;
         document.getElementById('DELTAS').value = allData.HS;
         document.getElementById('DELTAP').value = allData.HP;
         document.getElementById('DELTAT').value = allData.HT;
-        document.getElementById('VALVE').value = allData.VS;
-        document.getElementById('SETTEMP1I').value = allData.IS;
-        document.getElementById('SETTEMP2I').value = allData.IP;
-        document.getElementById('MEMFREE').value = allData.FM;
+        document.getElementById('SETTEMP1I').value = allData.STS;
+        document.getElementById('SETTEMP2I').value = allData.STP;
+        document.getElementById('APRESS2').value = allData.AP;
+        document.getElementById('AIRTEMP').value = allData.AT;
         document.getElementById('AUTOSTATUS').value = allData.AS;
-        document.getElementById('WARNING').value = allData.WA;
+        document.getElementById('WARNING').value = allData.WAR;
+        document.getElementById('MEMFREE').value = allData.FM;
+        document.getElementById('VALVE').value = allData.VS;
     }
 }
 
@@ -69,8 +69,8 @@ function sendbutton(button) { //отправка значений кнопок
 function sendDelS() { // отправка уставки pipe на сервер
     var delta_s = document.getElementById('DELTA_S').value;
     var delay_s = document.getElementById('DELAY_S').value;
-    var serve = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
-    request_new(serve);
+    var server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
+    request_new(server);
 
 }
 

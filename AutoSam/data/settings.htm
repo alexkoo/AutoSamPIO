@@ -8,68 +8,78 @@
     <script src="/settings.js"></script>
 </head>
 
-<BODY onload="process();">
+<BODY onload=" process() ">
+
     <!-- вставка -->
     <div w3-include-html="head.htm"></div>
     <script>
         includeHTML();
     </script>
     <!-- /вставка -->
-    <div>
 
+    <div>
         <br>
         <table class="details">
             <caption>Настройки</caption>
             <tr>
                 <td>Режим </td>
-                </td>
-                <td><output id="MODEI"></td>
-	<td ><input type="number" id="MODE"  value="1"min="1" max="3" step="1" size="1"></td>
-	<td  ><input type="submit" name="Set" value=" SET " onclick="SetMD()"></td>
-</tr>
-<tr>
-<td colspan="4" align="left"> 1 - ректификация; 2 - дистилляция; 3 - погода. </td>
-</tr>
+                <td><input type="number" id="MODE" value="id" min="1" max="3" step="1" size="1"></td>
+                <td><input type="submit" name="Set" value=" SET " onclick="SetMODE()"></td>
+            </tr>
+            <tr>
+                <td colspan="4" align="left"> 1 - ректификация; 2 - дистилляция; 3 - погода. </td>
+            </tr>
 
-<tr>
-	<td>Минимальная температура</td>
-	<td><output  id="BOILI" ></td>
-	<td ><input type="number" id="BOIL" value="80" min="0" max="100" step="0.5" size="2"></td>
-	<td  ><input type="submit" name="Set" value=" SET " onclick="SetMB()"></td>
-</tr>
-<tr>
-	<td>Макс температура бака</td>
-	<td><output  id="MTANKI" ></td>
-	<td ><input type="number" id="MTANK" value="95" min="0" max="100" step="0.5" size="2"></td>
-	<td  ><input type="submit" name="Set" value=" SET " onclick="SetMT()"></td>
-</tr>
+            <tr>
+                <td>Минимальная температура</td>
 
-<tr>
-	<td>Макс температура пара</td>
-	<td><output  id="STMAXI" ></td>
-	<td ><input type="number" id="STMAX" value="80" min="70" max="100" step="0.5" size="2"></td>
-	<td  ><input type="submit" name="Set" value=" SET " onclick="SetSM()"></td>
-</tr>
+                <td><input type="number" id="MINT" value="78" min="0" max="100" step="0.5" size="2"></td>
+                <td><input type="submit" name="Set" value=" SET " onclick="SetMINT()"></td>
+            </tr>
+            <tr>
+                <td>Макс температура бака</td>
 
-<tr>
-	<td>Скорость изменения температуры </td>
-	<td><output  id="DELT0I" ></td>
-	<td ><input type="number" id="DELT0" value="1" min="0" max="3" step="0.1" size="2"></td>
-	<td  ><input type="submit" name="Set" value=" SET " onclick="SetD0()"></td>
-</tr>
-<tr>
-<td colspan="2" align="left"> <input type="submit" name="init sensors 1" value=" Init sensors " onclick="Seti()"> </td>
-</tr>
-<tr>
-<td input type="submit" name="init_sens" value=" Init Sensors 2" onclick="sendbutton(41);"></td>
-</tr>
-<tr>
-<td colspan="4" align="left"> <input type="submit" name="reset" value=" Reset " onclick="sendbutton(42)"> </td>
-</tr>
-</table>
+                <td><input type="number" id="MAXT" value="95" min="0" max="100" step="0.5" size="2"></td>
+                <td><input type="submit" name="Set" value=" SET " onclick="SetMTT()"></td>
+            </tr>
 
-<br>
-<div class="copyright"> 
-Использованы материалы сайта  <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a>
-</div>
-</div></body></html>
+            <tr>
+                <td>Макс температура пара</td>
+                <td><input type="number" id="MAXS" value="90" min="70" max="100" step="0.5" size="2"></td>
+                <td><input type="submit" name="Set" value=" SET " onclick="SetMST()"></td>
+            </tr>
+
+            <tr>
+                <td>Скорость изменения температуры </td>
+                <td><input type="number" id="HEATR" value="1" min="0" max="3" step="0.1" size="2"></td>
+                <td><input type="submit" name="Set" value=" SET " onclick="SetHR()"></td>
+            </tr>
+            <tr>
+                <td colspan="4" align="left"> <input type="submit" name="init sensors 1" value=" Init sensors " onclick="Seti()"> </td>
+            </tr>
+            <tr>
+                <td colspan="4" align="left"> <input type="submit" name="init_sens" value=" Init Sensors 2" onclick="sendbutton(41);"></td>
+            </tr>
+            <tr>
+                <td colspan="4" align="left"> <input type="submit" name="reset" value=" Reset " onclick="sendbutton(42)"> </td>
+            </tr>
+
+            <tr>
+                <td colspan="4" align="left"> <input type="submit" name="Reload" value=" Перезагрузка " onclick="load_once()"> </td>
+            </tr>
+
+
+        </table>
+
+        <br>
+        <div class="copyright">
+            Использованы материалы сайта <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a>
+        </div>
+    </div>
+</body>
+
+<script>
+    load_once();
+</script>
+
+</html>
