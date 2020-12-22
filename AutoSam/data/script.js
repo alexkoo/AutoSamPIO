@@ -39,8 +39,8 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('DELTAS').value = allData.HS;
         document.getElementById('DELTAP').value = allData.HP;
         document.getElementById('DELTAT').value = allData.HT;
-        document.getElementById('SETTEMP1I').value = allData.STS;
-        document.getElementById('SETTEMP2I').value = allData.STP;
+        document.getElementById('SETTEMPS').value = allData.STS;
+        document.getElementById('SETTEMPP').value = allData.STP;
         document.getElementById('APRESS2').value = allData.AP;
         document.getElementById('AIRTEMP').value = allData.AT;
         document.getElementById('AUTOSTATUS').value = allData.AS;

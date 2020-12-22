@@ -42,18 +42,18 @@ function load_once() {
 }
 
 function SendForm() {
-    var modesam = document.getElementById('MODE').value;
-    var minboil = document.getElementById('MINT').value;
-    var maxtank = document.getElementById('MAXT').value;
-    var maxst = document.getElementById('MAXS').value;
-    var heat_rate = document.getElementById('HEATR').value;
+    var autosam_mode = document.getElementById('MODE').value;
+    var min_hot_temp = document.getElementById('MINT').value;
+    var max_tank_temp = document.getElementById('MAXT').value;
+    var max_steam_temp = document.getElementById('MAXS').value;
+    var heating_rate = document.getElementById('HEATR').value;
 
-    var s_modesam = "/SetForm?modesam=" + modesam;
-    var s_minboil = "&delta0=" + heat_rate;
-    var s_maxtank = "&stmax=" + maxst;
-    var s_maxst = "&maxtank=" + maxtank;
-    var s_heat_rate = "&minboil=" + minboil;
-    server = s_modesam + s_minboil + s_maxtank + s_maxst + s_heat_rate
+    var s_autosam_mode = "/SetForm?autosam_mode_h=" + autosam_mode;
+    var s_min_hot_temp = "&min_hot_temp_h=" + min_hot_temp;
+    var s_max_tank_temp = "&max_tank_temp_h=" + max_tank_temp;
+    var s_max_steam_temp = "&max_steam_temp_h=" + max_steam_temp;
+    var s_heating_rate = "&heating_rate_h=" + heating_rate;
+    server = s_autosam_mode + s_min_hot_temp + s_max_tank_temp + s_max_steam_temp + s_heating_rate
     request_new(server);
-    setTimeout(load_once, 3000);
+    setTimeout(load_once, 5000);
 }

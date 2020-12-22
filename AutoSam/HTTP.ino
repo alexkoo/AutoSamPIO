@@ -1,8 +1,8 @@
 
 #include "header.h"
 
-void HTTP_init(void)
-{            // функция инициализации HTTP
+void HTTP_init(void)// функция инициализации HTTP
+{            
   FS_init(); // Включаем работу с файловой системой
 
   //Выполнение команды из браузера
@@ -10,31 +10,30 @@ void HTTP_init(void)
   HTTP.on("/SetForm", handle_SetForm);
   HTTP.on("/DelS", handle_DeltaSteam); // обрашение к уставке SteamTemp через web интерфейс
   HTTP.on("/DelP", handle_DeltaPipe);  // обрашение к уставке PipeTemp(2/3) через web интерфейс
-
   HTTP.on("/data.json", handleData); // формирование json файла для передачи данных в web интерфейс
   HTTP.begin();                      // Запускаем HTTP сервер
 }
 
 
 
-void handle_SetForm(){
+void handle_SetForm(){       // функция изменения настроек с web страницы
                                         
-  autosam_mode = HTTP.arg("modesam").toInt(); // получаем от клиента строку с режимом
+  autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
  EEPROM.write(autosam_mode_addr, autosam_mode);
                                            
-  min_hot_temp = HTTP.arg("minboil").toFloat(); 
+  min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat(); 
   EEPROM_write(min_hot_temp_addr, min_hot_temp, 4);
 
-  max_tank_temp = HTTP.arg("maxtank").toFloat(); // получаем от клиента строку с максимальной температурой бака
+  max_tank_temp = HTTP.arg("max_tank_temp_h").toFloat(); 
   EEPROM_write(max_tank_temp_addr, max_tank_temp, 4);
-                                           // функция изменения настроек с web страницы
-  max_steam_temp = HTTP.arg("stmax").toFloat(); // получаем от клиента строку с максимальной температурой Пара
+                                           
+  max_steam_temp = HTTP.arg("max_steam_temp_h").toFloat(); 
   EEPROM_write(max_steam_temp_addr, max_steam_temp, 4);
-                                      // функция изменения настроек с web страницы (скорость изменения температуры)
-  heating_rate = HTTP.arg("delta0").toFloat(); // получаем от клиента строку с дельтой (скорость изменения температуры)
+                                     
+  heating_rate = HTTP.arg("heating_rate_h").toFloat(); 
   EEPROM_write(heating_rate_addr, heating_rate, 4);
 
- // press_corr = HTTP.arg("press_corr").toInt(); // получаем от клиента строку с режимом
+ // press_corr = HTTP.arg("press_corr").toInt(); 
  // EEPROM.write(press_corr_addr, press_corr);
 
   HTTP.send(200, "text/plain", "OK");          // передаём ответ
