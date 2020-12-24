@@ -3,8 +3,7 @@
 void samogon()
 {
     // Управление самогонным аппаратом
-    // TankTemp температура в баке
-    // SteamTemp - температура в сухопарнике
+
     auto_status = "Дистилляция";
     if (TankTemp <= 35 && pcountsam == 0)
     {
@@ -56,19 +55,24 @@ void samogon()
 
 void rect()
 {
-    
 
-    
-       
+    if (valve_manual == false && set_temp_steam == 0 && set_temp_pipe == 0) // если передан номер кнопки 7 и обе уставки равны 0 (ручное управление)
+    {
+        digitalWrite(valve, HIGH); // выключаем клапан (лог. 1)
+
+        telnet.println("Valve is CLOSED manually"); // выводим сообщение на UART
+        auto_status = "Closed, Man";
+    }
+
+    if (valve_manual == true && set_temp_steam == 0 && set_temp_pipe == 0) // ручное управление, клапан включен
+    {
+        digitalWrite(valve, LOW);
+        telnet.println("Valve is OPENED manually");
+        auto_status = "Opened, Man";
+    }
+
     // Управляем клапаном отбора по температуре пара перед дефлегматором SteamTemp
     if (set_temp_steam != 0) // если не ручной режим управления клапаном
-
-        if (valve_manual == true && set_temp_steam == 0 && set_temp_pipe == 0) // если передан номер кнопки 6 и обе уставки равны 0 (ручное управление)
-        {
-            digitalWrite(valve, LOW);                   // включаем клапан (лог. 0)
-            telnet.println("Valve is OPENED manually"); // выводим сообщение на UART
-            auto_status = "Opened, Man";
-        }
     {
         if (digitalRead(valve) == true) // если клапан закрыт
         {
@@ -91,22 +95,14 @@ void rect()
                 digitalWrite(valve, HIGH); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
                 auto_status = "Closed, Auto";
-                valve_pause = millis();
-            } // заводим таймер
+                valve_pause = millis(); // заводим таймер
+            }
         }
     }
+
     //***************************************************************************************************************************
     // Управляем клапаном отбора по температуре пара в царге на 2/3 колонны PipeTemp
     if (set_temp_pipe != 0) // если не ручной режим управления клапаном
-
-        if (valve_manual == true && set_temp_steam == 0 && set_temp_pipe == 0) // если передан номер кнопки 7 и обе уставки равны 0 (ручное управление)
-        {
-            digitalWrite(valve, HIGH); // выключаем клапан (лог. 1)
-
-            telnet.println("Valve is CLOSED manually"); // выводим сообщение на UART
-            auto_status = "Closed, Man";
-        }
-
     {
         if (digitalRead(valve) == true) // если клапан закрыт
         {
@@ -177,5 +173,3 @@ void rect()
         telnet.print(warning);
     }
 } // void rect
-
-

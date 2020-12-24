@@ -177,7 +177,12 @@ reset из функции в кнопку
 1.1.3
 отправка настроек сведена в 1 функцию
 выделен head.js
- */
+1.2.0
+переработка модуля ректификации
+
+
+
+*/
 
 /*Планы 
 
@@ -212,8 +217,14 @@ reset из функции в кнопку
 */
 
 /* Идеи
+параметры: крепость голов; крепость хвостов, крепость тела
+инвертировать рэле
+объединить дист и рект
+управление симистором
 
-https://alexgyver.ru/arduino-algorithms/
+
+
+https://alexgyver.ru/arduino-algorithms/ 
 
 https://github.com/jwrw/ESP_EEPROM 
 
@@ -263,12 +274,12 @@ String GetAddressToString(DeviceAddress deviceAddress) {
 
 Алгоритм брезенхема
 https://pikabu.ru/story/arduino_i_upravlenie_moshchnoy_nagruzkoy_peremennogo_toka_ili_samogonnyiy_apparat_2_6536302
-https://pikabu.ru/story/universalnyiy_podogrevatel_na_arduino_kolbasa_sosiski_i_suvid_7154428
+https://pikabu.ru/story/universalnyiy_podogrevatel_na_arduino_kolbasa_sosiski_i_suvid_7154428 
 EEPROM
 
 https://alcodistillers.ru/forum/viewtopic.php?id=661&p=8 Источник
 
-arduino.ru/forum/programmirovanie/sokhranenie-v-eeprom-esp8266
+https://arduino.ru/forum/programmirovanie/sokhranenie-v-eeprom-esp8266 
 Эта библиотека немного отличается от стандартной Arduino EEPROM. 
 Необходимо вызвать функцию EEPROM.begin(size) каждый раз перед началом чтения или записи, размер (указывается в байтах) соответствует размеру данных, 
 которые вы намереваетесь использовать в EEPROM. Размер данных должен быть в диапазоне от 4 до 4096 байт.
