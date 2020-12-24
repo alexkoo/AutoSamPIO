@@ -8,10 +8,13 @@ function request_new(server) {
     var request = new XMLHttpRequest();
     request.open("GET", server, true);
     request.send();
-    if (request.readyState != 4 && request.status != 200) {
-        //  alert('Status= ' +request.status + ': ' + request.statusText + ', readyState= ' + request.readyState);
-    }
+    // request.onreadystatechange = function() {              //запрашивает request.readyState, че с ним потом делать хз
+    // if (request.readyState == 4 && request.status == 200) {
+    //  alert('Status= ' + request.status + ': ' + request.statusText + ', readyState= ' + request.readyState);
+    // }
+    //}
 }
+
 
 
 function includeHTML() { // Скрипт включения в страницу https://www.w3schools.com/howto/howto_html_include.asp https://html5css.ru/howto/howto_html_include.php

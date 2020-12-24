@@ -5,7 +5,7 @@ void samogon()
     // Управление самогонным аппаратом
     // TankTemp температура в баке
     // SteamTemp - температура в сухопарнике
-
+    auto_status = "Дистилляция";
     if (TankTemp <= 35 && pcountsam == 0)
     {
         warning = "Не запущено";
@@ -56,6 +56,10 @@ void samogon()
 
 void rect()
 {
+    
+
+    
+       
     // Управляем клапаном отбора по температуре пара перед дефлегматором SteamTemp
     if (set_temp_steam != 0) // если не ручной режим управления клапаном
 
@@ -173,3 +177,5 @@ void rect()
         telnet.print(warning);
     }
 } // void rect
+
+

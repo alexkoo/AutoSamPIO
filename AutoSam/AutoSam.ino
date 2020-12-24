@@ -186,7 +186,7 @@ reset из функции в кнопку
 коррекция поправок через веб интерфейс 
 защита от зависания асинхронных запросов
 
-  
+  https://basicweb.ru/javascript/js_xmlhttprequest_onreadystatechange.php
 
   Функционал
    управление debug из веб
