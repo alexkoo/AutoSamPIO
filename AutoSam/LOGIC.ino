@@ -58,7 +58,7 @@ void rect()
 
     if (valve_manual == false && set_temp_steam == 0 && set_temp_pipe == 0) // если передан номер кнопки 7 и обе уставки равны 0 (ручное управление)
     {
-        digitalWrite(valve, HIGH); // выключаем клапан (лог. 1)
+        digitalWrite(valve, OFF); // выключаем клапан (лог. 1)
 
         telnet.println("Valve is CLOSED manually"); // выводим сообщение на UART
         auto_status = "Closed, Man";
@@ -66,7 +66,7 @@ void rect()
 
     if (valve_manual == true && set_temp_steam == 0 && set_temp_pipe == 0) // ручное управление, клапан включен
     {
-        digitalWrite(valve, LOW);
+        digitalWrite(valve, ON);
         telnet.println("Valve is OPENED manually");
         auto_status = "Opened, Man";
     }
@@ -80,7 +80,7 @@ void rect()
             {
                 if (SteamTemp < set_temp_steam)
                 {
-                    digitalWrite(valve, LOW); // если температура ниже уставки, включаем клапан (лог. 0)
+                    digitalWrite(valve, ON); // если температура ниже уставки, включаем клапан (лог. 0)
                     telnet.println("Valve is OPENED automatically");
                     auto_status = "Opened, Auto";
                 }
@@ -92,7 +92,7 @@ void rect()
         {
             if (SteamTemp >= set_temp_steam) // если температура выше уставки,
             {
-                digitalWrite(valve, HIGH); // выключаем клапан отбора
+                digitalWrite(valve, OFF); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
                 auto_status = "Closed, Auto";
                 valve_pause = millis(); // заводим таймер
@@ -110,7 +110,7 @@ void rect()
             {
                 if (PipeTemp < set_temp_pipe)
                 {
-                    digitalWrite(valve, LOW); // если температура ниже уставки, включаем клапан (лог. 0)
+                    digitalWrite(valve, ON); // если температура ниже уставки, включаем клапан (лог. 0)
 
                     telnet.println("Valve is OPENED automatically");
                     auto_status = "Opened, Auto";
@@ -123,7 +123,7 @@ void rect()
         {
             if (PipeTemp >= set_temp_pipe) // если температура выше уставки,
             {
-                digitalWrite(valve, HIGH); // выключаем клапан отбора
+                digitalWrite(valve, OFF); // выключаем клапан отбора
                 telnet.println("Valve is CLOSED automatically");
                 auto_status = "Closed, Auto";
                 valve_pause = millis();

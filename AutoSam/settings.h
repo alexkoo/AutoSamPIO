@@ -13,7 +13,7 @@ const char *ssid = STASSID;
 const char *password = STAPSK;
 
 //**************************************************************************************************//Версия
-const String VER = "1.2.0"; // Версия
+const String VER = "1.2.1"; // Версия
 
 //**************************************************************************************************//EEPROM
 const byte autosam_mode_addr = 0;
@@ -29,6 +29,7 @@ float min_hot_temp = 70.0;   //мин температура, при котор�
 float heating_rate = 1;      // заданная скорость нагрева, гр/мин
 float max_tank_temp = 95.0;  // макс температура в кубе
 float max_steam_temp = 90.0; // макс температура  пара
+
 
 // массив адресов датчиков
 //DeviceAddress SteamSensor, PipeSensor, WaterSensor, TankSensor;

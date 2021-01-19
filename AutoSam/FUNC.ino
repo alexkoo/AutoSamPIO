@@ -44,9 +44,8 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
   }
 }
 
-// корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
-float corrTemp(float temp)
-{ // функция принимает текущую температуру
+float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
+{                          // функция принимает текущую температуру
   if (BMP280 == true && temp > 75 && press_corr == 1)
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
@@ -54,8 +53,8 @@ float corrTemp(float temp)
   return temp;
 }
 
-float concFluid(float t)
-{ // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html
+float concFluid(float t) // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html
+{
   float Ti, f;
   Ti = (t - 89) / 6.49;
   f = (17.26 - Ti * (18.32 - Ti * (7.81 - Ti * (1.77 - Ti * (4.81 - Ti * (2.95 + Ti * (1.43 - Ti * (0.8 + 0.05 * Ti)))))))); //Содержание спирта в кубе,%об
@@ -66,8 +65,8 @@ float concFluid(float t)
   return f;
 }
 
-float concSteam(float t)
-{ //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/
+float concSteam(float t) //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/
+{
   float s;
   s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); //Содержание спирта в парах %об
   if (s <= 0 || s >= 100 || t >= 100 || t < 78)
@@ -134,9 +133,10 @@ float EEPROM_float_read(int addr)
 // запись EEPROM
 
 void EEPROM_write(int addr, float num, byte bytn) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
-{                                                
+{
   if (bytn == 2) // запись int
-  { int num = num;
+  {
+    int num = num;
     if (EEPROM_read(addr, 2) != num)
     { //если сохраняемое отличается
       byte raw[2];
