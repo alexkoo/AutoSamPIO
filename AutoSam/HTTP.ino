@@ -1,4 +1,3 @@
-
 #include "header.h"
 
 void HTTP_init(void)// функция инициализации HTTP
@@ -51,11 +50,11 @@ void handle_Button()
 
   if (button_state == 6)
   { // если передан номер кнопки 6 "Открыть"
-    valve_manual = true;
+    valve_set = true;
   }
   if (button_state == 7)
   { // если передан номер кнопки 7 "Закрыть"
-    valve_manual = false;
+    valve_set = false;
   }
   if (button_state == 41)
   { // если передан номер кнопки 41 "Поиск датчиков"
@@ -78,7 +77,7 @@ void handle_DeltaSteam()
     set_temp_steam = 0; // устанавливаем уставку 0
   else
     set_temp_steam = SteamTemp + delta_steam; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
-
+valve_auto_mode = true;
   Serial.print("Delta1="); // выводим новое значение уставки на UART
   Serial.println(delta_steam);
   Serial.print("delay_steam="); // выводим новое значение задержки на UART
@@ -97,7 +96,7 @@ void handle_DeltaPipe()
     set_temp_pipe = 0; // устанавливаем уставку 0
   else
     set_temp_pipe = PipeTemp + delta_pipe; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
-
+valve_auto_mode = true;
   Serial.print("Delta pipe="); // выводим новое значение уставки на UART
   Serial.println(delta_pipe);
   Serial.print("delay_pipe="); // выводим новое значение задержки на UART
@@ -148,9 +147,9 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"HR\":\"" + String(heating_rate);
   json += "\",\"VS\":\"" + String();
   if (digitalRead(valve))
-    json += " ЗАКРЫТ ";
-  else
     json += " ОТКРЫТ ";
+  else
+    json += " ЗАКРЫТ ";
   json += "\"}";                     // не забудем закрыть фигурную скобку!
   HTTP.send(200, "text/json", json); // передаём json
 }

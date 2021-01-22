@@ -2,9 +2,20 @@
 #define setup_h
 #include "header.h"
 
+void initDebug()
+{
+  set_temp_steam = 78.60;
+  set_temp_pipe = 78.2;
+  valve_auto_mode = true;
+}
+
 void setup0()
 {
+
   pinMode(valve, OUTPUT); // назначаем выводу клапана функцию выхода
+  pinMode(buz, OUTPUT);
+  digitalWrite(valve, 0);
+  digitalWrite(buz, 0);
   // Wire.begin();
   Serial.begin(115200); // Настраиваем вывод отладки
   delay(500);           // пауза небольшая
@@ -190,6 +201,7 @@ void setup0()
   {
     telnet.println("LOG: SteamTemp; PipeTemp; TankTemp; WaterTemp; air_temp; Pressure; Freemem; Timeloop");
   }
+  initDebug();
 
 } //void setup
 

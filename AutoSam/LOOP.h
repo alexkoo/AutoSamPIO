@@ -3,7 +3,7 @@
 #include "header.h"
 
 void loop0()
-{ // вынос функции loop в отдельную вкладку
+{                                 // вынос функции loop в отдельную вкладку
   free_mem = (ESP.getFreeHeap()); //свободная память
 
   if (debug == 2)
@@ -46,7 +46,7 @@ void loop0()
   if (digitalRead(button) == LOW && pressed == 0) //если кнопка нажата и переменная pressed равна 0 , то ...
   {
     pressed = 1;   //это нужно для того, чтобы с каждым нажатием кнопки происходило только одно действие плюс защита от "дребезга"
-    lcd_num++;      // увеличиваем номер экрана на 1
+    lcd_num++;     // увеличиваем номер экрана на 1
     lcd.clear();   // при нажатии кнопки очищаем дисплей
     pcountsam = 0; // снимаем процесс с паузы
     if (lcd_num >= lcd_max_num)
@@ -66,18 +66,39 @@ void loop0()
 
   //*************************************************************************** // считываем температуры с датчиков
 
-  if (millis() - time_request > 1000)
-  { // период опроса датчиков, вычисления поправок
-    time_request = millis();
+  if (millis() - bmx_time_request > bmx_time)
+  {
+    bmx_time_request = millis();
     atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление
-    air_temp = bme.readTemperature();             // и температуру воздуха
-    sensors.requestTemperatures();               // запрашиваем температуру у всех датчиков
+    air_temp = bme.readTemperature();               // и температуру воздуха
+  }
 
-    float TSteamTempN = sensors.getTempC(SteamSensor); // считываем температуру с датчика 0
-    float TPipeTempN = sensors.getTempC(PipeSensor);   // считываем температуру с датчика 1
-    float TWaterTemp = sensors.getTempC(WaterSensor);  // считываем температуру с датчика 2
-    float TTankTempN = sensors.getTempC(TankSensor);   // считываем температуру с датчика 3
+  if (millis() - ds_time_request > ds_time)
+  { // период опроса датчиков, вычисления поправок
+    ds_time_request = millis();
+    sensors.requestTemperatures(); // запрашиваем температуру у всех датчиков
 
+    float SteamTempN = sensors.getTempC(SteamSensor); // считываем температуру с датчика 0
+    float PipeTempN = sensors.getTempC(PipeSensor);   // считываем температуру с датчика 1
+    float WaterTemp = sensors.getTempC(WaterSensor);   // считываем температуру с датчика 2
+    float TankTempN = sensors.getTempC(TankSensor);   // считываем температуру с датчика 3
+
+telnet.print (PipeTempN);
+telnet.print (", ");
+
+      SteamTempN = SteamFilter.filtered(SteamTempN);
+      PipeTempN = PipeFilter.filtered(PipeTempN);
+      TankTempN = TankFilter.filtered(TankTempN); 
+
+//telnet.print (SteamTempNC);
+//telnet.print (", ");
+telnet.println (PipeTempN);
+//telnet.print (", ");
+//telnet.println (TankTempNC);
+
+
+
+    /*
     if (TSteamTempN >= -30)
     { // проверка на ошибочные значения
       SteamError = false;
@@ -95,19 +116,19 @@ void loop0()
     {
       TankTempNC = TTankTempN;
     }
-
-    // поправки на давление и ручные
-    SteamTemp = corrTemp(SteamTempNC) + 0.75; //  поправка. У меня  один из датчиков брешет
-    PipeTemp = corrTemp(PipeTempNC) + 0.5;
-    TankTemp = corrTemp(TankTempNC);
-
     // фильтрация
     if (filter_enable == 1)
     {
-      SteamTemp = SteamFilter.filtered(SteamTemp);
-      PipeTemp = PipeFilter.filtered(PipeTemp);
-      TankTemp = TankFilter.filtered(TankTemp);
+
     }
+
+*/
+    // поправки на давление и ручные
+    SteamTemp = corrTemp(SteamTempN) + 0.75; //  поправка. У меня  один из датчиков брешет
+    PipeTemp = corrTemp(PipeTempN) + 0.5;
+    TankTemp = corrTemp(TankTempN);
+
+
 
     // вычисление крепости
     SteamTempVolS = concSteam(SteamTemp);
@@ -120,8 +141,8 @@ void loop0()
 
   // вычисление скорости отбора
   if (millis() - heating_rate_timer >= heating_rate_int)
-  {                                                      // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
-    heating_rate_timer = millis();                                     // перезаводится
+  {                                                                             // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
+    heating_rate_timer = millis();                                              // перезаводится
     heating_rate_steam = (SteamTemp - SteamTempO) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
     if (heating_rate_steam > 40 || heating_rate_steam < -40)
     {
@@ -147,11 +168,13 @@ void loop0()
   switch (autosam_mode)
   {
   case 1:
+   
     rect(); // логика ректификации
     lcd1(); // вызываем функцию вывода на дисплей
     lcd_max_num = 2;
     break;
   case 2:
+   
     samogon(); // логика самогонного аппарата
     lcd2();    // вызываем функцию вывода на дисплей
     lcd_max_num = 1;
@@ -165,7 +188,7 @@ void loop0()
   if (debug == 1)
   {
     if (millis() - debug_time >= 1000)
-    {                       // выполняется раз в 1000 мс
+    {                        // выполняется раз в 1000 мс
       debug_time = millis(); // перезаводится
 
       // выводим температуры

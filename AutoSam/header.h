@@ -41,6 +41,10 @@
 #define ON HIGH  //настройки для инвертирования клапапна
 #define OFF LOW
 
+//#define ON LOW  //настройки для инвертирования клапапна
+//#define OFF HIGH
+
+
 BMx280I2C bme(I2C_ADDRESS_BMx);         // с моим датчиком Adafruit_BMP280 работать не захотел
 LiquidCrystal_I2C lcd(I2C_ADDRESS_LCD, 16, 2); // адрес дисплея на шине I2C, количество знаков, количество строк
 ESP8266WebServer HTTP(80);          // Web интерфейс для устройства
