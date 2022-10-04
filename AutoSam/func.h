@@ -1,7 +1,7 @@
-
 #ifndef func_h
 #define func_h
 #include "header.h"
+
 
 void beep()
 {
@@ -75,7 +75,7 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
 }
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
-{                          // функция принимает текущую температуру
+{                          // функция принимает текущую температуру //1-2mc
   if (BMP280 == true && temp > 75 && press_corr == 1)
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
@@ -83,7 +83,7 @@ float corrTemp(float temp) // корректировка по давлению h
   return temp;
 }
 
-float concFluid(float t) // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html
+float concFluid(float t) // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html //70-90mc
 {
   float Ti, f;
   Ti = (t - 89) / 6.49;
@@ -95,7 +95,7 @@ float concFluid(float t) // Определение содержания спир
   return f;
 }
 
-float concSteam(float t) //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/
+float concSteam(float t) //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/  //20-60mc
 {
   float s;
   s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); //Содержание спирта в парах %об
@@ -212,9 +212,31 @@ void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom 
     EEPROM.write(addr++, *data++);
 }
 
+/*
+   Готовая функция для вычисления среднего арифметического
+   Принимает новые значения, суммирует их в своём массиве
 
+  // функция вычисления среднего
+  #define NUM_AVER 10       // выборка (из скольки усредняем)
+  long average;             // перем. среднего
+  int valArray[NUM_AVER];   // массив
+  byte idx = 0;             // индекс
+
+
+  int middleArifm(int newVal) {       // принимает новое значение
+  valArray[idx] = newVal;           // пишем каждый раз в новую ячейку
+  if (++idx >= NUM_AVER) idx = 0;   // перезаписывая самое старое значение
+  average = 0;                      // обнуляем среднее
+  for (int i = 0; i < NUM_AVER; i++) {
+    average += valArray[i];         // суммируем
+  }
+  average /= NUM_AVER;              // делим
+  return average;                   // возвращаем
+  }
+*/
 
 /*
+
   Функция ESP.restart() перезапускает ESP8266.
   Функция ESP.getResetReason() возвращает строку, описывающую причину последнего сброса (в удобочитаемом формате).
   Функция ESP.getFreeHeap() возвращает размер свободной памяти.
@@ -285,4 +307,6 @@ void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom 
 
   }
 */
+
+
 #endif

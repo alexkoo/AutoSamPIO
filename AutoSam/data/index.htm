@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="/head.js"></script>
     <script src="/script.js"></script>
+    <script type="text/javascript" src="smoothie.js"></script>
 </head>
 
 <BODY onload="process();">
@@ -82,8 +83,8 @@
 <table >
 <tr> 
 	<td align="left">Статус</td>	
-	<td align="left"><input type="submit" id="WARNING" value="??" size="8"></td>
-	<td align="left"><input type="submit" id="AUTOSTATUS" value="??" size="8"></td>
+		<td align="left"><input type="submit" id="AUTOSTATUS" value="??" size="8"></td> 
+		<td align="left"><input type="submit" id="SETSTEAMS" value="??" size="8"></td>
 </tr>
 </table>
 <table class="details">
@@ -114,5 +115,29 @@
 
 
 </div>
+<canvas id="temp" width="1000" height="100"></canvas>
+
+
+
+<script type="text/javascript">
+	// Data
+	var line1 = new TimeSeries({lineWidth:2,strokeStyle:'#0400ff'});
+	var line2 = new TimeSeries({lineWidth:2,strokeStyle:'#11ff00'});
+
+	// Add a random value to each line every second
+	setInterval(function() {
+		line1.append(new Date().getTime(), document.getElementById('STEAMTEMP').value);
+		line2.append(new Date().getTime(), document.getElementById('PIPETEMP').value);
+	}, 10000);
+
+	var smoothie = new SmoothieChart({interpolation:'step',millisPerPixel:120, maxValueScale:1.9, minValueScale:1.9, scaleSmoothing: 0.5, grid:{fillStyle:'#f8f7f7', millisPerLine:6000, verticalSections:3}});
+
+	// Add to SmoothieChart
+	smoothie.addTimeSeries(line1, {lineWidth:2,strokeStyle:'#0400ff'});
+	smoothie.addTimeSeries(line2, {lineWidth:2,strokeStyle:'#11ff00'});
+
+
+	smoothie.streamTo(document.getElementById("temp", 5000));
+</script>
 </tr></table>
 </div></body></html>

@@ -45,6 +45,7 @@
 //#define OFF HIGH
 
 
+
 BMx280I2C bme(I2C_ADDRESS_BMx);         // с моим датчиком Adafruit_BMP280 работать не захотел
 LiquidCrystal_I2C lcd(I2C_ADDRESS_LCD, 16, 2); // адрес дисплея на шине I2C, количество знаков, количество строк
 ESP8266WebServer HTTP(80);          // Web интерфейс для устройства
@@ -58,10 +59,15 @@ DallasTemperature sensors(&oneWire);
 #include "SETTINGS.h"
 #include "time_fs.h"
 #include "http.h"
-#include "lcd.h"
-#include "func.h"
-#include "logic.h"
+#include "LCD.h"
+#include "FUNC.h"
+#include "LOGIC.h"
 #include "SETUP.h"
 #include "LOOP.h"
+
+
+//debug
+
+
 
 #endif

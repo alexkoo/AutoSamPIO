@@ -1,0 +1,23 @@
+{
+    "folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "210202-193705-esp01_1m",
+			"path": "..\\..\\..\\PlatformIO\\Projects\\210202-193705-esp01_1m"
+		}
+	],
+    "settings": {
+        "files.associations": {
+            "array": "cpp",
+            "deque": "cpp",
+            "list": "cpp",
+            "map": "cpp",
+            "*.tcc": "cpp",
+            "string": "cpp",
+            "unordered_map": "cpp",
+            "vector": "cpp"
+        }
+    }
+}

@@ -6,14 +6,6 @@ void loop0()
 {                                 // вынос функции loop в отдельную вкладку
   free_mem = (ESP.getFreeHeap()); //свободная память
 
-  if (debug == 2)
-  {                                   // выполняется каждый цикл
-    timeloop1 = millis() - timeloop0; // вывод время выполнения цикла
-    timeloop0 = millis();
-    telnet.print("Time Loop, ms: ");
-    telnet.println(timeloop1);
-  }
-
   ArduinoOTA.handle();
   HTTP.handleClient();
   delay(1);
@@ -80,23 +72,19 @@ void loop0()
 
     float SteamTempN = sensors.getTempC(SteamSensor); // считываем температуру с датчика 0
     float PipeTempN = sensors.getTempC(PipeSensor);   // считываем температуру с датчика 1
-    float WaterTemp = sensors.getTempC(WaterSensor);   // считываем температуру с датчика 2
+    float WaterTemp = sensors.getTempC(WaterSensor);  // считываем температуру с датчика 2
     float TankTempN = sensors.getTempC(TankSensor);   // считываем температуру с датчика 3
 
-telnet.print (PipeTempN);
-telnet.print (", ");
+    //telnet.print (PipeTempN); //оценка работы фильтров
+    //telnet.print (", ");
 
-      SteamTempN = SteamFilter.filtered(SteamTempN);
-      PipeTempN = PipeFilter.filtered(PipeTempN);
-      TankTempN = TankFilter.filtered(TankTempN); 
+ 
+    SteamTempN = SteamFilter.filtered(SteamTempN);
+    TankTempN = TankFilter.filtered(TankTempN); //6-11mc
+    PipeTempN = PipeFilter.filtered(PipeTempN); //20-30mc
+    
 
-//telnet.print (SteamTempNC);
-//telnet.print (", ");
-telnet.println (PipeTempN);
-//telnet.print (", ");
-//telnet.println (TankTempNC);
-
-
+    //telnet.println (PipeTempN);
 
     /*
     if (TSteamTempN >= -30)
@@ -117,26 +105,23 @@ telnet.println (PipeTempN);
       TankTempNC = TTankTempN;
     }
     // фильтрация
-    if (filter_enable == 1)
-    {
 
-    }
 
 */
     // поправки на давление и ручные
-    SteamTemp = corrTemp(SteamTempN) + 0.75; //  поправка. У меня  один из датчиков брешет
+    SteamTemp = corrTemp(SteamTempN) + 0.5; //  поправка. У меня  один из датчиков брешет
     PipeTemp = corrTemp(PipeTempN) + 0.5;
-    TankTemp = corrTemp(TankTempN);
-
-
+    TankTemp = corrTemp(TankTempN); //1-2mc
 
     // вычисление крепости
-    SteamTempVolS = concSteam(SteamTemp);
-    SteamTempVolF = concFluid(SteamTemp);
+
+    SteamTempVolS = concSteam(SteamTemp); //20-60mc
+    SteamTempVolF = concFluid(SteamTemp); //70-90mc
     PipeTempVolS = concSteam(PipeTemp);
     PipeTempVolF = concFluid(PipeTemp);
     TankTempVolS = concSteam(TankTemp);
     TankTempVolF = concFluid(TankTemp);
+    SetSteamTempVolS = concSteam(set_temp_steam);
   }
 
   // вычисление скорости отбора
@@ -168,13 +153,13 @@ telnet.println (PipeTempN);
   switch (autosam_mode)
   {
   case 1:
-   
+
     rect(); // логика ректификации
     lcd1(); // вызываем функцию вывода на дисплей
     lcd_max_num = 2;
     break;
   case 2:
-   
+
     samogon(); // логика самогонного аппарата
     lcd2();    // вызываем функцию вывода на дисплей
     lcd_max_num = 1;
@@ -184,6 +169,9 @@ telnet.println (PipeTempN);
     lcd_max_num = 0;
     break;
   }
+
+//////////////////debug
+
 
   if (debug == 1)
   {
@@ -216,6 +204,14 @@ telnet.println (PipeTempN);
 
       findDS();
     }
+  }
+
+  if (debug == 2)
+  {                                   // выполняется каждый цикл
+    timeloop1 = millis() - timeloop0; // вывод время выполнения цикла
+    timeloop0 = millis();
+    telnet.print("Time Loop, ms: ");
+    telnet.println(timeloop1);
   }
 
 } // loop0

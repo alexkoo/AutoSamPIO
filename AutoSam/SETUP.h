@@ -4,8 +4,8 @@
 
 void initDebug()
 {
-  set_temp_steam = 78.60;
-  set_temp_pipe = 78.2;
+  set_temp_steam = 78.5;
+  set_temp_pipe = 78.6;
   valve_auto_mode = true;
 }
 
@@ -197,12 +197,16 @@ void setup0()
   lcd.clear(); // очищаем дисплей
 
   tone(buz, 500, 100);
+
   if (debug == 1)
   {
     telnet.println("LOG: SteamTemp; PipeTemp; TankTemp; WaterTemp; air_temp; Pressure; Freemem; Timeloop");
   }
-  initDebug();
 
+  if (debug == 4)
+  {
+    initDebug();
+  }
 } //void setup
 
 #endif

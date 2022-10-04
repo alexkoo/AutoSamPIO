@@ -13,7 +13,7 @@ const char *ssid = STASSID;
 const char *password = STAPSK;
 
 //**************************************************************************************************//Версия
-const String VER = "1.2.2"; // Версия
+const String VER = "1.2.3"; // Версия
 
 //**************************************************************************************************//EEPROM
 const byte autosam_mode_addr = 0;
@@ -58,21 +58,23 @@ float SteamTempN = -127; // Некорректированная темпера�
 float SteamTempVolS = 0;  // Содержание спирта в парах
 float SteamTempVolF = 0;  // Содержание спирта в жидкости
 float SteamTempO;         // предыдущая температура
-bool SteamError = false;
+
 
 float PipeTemp = -127;   // температура в царге на 2/3 высоты
 float PipeTempN = -127; // Некорректированная температура
 float PipeTempVolS = 0;  // Содержание спирта в парах
 float PipeTempVolF = 0;  // Содержание спирта в жидкости
 float PipeTempO;         // предыдущая температура
-bool PipeError = false;
+
 
 float TankTemp = -127;   // температура в кубе
 float TankTempN = -127; // Некорректированная температура
 float TankTempVolS = 0;  // Содержание спирта в парах
 float TankTempVolF = 0;  // Содержание спирта в жидкости
 float TankTempO;         // предыдущая температура
-bool TankError = false;
+
+float SetSteamTempVolS = 0;
+
 
 float WaterTemp = -127; // температура охлаждающей воды или флегмы
 
@@ -93,11 +95,9 @@ float set_temp_pipe = 0;        // уставка по температуре п
 unsigned long delay_steam = 30; // временная задержка включения клапана по температуре на 2/3 колонны (в секундах)
 unsigned long delay_pipe = 30;  // временная задержка включения клапана по температуре вверху колонны (в секундах)
 unsigned long valve_pause = 0;  // минимальное время нахождения клапана в закрытом состоянии
-bool valve_set = false;         // ручное управление клапаном
 bool valve_auto_mode = false;   // ручное управление клапаном
 
 String auto_status = "Closed, Def";     // предупреждения
-String warning = "не запущен";          // предупреждения
 byte pcountsam = 0;                     // пауза (пред стадия)
 byte countsam = 0;                      // стадия процесса
 float heating_rate_steam;               // скорость нагрева сухопарника, гр/мин
@@ -107,24 +107,18 @@ unsigned long heating_rate_int = 30000; //интервал
 unsigned long heating_rate_timer;       //таймер скорости изменения deltaT
 
 //**************************************************************************************************//Прочее
-byte debug = 0;           // Редим отладки: 0 выкл 1-основное  2-подробное 3 - фильтры
+byte debug = 0;           // Редим отладки: 0 выкл 1-основное  2-подробное 3 - фильтры 4 - предустановки
 unsigned long debug_time; //период опроса
 
 unsigned long free_mem;             ///память
 unsigned long timeloop0, timeloop1; //отладка время выполнения
 
-GMedian<10, int> testFilter;
 
 GMedian3<float> SteamFilter; // указываем тип данных в <>
-GMedian<7, float> PipeFilter;
-GMedian3<float> TankFilter;
+GMedian<7, float> PipeFilter; //20-30mc
+GMedian3<float> TankFilter; //6-11mc
 
-/*
-GMedian3<float> SteamFilter; // указываем тип данных в <>
-GMedian3<float> PipeFilter;
-GMedian3<float> TankFilter;
-byte filter_enable = 1;
-*/
+
 
 bool valve_invert = true; //true  NC false NO
 

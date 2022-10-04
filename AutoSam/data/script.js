@@ -36,6 +36,7 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('TANKTEMPF').value = allData.TF;
         document.getElementById('TANKTEMPS').value = allData.TS;
         document.getElementById('WATERTEMP').value = allData.WT;
+        document.getElementById('SETSTEAMS').value = allData.SSS;
         document.getElementById('DELTAS').value = allData.HS;
         document.getElementById('DELTAP').value = allData.HP;
         document.getElementById('DELTAT').value = allData.HT;
@@ -44,7 +45,6 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('APRESS2').value = allData.AP;
         document.getElementById('AIRTEMP').value = allData.AT;
         document.getElementById('AUTOSTATUS').value = allData.AS;
-        document.getElementById('WARNING').value = allData.WAR;
         document.getElementById('MEMFREE').value = allData.FM;
         document.getElementById('VALVE').value = allData.VS;
     }
