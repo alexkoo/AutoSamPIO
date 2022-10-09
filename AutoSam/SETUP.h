@@ -39,10 +39,10 @@ void setup0()
 
   for (byte f = 0; f < 8; f++)
   {
-    sens0[f] = EEPROM.read(18 + f);
-    sens1[f] = EEPROM.read(26 + f);
-    sens2[f] = EEPROM.read(34 + f);
-    sens3[f] = EEPROM.read(42 + f);
+    sens0[f] = EEPROM.read(sens0_addr + f);
+    sens1[f] = EEPROM.read(sens1_addr + f);
+    sens2[f] = EEPROM.read(sens2_addr + f);
+    sens3[f] = EEPROM.read(sens3_addr + f);
   }
   WiFiManager wifiManager; //Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети.

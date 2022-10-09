@@ -20,16 +20,16 @@ void handle_SetForm()
   EEPROM.write(autosam_mode_addr, autosam_mode);
 
   min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat();
-  EEPROM_write(min_hot_temp_addr, min_hot_temp, 4);
+  EEPROM_write(min_hot_temp_addr, min_hot_temp);
 
   max_tank_temp = HTTP.arg("max_tank_temp_h").toFloat();
-  EEPROM_write(max_tank_temp_addr, max_tank_temp, 4);
+  EEPROM_write(max_tank_temp_addr, max_tank_temp);
 
   max_steam_temp = HTTP.arg("max_steam_temp_h").toFloat();
-  EEPROM_write(max_steam_temp_addr, max_steam_temp, 4);
+  EEPROM_write(max_steam_temp_addr, max_steam_temp);
 
   heating_rate = HTTP.arg("heating_rate_h").toFloat();
-  EEPROM_write(heating_rate_addr, heating_rate, 4);
+  EEPROM_write(heating_rate_addr, heating_rate);
 
   // press_corr = HTTP.arg("press_corr").toInt();
   // EEPROM.write(press_corr_addr, press_corr);

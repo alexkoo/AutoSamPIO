@@ -16,12 +16,17 @@ const char *password = STAPSK;
 const String VER = "1.3.0"; // Версия
 
 //**************************************************************************************************//EEPROM
-const byte autosam_mode_addr = 0;
-const byte press_corr_addr = 1;
-const float min_hot_temp_addr = 2;
-const float heating_rate_addr = 6;
-const float max_tank_temp_addr = 10;
-const float max_steam_temp_addr = 14;
+const int autosam_mode_addr = 0;
+const int press_corr_addr = 10;
+const int min_hot_temp_addr = 20;
+const int heating_rate_addr = 30;
+const int max_tank_temp_addr = 40;
+const int max_steam_temp_addr = 50;
+const int sens0_addr = 60;
+const int sens1_addr = 70;
+const int sens2_addr = 80;
+const int sens3_addr = 90;
+
 
 byte autosam_mode = 1;       //режим работы 1 ректификация 2 дистилляция 3 погода
 byte press_corr = 1;         // коррекция давления
@@ -115,7 +120,7 @@ unsigned long timeloop0, timeloop1; //отладка время выполнен
 
 
 GMedian3<float> SteamFilter; // указываем тип данных в <>
-GMedian<7, float> PipeFilter; //20-30mc
+GMedian<8, float> PipeFilter; //20-30mc
 GMedian3<float> TankFilter; //6-11mc
 
 

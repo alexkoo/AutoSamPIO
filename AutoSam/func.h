@@ -34,7 +34,7 @@ bool readValve()
 void findDS()
 {
   byte i;
-  byte j;
+  //byte j;
   byte addr[8];
   byte numDS = sensors.getDeviceCount();
   telnet.println("Поиск датчиков ");
@@ -45,7 +45,7 @@ void findDS()
     telnet.print("Error, no sensors found, please check");
     return;
   }
-  for (j = 0; i < numDS; i++)
+  for (i = 0; i < numDS; i++)
   {
     if (!oneWire.search(addr))
     {
@@ -162,23 +162,9 @@ float EEPROM_float_read(int addr)
 
 // запись EEPROM
 
-void EEPROM_write(int addr, float num, byte bytn) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
+void EEPROM_write(int addr, float num) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
 {
-  if (bytn == 2) // запись int
-  {
-    int num = num;
-    if (EEPROM_read(addr, 2) != num)
-    { //если сохраняемое отличается
-      byte raw[2];
-      (int &)raw = num;
-      for (byte i = 0; i < 2; i++)
-        EEPROM.write(addr + i, raw[i]);
-    }
-    EEPROM.commit();
-  }
-  if (bytn == 4) // запись float
-  {
-    if (EEPROM_read(addr, 4) != num)
+       if (EEPROM_read(addr, 4) != num)
     { //если сохраняемое отличается
       byte raw[4];
       (float &)raw = num;
@@ -186,26 +172,9 @@ void EEPROM_write(int addr, float num, byte bytn) // Запись данных �
         EEPROM.write(addr + i, raw[i]);
     }
     EEPROM.commit();
-  }
-}
-/*
-void EEPROM_int_write(int addr, int num) // Запись данных в EEPROM (адрес, число, количесство байтов)
-{                                        // запись int
+  
 }
 
-void EEPROM_float_write(int addr, float num)
-{ // запись float
-  if (EEPROM_read(addr, 4) != num)
-  { //если сохраняемое отличается
-    byte raw[4];
-    (float &)raw = num;
-    for (byte i = 0; i < 4; i++)
-      EEPROM.write(addr + i, raw[i]);
-  }
-  EEPROM.commit();
-}
-
-*/
 void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom и адрес датчика
 {
   for (int i = 0; i < 8; i++)

@@ -78,7 +78,7 @@ void loop0()
     //telnet.print (PipeTempN); //оценка работы фильтров
     //telnet.print (", ");
 
- 
+ telnet.println (WaterTemp);
     SteamTempN = SteamFilter.filtered(SteamTempN);
     TankTempN = TankFilter.filtered(TankTempN); //6-11mc
     PipeTempN = PipeFilter.filtered(PipeTempN); //20-30mc

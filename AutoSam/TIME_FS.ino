@@ -83,6 +83,7 @@ unsigned long sendNTPpacket(IPAddress &address) // функция посылки
   udp.beginPacket(address, 123);
   udp.write(packetBuffer, NTP_PACKET_SIZE);
   udp.endPacket();
+  return udp; //функция что то должеа вернуть
 }
 //**********************************************************************************************************************************
 String millis2time() // функция формирования строки "время работы модуля"
