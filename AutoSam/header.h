@@ -13,17 +13,19 @@
 #include <EEPROM.h>           //esp8266 core
 #include <Wire.h>             //esp8266 core
 #include <SPI.h>              //esp8266 core, нужен в platformio для BMx280I2C
+#include <LittleFS.h> // //esp8266 core 
 // OTA
 #include <ESP8266mDNS.h>       //esp8266 core
 #include <WiFiUdp.h>           //esp8266 core
 #include <ArduinoOTA.h>        //esp8266 core
+
 #include <GyverFilters.h>      //https://alexgyver.ru/gyverfilters/
 #include <LiquidCrystal_I2C.h> //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
 #include <OneWire.h>           //https://github.com/PaulStoffregen/OneWire
 #include <DallasTemperature.h> //https://github.com/milesburton/Arduino-Temperature-Control-Library
 #include <BMx280I2C.h>         //https://bitbucket.org/christandlg/bmx280mi/
 
-//#include "LittleFS.h" // LittleFS is declared
+
 
 //**************************************************************************************************// GPIO
 #define buz (16)         // (d0) Динамик GPIO 16  бел
