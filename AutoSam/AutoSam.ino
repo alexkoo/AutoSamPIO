@@ -1,9 +1,10 @@
+const String VER = "1.3.1"; // Версия
 
 //основной цикл программы
 #include "header.h" // вынос заголовка в отдельную вкладку
 
 
-const String VER = "1.3.1"; // Версия
+
 
 void setup()
 {
