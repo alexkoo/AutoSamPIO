@@ -17,7 +17,7 @@ void handle_SetForm()
 { // функция изменения настроек с web страницы
 
   autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
-  EEPROM.write(autosam_mode_addr, autosam_mode);
+  EEPROM_write(autosam_mode_addr, autosam_mode);
 
   min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat();
   EEPROM_write(min_hot_temp_addr, min_hot_temp);
@@ -32,7 +32,7 @@ void handle_SetForm()
   EEPROM_write(heating_rate_addr, heating_rate);
 
   // press_corr = HTTP.arg("press_corr").toInt();
-  // EEPROM.write(press_corr_addr, press_corr);
+  // EEPROM_write(press_corr_addr, press_corr);
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ
   EEPROM.commit();

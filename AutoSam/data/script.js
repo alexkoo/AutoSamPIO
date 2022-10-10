@@ -3,7 +3,7 @@ var xmlHttp = createXmlHttpObject();
 var allData;
 var mode_visible;
 var loaded = 0;
-
+var dist_plug = 1;
 
 
 function process() { //цикл выполнения
@@ -11,7 +11,9 @@ function process() { //цикл выполнения
         xmlHttp.open('PUT', '/data.json', true);
         xmlHttp.send(null);
         xmlHttp.onreadystatechange = handleServerResponse;
-        invis()
+        if (dist_plug == 1) {
+            invis()
+        }
     }
     setTimeout('process()', 1000);
 }
@@ -40,32 +42,37 @@ function request_new(server) { //Запрос к серверу
 function handleServerResponse() { // чтение данных с сервера
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         allData = JSON.parse(xmlHttp.responseText);
+        //head
         document.getElementById('CURRENTTIME').value = allData.TIME;
         document.getElementById('RUNTIME').value = allData.RTIM;
         document.getElementById('VERSION').value = allData.VER;
         document.getElementById('MODEI').value = allData.MOD;
-        document.getElementById('STEAMTEMP').value = allData.ST;
-        document.getElementById('STEAMTEMPF').value = allData.SF;
-        document.getElementById('STEAMTEMPS').value = allData.SS;
-        document.getElementById('PIPETEMP').value = allData.PT;
-        document.getElementById('PIPETEMPF').value = allData.PF;
-        document.getElementById('PIPETEMPS').value = allData.PS;
-        document.getElementById('TANKTEMP').value = allData.TT;
-        document.getElementById('TANKTEMPF').value = allData.TF;
-        document.getElementById('TANKTEMPS').value = allData.TS;
-        document.getElementById('WATERTEMP').value = allData.WT;
-        document.getElementById('SETSTEAMS').value = allData.SSS;
-        document.getElementById('DELTAS').value = allData.HS;
-        document.getElementById('DELTAP').value = allData.HP;
-        document.getElementById('DELTAT').value = allData.HT;
-        document.getElementById('SETTEMPS').value = allData.STS;
-        document.getElementById('SETTEMPP').value = allData.STP;
-        document.getElementById('APRESS2').value = allData.AP;
-        document.getElementById('AIRTEMP').value = allData.AT;
-        document.getElementById('AUTOSTATUS').value = allData.AS;
-        document.getElementById('MEMFREE').value = allData.FM;
-        document.getElementById('VALVE').value = allData.VS;
-        mode_visible = allData.MOD;
+        //dist
+        if (dist_plug == 1) {
+            document.getElementById('STEAMTEMP').value = allData.ST;
+            document.getElementById('STEAMTEMPF').value = allData.SF;
+            document.getElementById('STEAMTEMPS').value = allData.SS;
+            document.getElementById('PIPETEMP').value = allData.PT;
+            document.getElementById('PIPETEMPF').value = allData.PF;
+            document.getElementById('PIPETEMPS').value = allData.PS;
+            document.getElementById('TANKTEMP').value = allData.TT;
+            document.getElementById('TANKTEMPF').value = allData.TF;
+            document.getElementById('TANKTEMPS').value = allData.TS;
+            document.getElementById('WATERTEMP').value = allData.WT;
+            document.getElementById('SETSTEAMS').value = allData.SSS;
+            document.getElementById('DELTAS').value = allData.HS;
+            document.getElementById('DELTAP').value = allData.HP;
+            document.getElementById('DELTAT').value = allData.HT;
+            document.getElementById('SETTEMPS').value = allData.STS;
+            document.getElementById('SETTEMPP').value = allData.STP;
+            document.getElementById('APRESS2').value = allData.AP;
+            document.getElementById('AIRTEMP').value = allData.AT;
+            document.getElementById('AUTOSTATUS').value = allData.AS;
+            document.getElementById('MEMFREE').value = allData.FM;
+            document.getElementById('VALVE').value = allData.VS;
+            mode_visible = allData.MOD;
+        }
+        // settings
         loaded = 1;
     }
 }
@@ -115,6 +122,7 @@ function invis() { //скрывет лишнее поле
     } else {
         document.getElementById('rect_table').style.display = "block";
     }
+
 }
 
 function sendDelS() { // отправка уставки steam на сервер

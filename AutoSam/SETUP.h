@@ -30,8 +30,8 @@ void setup0()
   lcd.print(VER);         // пишем версию ПО
 
   EEPROM.begin(512);
-  autosam_mode = EEPROM.read(autosam_mode_addr);
-  press_corr = EEPROM.read(press_corr_addr);
+  autosam_mode = EEPROM_read(autosam_mode_addr, 2);
+  press_corr = EEPROM_read(press_corr_addr, 2);
   min_hot_temp = EEPROM_read(min_hot_temp_addr, 4);
   heating_rate = EEPROM_read(heating_rate_addr, 4);
   max_tank_temp = EEPROM_read(max_tank_temp_addr, 4);

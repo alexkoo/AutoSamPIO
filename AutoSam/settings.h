@@ -12,7 +12,7 @@
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-
+const String VER = "1.3.2"; // Версия
 
 //**************************************************************************************************//EEPROM
 const int autosam_mode_addr = 0;
