@@ -41,7 +41,7 @@ function load_once() {
     } else setTimeout(load_once, 1000);
 }
 
-function SendForm() {
+function send_form_settings() {
     var autosam_mode = document.getElementById('MODE').value;
     var min_hot_temp = document.getElementById('MINT').value;
     var max_tank_temp = document.getElementById('MAXT').value;

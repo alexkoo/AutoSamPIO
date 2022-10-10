@@ -1,12 +1,10 @@
 ﻿<!DOCTYPE html>
-<!--   Ректификация  -->
 <html>
 
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>AutoSam</title>
     <link rel="stylesheet" href="style.css">
-    <script src="/head.js"></script>
     <script src="/script.js"></script>
 </head>
 
@@ -18,6 +16,18 @@
         includeHTML();
     </script>
     <!-- /вставка -->
+
+    <div>
+        <form id="MODE" name="form1">
+            <select name="MODE">
+			<option value = "1"> 1-Ректификация </option>
+			<option value = "2"> 2- Дистилляция </option>
+		</select>
+            <input type="button" value=" Сохранить " onclick="send_form_mode()">
+        </form>
+
+    </div>
+
 
     <div>
         <table class="details">
@@ -43,6 +53,7 @@
 	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelS()"></td>
 </tr>
 </table>
+</div>
 
 <div id = "rect_table">
 <table  class="details">
@@ -67,6 +78,7 @@
 </table>
 	</div>
 
+<div>
 <table class="details">
 <caption>Температура в кубе</caption>
 <tr>
@@ -82,6 +94,9 @@
 	<td align="left"><output  id="DELTAT"></td> 
 </tr>
 </table>
+</div>
+
+<div>
 <table >
 <tr> 
 	<td align="left">Статус</td>	
@@ -112,8 +127,10 @@
 	<td align="center"><input type="submit" name="close" value=" ЗАКРЫТЬ " onclick="sendbutton(7);"></td>
 </tr> 
 </table>
-<div class="copyright"> 
-Использованы материалы сайта  <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a>
+
+</div>
 </div>
 
-</div></body></html>
+<div display="none"> </div>
+</body>
+</html>

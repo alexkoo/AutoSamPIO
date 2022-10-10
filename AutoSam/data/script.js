@@ -1,19 +1,12 @@
 ﻿//<!--
 var xmlHttp = createXmlHttpObject();
+var allData;
 var mode_visible;
+var loaded = 0;
 
 
 
-function createXmlHttpObject() {
-    if (window.XMLHttpRequest) {
-        xmlHttp = new XMLHttpRequest();
-    } else {
-        xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    return xmlHttp;
-}
-
-function process() {
+function process() { //цикл выполнения
     if (xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
         xmlHttp.open('PUT', '/data.json', true);
         xmlHttp.send(null);
@@ -23,10 +16,30 @@ function process() {
     setTimeout('process()', 1000);
 }
 
+function createXmlHttpObject() { //создание запроса
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    } else {
+        xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+    return xmlHttp;
+}
+
+function request_new(server) { //Запрос к серверу
+    var request = new XMLHttpRequest();
+    request.open("GET", server, true);
+    request.send();
+    // request.onreadystatechange = function() {              //запрашивает request.readyState, че с ним потом делать хз
+    // if (request.readyState == 4 && request.status == 200) {
+    //  alert('Status= ' + request.status + ': ' + request.statusText + ', readyState= ' + request.readyState);
+    // }
+    //}
+}
+
 
 function handleServerResponse() { // чтение данных с сервера
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        var allData = JSON.parse(xmlHttp.responseText);
+        allData = JSON.parse(xmlHttp.responseText);
         document.getElementById('CURRENTTIME').value = allData.TIME;
         document.getElementById('RUNTIME').value = allData.RTIM;
         document.getElementById('VERSION').value = allData.VER;
@@ -53,11 +66,49 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('MEMFREE').value = allData.FM;
         document.getElementById('VALVE').value = allData.VS;
         mode_visible = allData.MOD;
+        loaded = 1;
     }
 }
 
+function load_once() {
+    if (loaded == 1) {
+        document.getElementById('MINT').value = allData.MIT;
+        document.getElementById('MAXT').value = allData.MTT;
+        document.getElementById('MAXS').value = allData.MST;
+        document.getElementById('HEATR').value = allData.HR;
+    } else setTimeout(load_once, 1000);
+}
 
-function invis() {
+function send_form_mode() { //отправка значения статуса
+    var autosam_mode = document.form1.MODE.value;
+    var s_autosam_mode = "/SetForm?autosam_mode_h=" + autosam_mode;
+    server = s_autosam_mode
+    request_new(server);
+    //setTimeout(load_once, 5000);
+}
+
+function send_form_settings() {
+    var min_hot_temp = document.getElementById('MINT').value;
+    var max_tank_temp = document.getElementById('MAXT').value;
+    var max_steam_temp = document.getElementById('MAXS').value;
+    var heating_rate = document.getElementById('HEATR').value;
+
+    var s_min_hot_temp = "&min_hot_temp_h=" + min_hot_temp;
+    var s_max_tank_temp = "&max_tank_temp_h=" + max_tank_temp;
+    var s_max_steam_temp = "&max_steam_temp_h=" + max_steam_temp;
+    var s_heating_rate = "&heating_rate_h=" + heating_rate;
+    server = "/SetForm?" + s_min_hot_temp + s_max_tank_temp + s_max_steam_temp + s_heating_rate
+    request_new(server);
+    setTimeout(load_once, 5000);
+}
+
+function sendbutton(button) { //отправка значений кнопок
+    var server = "/button?state=" + button;
+    request_new(server);
+}
+
+
+function invis() { //скрывет лишнее поле
 
     if (mode_visible == 2) {
         document.getElementById('rect_table').style.display = "none";
@@ -82,3 +133,36 @@ function sendDelP() { // отправка уставки pipe на сервер
     request_new(server);
 
 }
+
+
+function includeHTML() { // Скрипт включения в страницу https://www.w3schools.com/howto/howto_html_include.asp https://html5css.ru/howto/howto_html_include.php
+    var z, i, elmnt, file, xhttp;
+    /*loop through a collection of all HTML elements:*/
+    z = document.getElementsByTagName("*");
+    for (i = 0; i < z.length; i++) {
+        elmnt = z[i];
+        /*search for elements with a certain atrribute:*/
+        file = elmnt.getAttribute("w3-include-html");
+        if (file) {
+            /*make an HTTP request using the attribute value as the file name:*/
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        elmnt.innerHTML = this.responseText;
+                    }
+                    if (this.status == 404) {
+                        elmnt.innerHTML = "Page not found.";
+                    }
+                    /*remove the attribute, and call this function once more:*/
+                    elmnt.removeAttribute("w3-include-html");
+                    includeHTML();
+                }
+            }
+            xhttp.open("GET", file, true);
+            xhttp.send();
+            /*exit the function:*/
+            return;
+        }
+    }
+};

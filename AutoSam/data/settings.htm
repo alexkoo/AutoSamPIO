@@ -5,13 +5,14 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>AutoSam</title>
     <link rel="stylesheet" href="style.css">
-    <script src="/head.js"></script>
-    <script src="/settings.js"></script>
+    <script src="/script.js"></script>
+
 </head>
 
 <BODY onload=" process() ">
 
     <!-- вставка -->
+
     <div w3-include-html="head.htm"></div>
     <script>
         includeHTML();
@@ -21,18 +22,17 @@
     <div>
         <br>
         <table class="details">
-            <tr>
-                <td> Режим</td>
-                <td> <input type="number" id="MODE" min="1" max="3" step="1" size="2"></td>
-            </tr>
-            <tr>
-                <td> Минимальная температур</td>
-                <td> <input type="number" id="MINT" value="78" min="0" max="100" step="0.5" size="2"> </td>
-            </tr>
+
             <tr>
                 <td> Макс температура бака</td>
                 <td> <input type="number" id="MAXT" value="98" min="70" max="100" step="0.5" size="2"></td>
             </tr>
+
+            <tr>
+                <td> Минимальная температур</td>
+                <td> <input type="number" id="MINT" value="78" min="0" max="100" step="0.5" size="2"> </td>
+            </tr>
+
             <tr>
                 <td> Макс температура пара</td>
                 <td> <input type="number" id="MAXS" value="90" min="70" max="100" step="0.5" size="2"></td>
@@ -48,13 +48,78 @@
             </tr>
             <tr>
                 <td align="left"> <input type="submit" name="init_sens" value=" Init Sensors" onclick="sendbutton(41);"></td>
-                <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="SendForm()"> </td>
+                <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="send_form_settings()"> </td>
             </tr>
         </table>
 
+        <div style="display: none">
+            <input id='MODE'>
+            <input id='rect_table'>
+            <input id='STEAMTEMP'>
+            <input id='STEAMTEMPF'>
+            <input id='STEAMTEMPS'>
+            <input id='PIPETEMP'>
+            <input id='PIPETEMPF'>
+            <input id='PIPETEMPS'>
+            <input id='TANKTEMP'>
+            <input id='TANKTEMPF'>
+            <input id='TANKTEMPS'>
+            <input id='WATERTEMP'>
+            <input id='SETSTEAMS'>
+            <input id='DELTAS'>
+            <input id='DELTAP'>
+            <input id='DELTAT'>
+            <input id='SETTEMPS'>
+            <input id='SETTEMPP'>
+            <input id='APRESS2'>
+            <input id='AIRTEMP'>
+            <input id='AUTOSTATUS'>
+            <input id='MEMFREE'>
+            <input id='VALVE'>
+
+
+
+
+
+        </div>
+
+
         <br>
+
+        <div class="copyright">
+            Подключение: NodeMCU V3 Lua WIFI ESP8266 32M Flash, CH340G
+            <br> MAC: cc:50:e3:2e:80:06
+            <br> I2C address 0x27 // Дисплей 1602 sda>d2(зел); scl>d1(син)
+            <br> I2C address 0x76 // BMP280_CHIPID (0x88) (Default (0x58)) sda>d2(зел); scl>d1(син)
+            <br> Пищалка d0 (16)
+            <br> Клапан d5 (14)
+            <br>DS18B20: d4 (2)
+            <br>
+            <br> byte addr1[8] = {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE}; // Узел отбора SteamSensor ЧЕРНЫЙ (28A80A46920902DE)
+            <br> byte addr2[8] = {0x28, 0x35, 0x32, 0x46, 0x92, 0x09, 0x02, 0x9F}; // Бак TankSensor БЕЛЫЙ (283532469209029F)
+            <br> byte addr3[8] = {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A}; // 2/3 царги PipeSensor ЗЕЛЕНЫЙ
+            <br>
+            <br> Калибровка крана:
+            <br> 30' = 0 мл/ч
+            <br> 45' = 150 мл/ч
+            <br> 60' = 600 мл/ч
+            <br> 75' = 1500 мл/ч
+            <br> 90' = 2400 мл/ч
+            <br>
+
+
+            <br> кажется датчик в сухопарнике брешет на -1 градус
+
+        </div>
+
+
         <div class="copyright">
             Использованы материалы сайта <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a>
+        </div>
+
+        <div class="copyright">
+            <a href="graf\graf.htm" target="blank">График </a>
+            <a href="graf\graf1.htm" target="blank">График1 </a>
         </div>
     </div>
 
