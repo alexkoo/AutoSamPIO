@@ -1,5 +1,8 @@
 ﻿//<!--
 var xmlHttp = createXmlHttpObject();
+var mode_visible;
+
+
 
 function createXmlHttpObject() {
     if (window.XMLHttpRequest) {
@@ -15,9 +18,11 @@ function process() {
         xmlHttp.open('PUT', '/data.json', true);
         xmlHttp.send(null);
         xmlHttp.onreadystatechange = handleServerResponse;
+        invis()
     }
     setTimeout('process()', 1000);
 }
+
 
 function handleServerResponse() { // чтение данных с сервера
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -47,6 +52,17 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('AUTOSTATUS').value = allData.AS;
         document.getElementById('MEMFREE').value = allData.FM;
         document.getElementById('VALVE').value = allData.VS;
+        mode_visible = allData.MOD;
+    }
+}
+
+
+function invis() {
+
+    if (mode_visible == 2) {
+        document.getElementById('rect_table').style.display = "none";
+    } else {
+        document.getElementById('rect_table').style.display = "block";
     }
 }
 
