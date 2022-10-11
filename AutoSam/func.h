@@ -2,11 +2,10 @@
 #define func_h
 #include "header.h"
 
-
 void beep()
 {
   telnet.print(millis2time());
-    telnet.print("   ");
+  telnet.print("   ");
   telnet.println(auto_status); // выводим сообщение на UART
   tone(buz, 400, 200);
 }
@@ -17,7 +16,7 @@ bool readValve()
   valve_status = digitalRead(valve);
 
   /*
-  
+
 
   if (valve_invert == true)
   {
@@ -34,7 +33,7 @@ bool readValve()
 void findDS()
 {
   byte i;
-  //byte j;
+  // byte j;
   byte addr[8];
   byte numDS = sensors.getDeviceCount();
   telnet.println("Поиск датчиков ");
@@ -108,7 +107,16 @@ float concSteam(float t) //Определение содержания спир�
 
 // чтение EEPROM
 
-float EEPROM_read(int addr, byte bytn) // чтение данных из EEPROM (адрес, количесство байтов)
+float EEPROM_read(int addr) // чтение данных из EEPROM (адрес, количесство байтов)
+{
+  byte raw[4];
+  for (byte i = 0; i < 4; i++)
+    raw[i] = EEPROM.read(addr + i);
+  float &num = (float &)raw;
+  return num;
+}
+/*
+float EEPROM_read(int addr) // чтение данных из EEPROM (адрес, количесство байтов)
 {
   if (bytn == 2)
   {
@@ -130,6 +138,9 @@ float EEPROM_read(int addr, byte bytn) // чтение данных из EEPROM 
   else
     return 0;
 }
+
+*/
+
 /*
 float EEPROM_int_read(int addr)
 {
@@ -164,15 +175,14 @@ float EEPROM_float_read(int addr)
 
 void EEPROM_write(int addr, float num) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
 {
-       if (EEPROM_read(addr, 4) != num)
-    { //если сохраняемое отличается
-      byte raw[4];
-      (float &)raw = num;
-      for (byte i = 0; i < 4; i++)
-        EEPROM.write(addr + i, raw[i]);
-    }
-    EEPROM.commit();
-  
+  if (EEPROM_read(addr) != num)
+  { //если сохраняемое отличается
+    byte raw[4];
+    (float &)raw = num;
+    for (byte i = 0; i < 4; i++)
+      EEPROM.write(addr + i, raw[i]);
+  }
+  EEPROM.commit();
 }
 
 void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom и адрес датчика
@@ -267,7 +277,7 @@ void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom 
   sensors.setResolution(WaterSensor, 12);                      // устанавливаем разрешение для датчика 2
   sensors.setResolution(TankSensor, 12);                       // устанавливаем разрешение для датчика 3
 
-  
+
   telnet.println ("Sensors Address: ");                      // пишем адрес и разрешение датчика 0
   telnet.println (printAddress(sens0));
   telnet.println (printAddress(sens1));
@@ -276,6 +286,5 @@ void EEPROM_addr_write(int addr, byte *data) // на вход адрес eeprom 
 
   }
 */
-
 
 #endif
