@@ -46,6 +46,8 @@
 //#define ON LOW  //настройки для инвертирования клапапна
 //#define OFF HIGH
 
+#define DEBSTART if (debug==1) {debug_time_start = micros();}
+#define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debug_time_print();} 
 
 
 BMx280I2C bme(I2C_ADDRESS_BMx);         // с моим датчиком Adafruit_BMP280 работать не захотел

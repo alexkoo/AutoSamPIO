@@ -12,7 +12,7 @@
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-const String VER = "1.3.2"; // Версия
+const String VER = "1.3.3"; // Версия
 
 //**************************************************************************************************//EEPROM
 const int autosam_mode_addr = 0;
@@ -55,30 +55,32 @@ unsigned long lcd_timer_set = 2000; //задержка автопереключ�
 
 int pressed = 0; // переменная "нажатие"
 
+unsigned long bmx_time_set = 5000;
+unsigned long ds_time_set = 2000;
+unsigned long ntp_time_set = 20000;
+
+unsigned long bmx_timer; // таймер опроса датчиков
+unsigned long ds_timer;  // таймер опроса датчиков
+unsigned long ntp_timer;
+
 //**************************************************************************************************// основные переменные
 
 float SteamTemp = -127;   // температура пара вверху колонны / сухопарник
-float SteamTempN = -127; // Некорректированная температура
 float SteamTempVolS = 0;  // Содержание спирта в парах
 float SteamTempVolF = 0;  // Содержание спирта в жидкости
 float SteamTempO;         // предыдущая температура
 
-
 float PipeTemp = -127;   // температура в царге на 2/3 высоты
-float PipeTempN = -127; // Некорректированная температура
 float PipeTempVolS = 0;  // Содержание спирта в парах
 float PipeTempVolF = 0;  // Содержание спирта в жидкости
 float PipeTempO;         // предыдущая температура
 
-
 float TankTemp = -127;   // температура в кубе
-float TankTempN = -127; // Некорректированная температура
 float TankTempVolS = 0;  // Содержание спирта в парах
 float TankTempVolF = 0;  // Содержание спирта в жидкости
 float TankTempO;         // предыдущая температура
 
 float SetSteamTempVolS = 0;
-
 
 float WaterTemp = -127; // температура охлаждающей воды или флегмы
 
@@ -87,11 +89,6 @@ float air_temp = 20.00;     // температура окружающего в�
 
 bool BMP280 = true; // вспомогательная переменная при отсутствии датчика
 
-unsigned long bmx_time = 5000;
-unsigned long ds_time = 1000;
-
-unsigned long bmx_time_request; // таймер опроса датчиков
-unsigned long ds_time_request;  // таймер опроса датчиков
 
 //**************************************************************************************************//самогонный модуль
 float set_temp_steam = 0;       // уставка по температуре пара вверху колонны, при достижении которой клапан отключается
@@ -111,12 +108,14 @@ unsigned long heating_rate_int = 30000; //интервал
 unsigned long heating_rate_timer;       //таймер скорости изменения deltaT
 
 //**************************************************************************************************//Прочее
-byte debug = 0;           // Редим отладки: 0 выкл 1-основное  2-подробное 3 - фильтры 4 - предустановки
+byte debug = 1;           // Редим отладки: 0 выкл 1-время выполнения  
 unsigned long debug_time; //период опроса
 
 unsigned long free_mem;             ///память
 unsigned long timeloop0, timeloop1; //отладка время выполнения
 
+unsigned long debug_time_start;
+unsigned long debug_time_stop;
 
 GMedian3<float> SteamFilter; // указываем тип данных в <>
 GMedian<8, float> PipeFilter; //20-30mc
