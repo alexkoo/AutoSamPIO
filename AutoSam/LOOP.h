@@ -8,8 +8,13 @@ void loop0()
 
   ArduinoOTA.handle();
   HTTP.handleClient();
-  delay(1);
-  clok();
+  // delay(1);
+
+  if (millis() - ntp_timer > ntp_time_set)
+  {
+    ntp_timer = millis();
+    clok();
+  }
 
   if (telnetServer.hasClient())
   {
@@ -32,24 +37,6 @@ void loop0()
     Serial.write(telnet.read());
   }
 
-  //********************************************
-  // Обрабатываем нажатия кнопки переключения экранов дисплея
-
-/*
-
-
-  if (digitalRead(button) == LOW && pressed == 0) //если кнопка нажата и переменная pressed равна 0 , то ...
-  {
-    pressed = 1;   //это нужно для того, чтобы с каждым нажатием кнопки происходило только одно действие плюс защита от "дребезга"
-    lcd_num++;     // увеличиваем номер экрана на 1
-    lcd.clear();   // при нажатии кнопки очищаем дисплей
-    pcountsam = 0; // снимаем процесс с паузы
-    if (lcd_num >= lcd_max_num)
-      lcd_num = 0; // так как мы используем только одну кнопку, то переключать экраны будем циклично
-  }
-  if (digitalRead(button) == HIGH && pressed == 1)
-    pressed = 0; //если кнопка НЕ нажата и pressed равна 1 ,то обнуляем pressed
-
   if (millis() - lcd_timer > lcd_timer_set)
   { // автопереключение экранов
     lcd_timer = millis();
@@ -58,77 +45,37 @@ void loop0()
     if (lcd_num > lcd_max_num)
       lcd_num = 0;
   }
-*/
 
-  if (millis() - lcd_timer > lcd_timer_set)
-  { // автопереключение экранов
-    lcd_timer = millis();
-    lcd_num++;
-    lcd.clear();
-    if (lcd_num > lcd_max_num)
-      lcd_num = 0;
-  }
   //*************************************************************************** // считываем температуры с датчиков
-
-  if (millis() - bmx_time_request > bmx_time)
+  if (millis() - bmx_timer > bmx_time_set)
   {
-    bmx_time_request = millis();
-    atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление
-    air_temp = bme.readTemperature();               // и температуру воздуха
+    bmx_timer = millis();
+    atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление  104ms
+    air_temp = bme.readTemperature();               // и температуру воздуха 104ms
   }
 
-  if (millis() - ds_time_request > ds_time)
+  if (millis() - ds_timer > ds_time_set)
   { // период опроса датчиков, вычисления поправок
-    ds_time_request = millis();
-    sensors.requestTemperatures(); // запрашиваем температуру у всех датчиков
+    ds_timer = millis();
 
-    float SteamTempN = sensors.getTempC(SteamSensor); // считываем температуру с датчика 0
-    float PipeTempN = sensors.getTempC(PipeSensor);   // считываем температуру с датчика 1
-    float WaterTemp = sensors.getTempC(WaterSensor);  // считываем температуру с датчика 2
-    float TankTempN = sensors.getTempC(TankSensor);   // считываем температуру с датчика 3
+    sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
+    float SteamTempN = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
+    float PipeTempN = sensors.getTempC(PipeSensor);
+    float WaterTemp = sensors.getTempC(WaterSensor);
+    float TankTempN = sensors.getTempC(TankSensor);
 
-    //telnet.print (PipeTempN); //оценка работы фильтров
-    //telnet.print (", ");
-
- telnet.println (WaterTemp);
     SteamTempN = SteamFilter.filtered(SteamTempN);
-    TankTempN = TankFilter.filtered(TankTempN); //6-11mc
-    PipeTempN = PipeFilter.filtered(PipeTempN); //20-30mc
-    
+    TankTempN = TankFilter.filtered(TankTempN); //
+    PipeTempN = PipeFilter.filtered(PipeTempN); //
 
-    //telnet.println (PipeTempN);
-
-    /*
-    if (TSteamTempN >= -30)
-    { // проверка на ошибочные значения
-      SteamError = false;
-      SteamTempNC = TSteamTempN;
-    }
-    if (TPipeTempN >= -30)
-    {
-      PipeTempNC = TPipeTempN;
-    }
-    if (TWaterTemp >= -30)
-    {
-      WaterTemp = TWaterTemp;
-    }
-    if (TTankTempN >= -30)
-    {
-      TankTempNC = TTankTempN;
-    }
-    // фильтрация
-
-
-*/
-    // поправки на давление и ручные
+    // поправки на давление и ручные 1-2mc
     SteamTemp = corrTemp(SteamTempN) + 0.5; //  поправка. У меня  один из датчиков брешет
     PipeTemp = corrTemp(PipeTempN) + 0.5;
-    TankTemp = corrTemp(TankTempN); //1-2mc
+    TankTemp = corrTemp(TankTempN); //
 
-    // вычисление крепости
-
-    SteamTempVolS = concSteam(SteamTemp); //20-60mc
-    SteamTempVolF = concFluid(SteamTemp); //70-90mc
+    // вычисление крепости 0-2000мс
+    SteamTempVolS = concSteam(SteamTemp); // 0,1mc
+    SteamTempVolF = concFluid(SteamTemp); // 70-90mc 0,1мс
     PipeTempVolS = concSteam(PipeTemp);
     PipeTempVolF = concFluid(PipeTemp);
     TankTempVolS = concSteam(TankTemp);
@@ -165,13 +112,12 @@ void loop0()
   switch (autosam_mode)
   {
   case 1:
-
     rect(); // логика ректификации
-    lcd1(); // вызываем функцию вывода на дисплей
+    lcd1(); // вызываем функцию вывода на дисплей 60mc
     lcd_max_num = 2;
+
     break;
   case 2:
-
     samogon(); // логика самогонного аппарата
     lcd2();    // вызываем функцию вывода на дисплей
     lcd_max_num = 1;
@@ -181,51 +127,6 @@ void loop0()
     lcd_max_num = 0;
     break;
   }
-
-//////////////////debug
-
-
-  if (debug == 1)
-  {
-    if (millis() - debug_time >= 1000)
-    {                        // выполняется раз в 1000 мс
-      debug_time = millis(); // перезаводится
-
-      // выводим температуры
-      telnet.println(" ");
-      telnet.println("LOG: ");
-      telnet.print(SteamTemp);
-      telnet.print("; ");
-      telnet.print(SteamTemp);
-      telnet.print("; ");
-      telnet.print(PipeTemp);
-      telnet.print("; ");
-      telnet.print(TankTemp);
-      telnet.print("; ");
-      telnet.print(WaterTemp);
-      telnet.print("; ");
-      telnet.print(air_temp);
-      telnet.print("; ");
-      telnet.print(atm_pressure);
-      telnet.print("; ");
-      telnet.print(free_mem);
-      telnet.print("; ");
-      telnet.println(timeloop1);
-      telnet.print(" Причина перезагрузки  ");
-      telnet.println(ESP.getResetReason());
-
-      findDS();
-    }
-  }
-
-  if (debug == 2)
-  {                                   // выполняется каждый цикл
-    timeloop1 = millis() - timeloop0; // вывод время выполнения цикла
-    timeloop0 = millis();
-    telnet.print("Time Loop, ms: ");
-    telnet.println(timeloop1);
-  }
-
 } // loop0
 
 #endif
