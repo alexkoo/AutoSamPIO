@@ -271,10 +271,6 @@ if (debug == 1)
 
 
  
-void EEPROM_float_write(int addr, float val_){     //Запись в ЕЕПРОМ
-скрин с проектом прилагаю ,
-
-
 
 float EEPROM_float_read(int addr){               //Чтение из ЕЕПРОМ
   EEPROM.begin(512);              //Начало работы с EEPROM модуля esp8266
@@ -288,16 +284,7 @@ float EEPROM_float_read(int addr){               //Чтение из ЕЕПРО�
 @Thorn зачем вам float? Умножьте температуру на 10 или на 100 и сохраняйте в int32 и даже int16 хватит
 
 
-// время выполнения функции
-unsigned long start_time = micros(); 
-// 
-//Ваш Код
-// 
-unsigned long end_time = micros();
-unsigned long delta_time = end - start;
-telnet.print("Time , ms: ");
-telnet.println(delta_time);
-// время выполнения функции
+
 
 
 telnet 800-900

@@ -141,7 +141,7 @@ float concSteam(float t) //Определение содержания спир�
   return s;
 }
 
-float EEPROM_read(int addr) // чтение данных из EEPROM (адрес, количесство байтов)
+float EEPROM_read(int addr) // чтение данных из EEPROM (адрес)
 {
   byte raw[4];
   for (byte i = 0; i < 4; i++)
@@ -151,5 +151,16 @@ float EEPROM_read(int addr) // чтение данных из EEPROM (адрес
 }
 
 
+void EEPROM_write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
+{
+  if (EEPROM_read(addr) != num)
+  { //если сохраняемое отличается
+    byte raw[4];
+    (float &)raw = num;
+    for (byte i = 0; i < 4; i++)
+      EEPROM.write(addr + i, raw[i]);
+  }
+  EEPROM.commit();
+}
 
 #endif
