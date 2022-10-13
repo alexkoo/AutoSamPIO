@@ -64,14 +64,14 @@ void loop0()
     float WaterTemp = sensors.getTempC(WaterSensor);
     float TankTempN = sensors.getTempC(TankSensor);
 
-    SteamTempN = SteamFilter.filtered(SteamTempN);
-    TankTempN = TankFilter.filtered(TankTempN); //
-    PipeTempN = PipeFilter.filtered(PipeTempN); //
+    float SteamTempF = SteamFilter.filtered(SteamTempN);
+    float TankTempF = TankFilter.filtered(TankTempN); //
+    float PipeTempF = PipeFilter.filtered(PipeTempN); //
 
     // поправки на давление и ручные 1-2mc
-    SteamTemp = corrTemp(SteamTempN) + 0.5; //  поправка. У меня  один из датчиков брешет
-    PipeTemp = corrTemp(PipeTempN) + 0.5;
-    TankTemp = corrTemp(TankTempN); //
+    SteamTemp = corrTemp(SteamTempF) + 0.5; //  поправка. У меня  один из датчиков брешет
+    PipeTemp = corrTemp(PipeTempF) + 0.5;
+    TankTemp = corrTemp(TankTempF); //
 
     // вычисление крепости 0-2000мс
     SteamTempVolS = concSteam(SteamTemp); // 0,1mc
