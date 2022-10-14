@@ -1,13 +1,9 @@
 {
     "folders": [
-		{
-			"path": ".."
-		},
-		{
-			"name": "210202-193705-esp01_1m",
-			"path": "..\\..\\..\\PlatformIO\\Projects\\210202-193705-esp01_1m"
-		}
-	],
+        {
+            "path": ".."
+        }
+    ],
     "settings": {
         "files.associations": {
             "array": "cpp",

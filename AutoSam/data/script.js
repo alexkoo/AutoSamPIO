@@ -1,9 +1,10 @@
 ﻿//<!--
 var xmlHttp = createXmlHttpObject();
 var allData;
-var mode_visible;
+var modeVisible;
 var loaded = 0;
-var dist_plug = 1;
+var distPlug = 1;
+var valveStatus;
 
 
 function process() { //цикл выполнения
@@ -11,8 +12,10 @@ function process() { //цикл выполнения
         xmlHttp.open('PUT', '/data.json', true);
         xmlHttp.send(null);
         xmlHttp.onreadystatechange = handleServerResponse;
-        if (dist_plug == 1) {
-            invis()
+        valve_status();
+        if (distPlug == 1) {
+            invis();
+
         }
     }
     setTimeout('process()', 1000);
@@ -48,7 +51,7 @@ function handleServerResponse() { // чтение данных с сервера
         document.getElementById('VERSION').value = allData.VER;
         document.getElementById('MODEI').value = allData.MOD;
         //dist
-        if (dist_plug == 1) {
+        if (distPlug == 1) {
             document.getElementById('STEAMTEMP').value = allData.ST;
             document.getElementById('STEAMTEMPF').value = allData.SF;
             document.getElementById('STEAMTEMPS').value = allData.SS;
@@ -69,13 +72,24 @@ function handleServerResponse() { // чтение данных с сервера
             document.getElementById('AIRTEMP').value = allData.AT;
             document.getElementById('AUTOSTATUS').value = allData.AS;
             document.getElementById('MEMFREE').value = allData.FM;
-            document.getElementById('VALVE').value = allData.VS;
-            mode_visible = allData.MOD;
+            valveStatus = allData.VS;
+            modeVisible = allData.MOD;
         }
         // settings
         loaded = 1;
     }
 }
+
+function valve_status() {
+    if (valveStatus == 1) {
+        document.getElementById('VALVE').value = "Открыт";
+    } else {
+        document.getElementById('VALVE').value = "Закрыт";
+    }
+}
+
+//document.getElementById('VALVE').value = allData.VS;
+
 
 function load_once() {
     if (loaded == 1) {
@@ -117,7 +131,7 @@ function sendbutton(button) { //отправка значений кнопок
 
 function invis() { //скрывет лишнее поле
 
-    if (mode_visible == 2) {
+    if (modeVisible == 2) {
         document.getElementById('rect_table').style.display = "none";
     } else {
         document.getElementById('rect_table').style.display = "block";
@@ -128,10 +142,8 @@ function invis() { //скрывет лишнее поле
 function sendDelS() { // отправка уставки steam на сервер
     var delta_s = document.getElementById('DELTA_S').value;
     var delay_s = document.getElementById('DELAY_S').value;
-
     var server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
     request_new(server);
-
 }
 
 function sendDelP() { // отправка уставки pipe на сервер
@@ -139,7 +151,6 @@ function sendDelP() { // отправка уставки pipe на сервер
     var delay_p = document.getElementById('DELAY_P').value;
     var server = "/DelP?delta_p=" + delta_p + "&delay_p=" + delay_p;
     request_new(server);
-
 }
 
 

@@ -3,7 +3,10 @@
 #include "header.h"
 
 void loop0()
-{                                 // вынос функции loop в отдельную вкладку
+{    
+  DEBSTOP
+  DEBSTART
+                               // вынос функции loop в отдельную вкладку
   free_mem = (ESP.getFreeHeap()); //свободная память
 
   ArduinoOTA.handle();
@@ -127,6 +130,7 @@ void loop0()
     lcd_max_num = 0;
     break;
   }
+  
 } // loop0
 
 #endif
