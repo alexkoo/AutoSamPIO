@@ -2,11 +2,11 @@
 #define loop_h
 #include "header.h"
 
-void loop0()
+void loop0()// вынос функции loop в отдельную вкладку
 {    
-  DEBSTOP
-  DEBSTART
-                               // вынос функции loop в отдельную вкладку
+  //DEBSTOP
+  //DEBSTART
+                               
   free_mem = (ESP.getFreeHeap()); //свободная память
 
   ArduinoOTA.handle();
@@ -62,60 +62,60 @@ void loop0()
     ds_timer = millis();
 
     sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
-    float SteamTempN = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
-    float PipeTempN = sensors.getTempC(PipeSensor);
-    float WaterTemp = sensors.getTempC(WaterSensor);
-    float TankTempN = sensors.getTempC(TankSensor);
+    float steam_temp_nc = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
+    float pipe_temp_nc = sensors.getTempC(PipeSensor);
+    float water_temp = sensors.getTempC(WaterSensor);
+    float tank_temp_nc = sensors.getTempC(TankSensor);
 
-    float SteamTempF = SteamFilter.filtered(SteamTempN);
-    float TankTempF = TankFilter.filtered(TankTempN); //
-    float PipeTempF = PipeFilter.filtered(PipeTempN); //
+    float steam_temp_filtered = SteamFilter.filtered(steam_temp_nc);
+    float tank_temp_filtered = TankFilter.filtered(tank_temp_nc); //
+    float pipe_temp_fitered = PipeFilter.filtered(pipe_temp_nc); //
 
     // поправки на давление и ручные 1-2mc
-    SteamTemp = corrTemp(SteamTempF) + 0.5; //  поправка. У меня  один из датчиков брешет
-    PipeTemp = corrTemp(PipeTempF) + 0.5;
-    TankTemp = corrTemp(TankTempF); //
+    steam_temp = corrTemp(steam_temp_filtered) + 0.5; //  поправка. У меня  один из датчиков брешет
+    pipe_temp = corrTemp(pipe_temp_fitered) + 0.5;
+    tank_temp = corrTemp(tank_temp_filtered); //
 
     // вычисление крепости 0-2000мс
-    SteamTempVolS = concSteam(SteamTemp); // 0,1mc
-    SteamTempVolF = concFluid(SteamTemp); // 70-90mc 0,1мс
-    PipeTempVolS = concSteam(PipeTemp);
-    PipeTempVolF = concFluid(PipeTemp);
-    TankTempVolS = concSteam(TankTemp);
-    TankTempVolF = concFluid(TankTemp);
-    SetSteamTempVolS = concSteam(set_temp_steam);
+    steam_temp_alc_st = concSteam(steam_temp); // 0,1mc
+    steam_temp_alc_fl = concFluid(steam_temp); // 70-90mc 0,1мс
+    pipe_temp_alc_st = concSteam(pipe_temp);
+    pipe_temp_alc_fl = concFluid(pipe_temp);
+    tank_temp_alc_st = concSteam(tank_temp);
+    tank_temp_alc_fl = concFluid(tank_temp);
+    set_steam_temp_alc_st = concSteam(set_temp_steam);
   }
 
   // вычисление скорости отбора
   if (millis() - heating_rate_timer >= heating_rate_int)
   {                                                                             // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
     heating_rate_timer = millis();                                              // перезаводится
-    heating_rate_steam = (SteamTemp - SteamTempO) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
+    heating_rate_steam = (steam_temp - steam_temp_prev) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
     if (heating_rate_steam > 40 || heating_rate_steam < -40)
     {
       heating_rate_steam = 0;
     }
-    SteamTempO = SteamTemp;
+    steam_temp_prev = steam_temp;
 
-    heating_rate_pipe = (PipeTemp - PipeTempO) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
+    heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
     if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
     {
       heating_rate_pipe = 0;
     }
-    PipeTempO = PipeTemp;
+    pipe_temp_prev = pipe_temp;
 
-    heating_rate_tank = (TankTemp - TankTempO) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
+    heating_rate_tank = (tank_temp - tank_temp_prev) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
     if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
     {
       heating_rate_pipe = 0;
     }
-    TankTempO = TankTemp;
+    tank_temp_prev = tank_temp;
   }
 
   switch (autosam_mode)
   {
   case 1:
-    rect(); // логика ректификации
+    rectification(); // логика ректификации
     lcd1(); // вызываем функцию вывода на дисплей 60mc
     lcd_max_num = 2;
 

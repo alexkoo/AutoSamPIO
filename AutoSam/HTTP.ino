@@ -1,35 +1,35 @@
 #include "header.h"
 
-void HTTP_init(void) // функция инициализации HTTP
+void HTTP_Init(void) // функция инициализации HTTP
 {
   FS_init(); // Включаем работу с файловой системой
 
   //Выполнение команды из браузера
-  HTTP.on("/button", handle_Button); // обрашение к кнопкам через web интерфейс
-  HTTP.on("/SetForm", handle_SetForm);
-  HTTP.on("/DelS", handle_DeltaSteam); // обрашение к уставке SteamTemp через web интерфейс
-  HTTP.on("/DelP", handle_DeltaPipe);  // обрашение к уставке PipeTemp(2/3) через web интерфейс
+  HTTP.on("/button", handleButton); // обрашение к кнопкам через web интерфейс
+  HTTP.on("/SetForm", handleSetForm);
+  HTTP.on("/DelS", handleDeltaSteam); // обрашение к уставке steam_temp через web интерфейс
+  HTTP.on("/DelP", handleDeltaPipe);  // обрашение к уставке pipe_temp(2/3) через web интерфейс
   HTTP.on("/data.json", handleData);   // формирование json файла для передачи данных в web интерфейс
   HTTP.begin();                        // Запускаем HTTP сервер
 }
 
-void handle_SetForm()
+void handleSetForm()
 { // функция изменения настроек с web страницы
 
   autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
-  EEPROM_write(autosam_mode_addr, autosam_mode);
+  EEPROM_Write(autosam_mode_addr, autosam_mode);
 
   min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat();
-  EEPROM_write(min_hot_temp_addr, min_hot_temp);
+  EEPROM_Write(min_hot_temp_addr, min_hot_temp);
 
   max_tank_temp = HTTP.arg("max_tank_temp_h").toFloat();
-  EEPROM_write(max_tank_temp_addr, max_tank_temp);
+  EEPROM_Write(max_tank_temp_addr, max_tank_temp);
 
   max_steam_temp = HTTP.arg("max_steam_temp_h").toFloat();
-  EEPROM_write(max_steam_temp_addr, max_steam_temp);
+  EEPROM_Write(max_steam_temp_addr, max_steam_temp);
 
   heating_rate = HTTP.arg("heating_rate_h").toFloat();
-  EEPROM_write(heating_rate_addr, heating_rate);
+  EEPROM_Write(heating_rate_addr, heating_rate);
 
   // press_corr = HTTP.arg("press_corr").toInt();
   // EEPROM_write(press_corr_addr, press_corr);
@@ -39,7 +39,7 @@ void handle_SetForm()
 }
 
 //***************************************************************************************************
-void handle_Button()
+void handleButton()
 {                                               // функция управления клапаном с web страницы
   int button_state = HTTP.arg("state").toInt(); // получаем от клиента строку с номером нажатой кнопки
 
@@ -70,8 +70,8 @@ void handle_Button()
 }
 
 //**************************************************************************************************
-void handle_DeltaSteam()
-{                                                    // функция изменения уставок с web страницы //SteamTemp
+void handleDeltaSteam()
+{                                                    // функция изменения уставок с web страницы //steam_temp
   float delta_steam = HTTP.arg("delta_s").toFloat(); // получаем от клиента строку с дельтой
   delay_steam = HTTP.arg("delay_s").toInt();         // получаем от клиента строку с задержкой
   if (delta_steam == 0)
@@ -83,7 +83,7 @@ void handle_DeltaSteam()
     }
   }
   else
-    set_temp_steam = SteamTemp + delta_steam; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
+    set_temp_steam = steam_temp + delta_steam; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
   valve_auto_mode = true;
   telnet.print("DeltaSteam="); // выводим новое значение уставки на UART
   telnet.println(delta_steam);
@@ -93,8 +93,8 @@ void handle_DeltaSteam()
 }
 
 //**************************************************************************************************
-void handle_DeltaPipe()
-{                                                   // функция изменения уставок с web страницы //PipeTemp(2/3)
+void handleDeltaPipe()
+{                                                   // функция изменения уставок с web страницы //pipe_temp(2/3)
   float delta_pipe = HTTP.arg("delta_p").toFloat(); // получаем от клиента строку с дельтой
   delay_pipe = HTTP.arg("delay_p").toInt();         // получаем от клиента строку с задержкой
   if (delta_pipe == 0)
@@ -107,7 +107,7 @@ void handle_DeltaPipe()
   }
 
   else
-    set_temp_pipe = PipeTemp + delta_pipe; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
+    set_temp_pipe = pipe_temp + delta_pipe; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
   valve_auto_mode = true;
   telnet.print("Delta pipe="); // выводим новое значение уставки на UART
   telnet.println(delta_pipe);
@@ -127,17 +127,17 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"VER\":\"" + String(VER);
   json += "\",\"MOD\":\"" + String(autosam_mode);
   //head
-  json += "\",\"ST\":\"" + String(SteamTemp);
-  json += "\",\"SF\":\"" + String(SteamTempVolF);
-  json += "\",\"SS\":\"" + String(SteamTempVolS);
-  json += "\",\"PT\":\"" + String(PipeTemp);
-  json += "\",\"PF\":\"" + String(PipeTempVolF);
-  json += "\",\"PS\":\"" + String(PipeTempVolS);
-  json += "\",\"TT\":\"" + String(TankTemp);
-  json += "\",\"TF\":\"" + String(TankTempVolF);
-  json += "\",\"TS\":\"" + String(TankTempVolS);
-  json += "\",\"WT\":\"" + String(WaterTemp);
-  json += "\",\"SSS\":\"" + String(SetSteamTempVolS);
+  json += "\",\"ST\":\"" + String(steam_temp);
+  json += "\",\"SF\":\"" + String(steam_temp_alc_fl);
+  json += "\",\"SS\":\"" + String(steam_temp_alc_st);
+  json += "\",\"PT\":\"" + String(pipe_temp);
+  json += "\",\"PF\":\"" + String(pipe_temp_alc_fl);
+  json += "\",\"PS\":\"" + String(pipe_temp_alc_st);
+  json += "\",\"TT\":\"" + String(tank_temp);
+  json += "\",\"TF\":\"" + String(tank_temp_alc_fl);
+  json += "\",\"TS\":\"" + String(tank_temp_alc_st);
+  json += "\",\"WT\":\"" + String(water_temp);
+  json += "\",\"SSS\":\"" + String(set_steam_temp_alc_st);
   
   json += "\",\"HS\":\"" + String(heating_rate_steam);
   json += "\",\"HP\":\"" + String(heating_rate_pipe);

@@ -30,12 +30,12 @@ void setup0()
   lcd.print(VER);         // пишем версию ПО
 
   EEPROM.begin(512);
-  autosam_mode = EEPROM_read(autosam_mode_addr);
-  press_corr = EEPROM_read(press_corr_addr);
-  min_hot_temp = EEPROM_read(min_hot_temp_addr);
-  heating_rate = EEPROM_read(heating_rate_addr);
-  max_tank_temp = EEPROM_read(max_tank_temp_addr);
-  max_steam_temp = EEPROM_read(max_steam_temp_addr);
+  autosam_mode = EEPROM_Read(autosam_mode_addr);
+  pressure_correction = EEPROM_Read(press_corr_addr);
+  min_hot_temp = EEPROM_Read(min_hot_temp_addr);
+  heating_rate = EEPROM_Read(heating_rate_addr);
+  max_tank_temp = EEPROM_Read(max_tank_temp_addr);
+  max_steam_temp = EEPROM_Read(max_steam_temp_addr);
 
   for (byte f = 0; f < 8; f++)
   {
@@ -59,7 +59,7 @@ void setup0()
 
   delay(500);
 
-  HTTP_init(); //настраиваем HTTP интерфейс
+  HTTP_Init(); //настраиваем HTTP интерфейс
   Serial.println("HTTP Ready, Starting UDP");
   udp.begin(localPort); // Инициализация UDP соединения с NTP сервером
   Serial.print("Local port: ");
@@ -118,14 +118,14 @@ void setup0()
   if (!bme.begin())
   {
     Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
-    BMP280 = false;
+    BMP280_used = false;
   }
   else
   {
     Serial.println("Find a valid BMP280 sensor");
-    BMP280 = true;
+    BMP280_used = true;
   }
-  if (BMP280 == true)
+  if (BMP280_used == true)
   {
     bme.resetToDefaults();
     bme.writeOversamplingPressure(BMx280MI::OSRS_P_x16);
@@ -200,7 +200,7 @@ void setup0()
 
   if (debug == 1)
   {
-    telnet.println("LOG: SteamTemp; PipeTemp; TankTemp; WaterTemp; air_temp; Pressure; Freemem; Timeloop");
+    telnet.println("LOG: steam_temp; pipe_temp; tank_temp; water_temp; air_temp; Pressure; Freemem; Timeloop");
   }
 
   if (debug == 4)

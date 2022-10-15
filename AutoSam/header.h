@@ -60,14 +60,14 @@ WiFiClient telnet;
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
-#include "SETTINGS.h"
+#include "settings.h"
 #include "time_fs.h"
 #include "http.h"
-#include "LCD.h"
-#include "FUNC.h"
-#include "LOGIC.h"
-#include "SETUP.h"
-#include "LOOP.h"
+#include "lcd.h"
+#include "func.h"
+#include "logic.h"
+#include "setup.h"
+#include "loop.h"
 
 
 //debug
