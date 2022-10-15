@@ -3,7 +3,7 @@
 #include "header.h"
 
 /*
-void fake_data() // генерирует случайные показания
+void fakeData() // генерирует случайные показания
 {
   if (debug == 1){
 SteamTempN = random(80,90);
@@ -13,11 +13,11 @@ TankTempN  = random(80,90);
 }
 */
 
-void debug_time_print()
+void debugTimePrint()
 {
   /*
   #define DEBSTART if (debug==1) {debug_time_start = micros();}
-  #define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debug_time_print(); }
+  #define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debugTimePrint(); }
   DEBSTART
   DEBSTOP
   */
@@ -111,7 +111,7 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc
-  if (BMP280 == true && temp > 75 && press_corr == 1)
+  if (BMP280_used == true && temp > 75 && pressure_correction == 1)
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
@@ -141,7 +141,7 @@ float concSteam(float t) //Определение содержания спир�
   return s;
 }
 
-float EEPROM_read(int addr) // чтение данных из EEPROM (адрес)
+float EEPROM_Read(int addr) // чтение данных из EEPROM (адрес)
 {
   byte raw[4];
   for (byte i = 0; i < 4; i++)
@@ -151,9 +151,9 @@ float EEPROM_read(int addr) // чтение данных из EEPROM (адрес
 }
 
 
-void EEPROM_write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
+void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
 {
-  if (EEPROM_read(addr) != num)
+  if (EEPROM_Read(addr) != num)
   { //если сохраняемое отличается
     byte raw[4];
     (float &)raw = num;

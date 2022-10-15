@@ -1,11 +1,11 @@
 #ifndef http_h
 #define http_h
 
-void HTTP_init(void);
-void handle_DeltaSteam();
-void handle_DeltaPipe();
-void handle_Button();
-void handle_SetForm();
+void HTTP_Init(void);
+void handleDeltaSteam();
+void handleDeltaPipe();
+void handleButton();
+void handleSetForm();
 void handleData();
 
 

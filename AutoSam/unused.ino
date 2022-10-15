@@ -5,7 +5,7 @@
 
 /*
 
-float EEPROM_read(int addr) // чтение данных из EEPROM (адрес, количесство байтов)
+float EEPROM_Read(int addr) // чтение данных из EEPROM (адрес, количесство байтов)
 {
   if (bytn == 2)
   {
@@ -58,9 +58,9 @@ float EEPROM_float_read(int addr)
   }
 
 
-void EEPROM_write(int addr, float num) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
+void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (адрес, число, количесство байтов(int=2, float=4))
 {
-  if (EEPROM_read(addr) != num)
+  if (EEPROM_Read(addr) != num)
   { //если сохраняемое отличается
     byte raw[4];
     (float &)raw = num;
@@ -244,15 +244,15 @@ if (debug == 1)
       // выводим температуры
       telnet.println(" ");
       telnet.println("LOG: ");
-      telnet.print(SteamTemp);
+      telnet.print(steam_temp);
       telnet.print("; ");
-      telnet.print(SteamTemp);
+      telnet.print(steam_temp);
       telnet.print("; ");
-      telnet.print(PipeTemp);
+      telnet.print(pipe_temp);
       telnet.print("; ");
-      telnet.print(TankTemp);
+      telnet.print(tank_temp);
       telnet.print("; ");
-      telnet.print(WaterTemp);
+      telnet.print(water_temp);
       telnet.print("; ");
       telnet.print(air_temp);
       telnet.print("; ");
