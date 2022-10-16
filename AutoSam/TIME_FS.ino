@@ -1,6 +1,31 @@
 
 #include "header.h"
 
+void telnetLoop();{
+  if (telnetServer.hasClient())
+  {
+    if (!telnet || !telnet.connected())
+    {
+      if (telnet)
+      {
+        telnet.stop();
+        Serial.println("Telnet Client Stop");
+      }
+      telnet = telnetServer.available();
+      Serial.println("New Telnet client");
+      telnet.print("Autosam telnet, debug mode: ");
+      telnet.println(debug);
+      telnet.flush(); // clear input buffer, else you get strange characters
+    }
+  }
+  while (telnet.available())
+  { // get data from Client
+    Serial.write(telnet.read());
+  }
+  }
+
+
+
 /*
 void clok()
 {                                             // функция получения текущего времени с NTP сервера

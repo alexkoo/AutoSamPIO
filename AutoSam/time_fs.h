@@ -1,7 +1,7 @@
 #ifndef time_fs_h
 #define time_fs_h
 
-
+void telnetLoop(void);
 
 void FS_init(void);
 String getContentType(String);
