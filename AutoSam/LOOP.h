@@ -37,9 +37,10 @@ void loop0()// вынос функции loop в отдельную вкладк
 
   if (millis() - ds_timer > ds_time_set)
   { // период опроса датчиков, вычисления поправок
+    sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
     ds_timer = millis();
 
-    sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
+  
     float SteamTempN = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
     float PipeTempN = sensors.getTempC(PipeSensor);
     float WaterTemp = sensors.getTempC(WaterSensor);
