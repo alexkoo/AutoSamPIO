@@ -1,6 +1,7 @@
 
 #include "header.h"
 
+/*
 void clok()
 {                                             // функция получения текущего времени с NTP сервера
   cur_ms = millis();                          // текущее количество миллисекунд
@@ -108,6 +109,7 @@ String millis2time() // функция формирования строки "в
 } // функция возвращает строку
 //***********************************************************************************************************************************
 String CurrentTime(void) // функция формирования строки "текущее время"
+
 {
   String Time = "";                // начинаем с пустой строки
   byte m = (ntp_time / 60) % 60;   // вычисляем количество минут
@@ -120,6 +122,9 @@ String CurrentTime(void) // функция формирования строки
   Time += (String)m; // добавляем минуты
   return Time;
 } // функция возвращает строку
+
+*/
+
 
 // Инициализация FFS
 void FS_init(void)
@@ -213,6 +218,9 @@ bool handleFileRead(String path)
   return false;
 }
 
+
+
+
 void handleFileUpload()
 {
   if (HTTP.uri() != "/edit")
@@ -269,6 +277,8 @@ void handleFileCreate()
   HTTP.send(200, "text/plain", "");
   path = String();
 }
+
+
 void handleFileList()
 {
 

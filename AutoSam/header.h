@@ -25,7 +25,8 @@
 #include <DallasTemperature.h> //https://github.com/milesburton/Arduino-Temperature-Control-Library
 #include <BMx280I2C.h>         //https://bitbucket.org/christandlg/bmx280mi/
 
-
+#include <GyverNTP.h>
+GyverNTP ntp(3);
 
 //**************************************************************************************************// GPIO
 #define buz (16)         // (d0) Динамик GPIO 16  бел
@@ -63,11 +64,12 @@ DallasTemperature sensors(&oneWire);
 #include "SETTINGS.h"
 #include "time_fs.h"
 #include "http.h"
-#include "LCD.h"
 #include "FUNC.h"
 #include "LOGIC.h"
 #include "SETUP.h"
+#include "LCD.h"
 #include "LOOP.h"
+
 
 
 //debug

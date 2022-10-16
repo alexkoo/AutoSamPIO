@@ -61,9 +61,16 @@ void setup0()
 
   HTTP_init(); //настраиваем HTTP интерфейс
   Serial.println("HTTP Ready, Starting UDP");
+  /*
   udp.begin(localPort); // Инициализация UDP соединения с NTP сервером
   Serial.print("Local port: ");
   Serial.println(udp.localPort());
+*/
+
+ ntp.begin(); //GyverNTP.h
+
+ 
+
 
   telnetServer.begin();
   telnetServer.setNoDelay(true);

@@ -11,14 +11,18 @@ void loop0()
 
   ArduinoOTA.handle();
   HTTP.handleClient();
+
+   ntp.tick();
   // delay(1);
+/*
+
 
   if (millis() - ntp_timer > ntp_time_set)
   {
     ntp_timer = millis();
     clok();
   }
-
+*/
   if (telnetServer.hasClient())
   {
     if (!telnet || !telnet.connected())
