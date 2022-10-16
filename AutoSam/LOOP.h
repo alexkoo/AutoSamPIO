@@ -37,6 +37,7 @@ void loop0()// вынос функции loop в отдельную вкладк
 
   if (millis() - ds_timer > ds_time_set)
   { // период опроса датчиков, вычисления поправок
+    sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
     ds_timer = millis();
 
     sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
