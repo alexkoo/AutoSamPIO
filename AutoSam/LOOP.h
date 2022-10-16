@@ -4,41 +4,19 @@
 
 void loop0()// вынос функции loop в отдельную вкладку
 {    
-  //DEBSTOP
-  //DEBSTART
+  DEBSTOP
+  DEBSTART
                                
   free_mem = (ESP.getFreeHeap()); //свободная память
 
   ArduinoOTA.handle();
   HTTP.handleClient();
+
+   ntp.tick(); //guiverNTP
   // delay(1);
 
-  if (millis() - ntp_timer > ntp_time_set)
-  {
-    ntp_timer = millis();
-    clok();
-  }
+ telnetLoop();
 
-  if (telnetServer.hasClient())
-  {
-    if (!telnet || !telnet.connected())
-    {
-      if (telnet)
-      {
-        telnet.stop();
-        Serial.println("Telnet Client Stop");
-      }
-      telnet = telnetServer.available();
-      Serial.println("New Telnet client");
-      telnet.print("Autosam telnet, debug mode: ");
-      telnet.println(debug);
-      telnet.flush(); // clear input buffer, else you get strange characters
-    }
-  }
-  while (telnet.available())
-  { // get data from Client
-    Serial.write(telnet.read());
-  }
 
   if (millis() - lcd_timer > lcd_timer_set)
   { // автопереключение экранов
