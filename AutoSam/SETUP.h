@@ -24,22 +24,20 @@ void setup0()
 
   EEPROM.begin(512);
   autosam_mode = EEPROM_Read(autosam_mode_addr);
-  pressure_correction = EEPROM_Read(press_corr_addr);
+  press_correction = EEPROM_Read(press_corr_addr);
   min_hot_temp = EEPROM_Read(min_hot_temp_addr);
   heating_rate = EEPROM_Read(heating_rate_addr);
   max_tank_temp = EEPROM_Read(max_tank_temp_addr);
   max_steam_temp = EEPROM_Read(max_steam_temp_addr);
 
-  //
-  /*
-    for (byte f = 0; f < 8; f++)
-    {
-      sens0[f] = EEPROM.read(sens0_addr + f);
-      sens1[f] = EEPROM.read(sens1_addr + f);
-      sens2[f] = EEPROM.read(sens2_addr + f);
-      sens3[f] = EEPROM.read(sens3_addr + f);
-    }
-    */
+  /*for (byte f = 0; f < 8; f++)
+  {
+    sens0[f] = EEPROM.read(sens0_addr + f);
+    sens1[f] = EEPROM.read(sens1_addr + f);
+    sens2[f] = EEPROM.read(sens2_addr + f);
+    sens3[f] = EEPROM.read(sens3_addr + f);
+  }
+  */
   WiFiManager wifiManager; //Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети.
   // Если не удалось подключиться, (например, неизвестны SSID и пароль),
@@ -65,13 +63,13 @@ void setup0()
 
   sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
   sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
-                                                 /*
+  /*
                                                  // Время преобразования от точности
                                                  12 бит   | 750 мс
                                                  11 бит   | 375 мс
                                                  10 бит   | 187 мс
                                                  9 бит    | 93 мс
-                                                  */
+*/
 
   if (!bme.begin()) // Инициализируем BMP280
   {

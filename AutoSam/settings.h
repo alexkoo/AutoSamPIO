@@ -27,7 +27,7 @@ const uint8_t sens2_addr = 80;
 const uint8_t sens3_addr = 90;
 
 uint8_t autosam_mode = 1;    //режим работы 1 ректификация 2 дистилляция 3 погода
-uint8_t press_corr = 1;      // коррекция давления
+uint8_t press_correction = 1;      // коррекция давления
 float min_hot_temp = 70.0;   //мин температура, при которой элемент считается горячим
 float heating_rate = 1;      // заданная скорость нагрева, гр/мин
 float max_tank_temp = 95.0;  // макс температура в кубе

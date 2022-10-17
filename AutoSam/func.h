@@ -145,7 +145,7 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc
-  if (BMP280_used == true && temp > 75 && pressure_correction == 1)
+  if (BMP280_used == true && temp > 75 && pressure_correctionection == 1)
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
@@ -183,7 +183,6 @@ float EEPROM_Read(int addr) // чтение данных из EEPROM (адрес
   float &num = (float &)raw;
   return num;
 }
-
 
 void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
 {

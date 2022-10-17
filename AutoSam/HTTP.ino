@@ -31,8 +31,8 @@ void handleSetForm()
   heating_rate = HTTP.arg("heating_rate_h").toFloat();
   EEPROM_Write(heating_rate_addr, heating_rate);
 
-  // press_corr = HTTP.arg("press_corr").toInt();
-  // EEPROM_write(press_corr_addr, press_corr);
+  // press_correction = HTTP.arg("press_correction").toInt();
+  // EEPROM_write(press_corr_addr, press_correction);
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ
   EEPROM.commit();
