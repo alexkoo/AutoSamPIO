@@ -4,7 +4,7 @@
 
 //Настройки
 
-//wifi
+// wifi
 #ifndef STASSID
 #define STASSID "krakozyabra"
 #define STAPSK "10033val"
@@ -12,7 +12,7 @@
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-const String VER = "1.3.4"; // Версия
+const String VER = "1.3.5"; // Версия
 
 //**************************************************************************************************//EEPROM
 const uint8_t autosam_mode_addr = 0;
@@ -34,6 +34,7 @@ float heating_rate = 1;      // заданная скорость нагрева
 float max_tank_temp = 95.0;  // макс температура в кубе
 float max_steam_temp = 90.0; // макс температура  пара
 
+/*
 // массив адресов датчиков
 //DeviceAddress SteamSensor, PipeSensor, WaterSensor, TankSensor;
 uint8_t sens0[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -46,6 +47,8 @@ uint8_t PipeSensor[] = {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A};
 uint8_t TankSensor[] = {0x28, 0x35, 0x32, 0x46, 0x92, 0x09, 0x02, 0x9F};
 uint8_t WaterSensor[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+/*
+ */
 //**************************************************************************************************// Управление
 
 uint8_t lcd_max_num = 2;                //количество экранов от 0
@@ -87,7 +90,7 @@ float water_temp = -127; // температура охлаждающей вод
 float atm_pressure = 754.0; // атмосферное давление текущее
 float air_temp = 20.00;     // температура окружающего воздуха
 
-bool BMP280_used = true; // вспомогательная переменная при отсутствии датчика
+bool BMP280 = true; // вспомогательная переменная при отсутствии датчика
 
 
 //**************************************************************************************************//самогонный модуль
@@ -111,8 +114,8 @@ uint32_t heating_rate_timer;       //таймер скорости измене�
 uint8_t debug = 1;           // Редим отладки: 0 выкл 1-время выполнения  
 uint32_t debug_time; //период опроса
 
-uint32_t free_mem;             ///память
-uint32_t timeloop0, timeloop1; //отладка время выполнения
+unsigned long free_mem;             ///память
+unsigned long timeloop0, timeloop1; //отладка время выполнения
 
 uint32_t debug_time_start;
 uint32_t debug_time_stop;
@@ -121,8 +124,13 @@ GMedian3<float> SteamFilter; // указываем тип данных в <>
 GMedian<8, float> PipeFilter; //20-30mc
 GMedian3<float> TankFilter; //6-11mc
 
+uint32_t debug_time_start;
+uint32_t debug_time_stop;
 
+GMedian3<float> SteamFilter;  // указываем тип данных в <>
+GMedian<8, float> PipeFilter; // 20-30mc
+GMedian3<float> TankFilter;   // 6-11mc
 
-bool valve_invert = true; //true  NC false NO
+bool valve_invert = true; // true  NC false NO
 
 #endif
