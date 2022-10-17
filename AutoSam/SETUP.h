@@ -2,13 +2,6 @@
 #define setup_h
 #include "header.h"
 
-void initDebug()
-{
-  set_temp_steam = 78.5;
-  set_temp_pipe = 78.6;
-  valve_auto_mode = true;
-}
-
 void setup0()
 {
 
@@ -31,19 +24,20 @@ void setup0()
 
   EEPROM.begin(512);
   autosam_mode = EEPROM_Read(autosam_mode_addr);
-  pressure_correction = EEPROM_Read(press_corr_addr);
+  press_correction = EEPROM_Read(press_corr_addr);
   min_hot_temp = EEPROM_Read(min_hot_temp_addr);
   heating_rate = EEPROM_Read(heating_rate_addr);
   max_tank_temp = EEPROM_Read(max_tank_temp_addr);
   max_steam_temp = EEPROM_Read(max_steam_temp_addr);
 
-  for (byte f = 0; f < 8; f++)
+  /*for (byte f = 0; f < 8; f++)
   {
     sens0[f] = EEPROM.read(sens0_addr + f);
     sens1[f] = EEPROM.read(sens1_addr + f);
     sens2[f] = EEPROM.read(sens2_addr + f);
     sens3[f] = EEPROM.read(sens3_addr + f);
   }
+  */
   WiFiManager wifiManager; //Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети.
   // Если не удалось подключиться, (например, неизвестны SSID и пароль),
@@ -51,7 +45,7 @@ void setup0()
   // Доступ к настройкам по адресу http://192.168.4.1
 
   wifiManager.autoConnect("AutoSamAP"); // задаём имя новой WiFi сети без пароля
-  //wifiManager.autoConnect("AutoSamAP", "password"); // задаём имя новой WiFi сети c паролем (минимум 8 символов!)
+  // wifiManager.autoConnect("AutoSamAP", "password"); // задаём имя новой WiFi сети c паролем (минимум 8 символов!)
   Serial.println("Connected! :)"); //если подключение произошло, сообщаем
   lcd.setCursor(0, 1);
   lcd.print(WiFi.localIP());
@@ -61,68 +55,30 @@ void setup0()
 
   HTTP_Init(); //настраиваем HTTP интерфейс
   Serial.println("HTTP Ready, Starting UDP");
-  udp.begin(localPort); // Инициализация UDP соединения с NTP сервером
-  Serial.print("Local port: ");
-  Serial.println(udp.localPort());
+  ntp.begin(); // GyverNTP.h
 
   telnetServer.begin();
   telnetServer.setNoDelay(true);
   Serial.println("Please connect Telnet Client, exit with ^] and 'quit'");
 
-  sensors.begin(); // стартуем датчики температуры
-  // определяем устройства на шине
-  Serial.print("Locating DS18B20...Found ");
-  Serial.print(sensors.getDeviceCount(), DEC);
-  Serial.println(" devices.");
-
-  // Инициализируем датчики температуры по возрастанию серийных номеров
+  sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
+  sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
   /*
-    if (!sensors.getAddress(sens0, 0))
-    { Serial.println("Unable to find address for Device 0"); } // если адрес датчика 0 не найден
-    if (!sensors.getAddress(sens1, 1))
-    { Serial.println("Unable to find address for Device 1"); } // если адрес датчика 1 не найден
-    if (!sensors.getAddress(sens2, 1))
-    { Serial.println("Unable to find address for Device 2"); } // если адрес датчика 2 не найден
-    if (!sensors.getAddress(sens3, 1))
-    { Serial.println("Unable to find address for Device 3"); } // если адрес датчика 3 не найден
+                                                 // Время преобразования от точности
+                                                 12 бит   | 750 мс
+                                                 11 бит   | 375 мс
+                                                 10 бит   | 187 мс
+                                                 9 бит    | 93 мс
 */
 
-  sensors.setResolution(SteamSensor, 12); // устанавливаем разрешение для датчика 0
-  sensors.setResolution(PipeSensor, 12);  // устанавливаем разрешение для датчика 1
-  sensors.setResolution(WaterSensor, 12); // устанавливаем разрешение для датчика 2
-  sensors.setResolution(TankSensor, 12);  // устанавливаем разрешение для датчика 3
-
-  Serial.print("SteamSensor Address: "); // пишем адрес и разрешение датчика 0
-  printAddress(SteamSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(SteamSensor), DEC);
-
-  Serial.print("PipeSensor Address: "); // пишем адрес и разрешение датчика 1
-  printAddress(PipeSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(PipeSensor), DEC);
-
-  Serial.print("WaterSensor Address: "); // пишем адрес и разрешение датчика 2
-  printAddress(WaterSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(WaterSensor), DEC);
-
-  Serial.print("TankSensor Address: "); // пишем адрес и разрешение датчика 3
-  printAddress(TankSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(TankSensor), DEC);
-
-  // Инициализируем BMP280
-
-  Serial.println(F("BMP280 search..."));
-  if (!bme.begin())
+  if (!bme.begin()) // Инициализируем BMP280
   {
-    Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
+    telnet.println(F("Could not find a valid BMP280 sensor, check wiring!"));
     BMP280_used = false;
   }
   else
   {
-    Serial.println("Find a valid BMP280 sensor");
+    telnet.println("Find a valid BMP280 sensor");
     BMP280_used = true;
   }
   if (BMP280_used == true)
@@ -145,7 +101,8 @@ void setup0()
   // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
   // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
 
-  ArduinoOTA.onStart([]() {
+  ArduinoOTA.onStart([]()
+                     {
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH)
     {
@@ -157,15 +114,13 @@ void setup0()
     }
 
     // NOTE: if updating FS this would be the place to unmount FS using FS.end()
-    Serial.println("Start updating " + type);
-  });
-  ArduinoOTA.onEnd([]() {
-    Serial.println("\nEnd");
-  });
-  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-  });
-  ArduinoOTA.onError([](ota_error_t error) {
+    telnet.println("Start updating " + type); });
+  ArduinoOTA.onEnd([]()
+                   { Serial.println("\nEnd"); });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total)
+                        { Serial.printf("Progress: %u%%\r", (progress / (total / 100))); });
+  ArduinoOTA.onError([](ota_error_t error)
+                     {
     Serial.printf("Error[%u]: ", error);
     if (error == OTA_AUTH_ERROR)
     {
@@ -186,27 +141,15 @@ void setup0()
     else if (error == OTA_END_ERROR)
     {
       Serial.println("End Failed");
-    }
-  });
+    } });
   ArduinoOTA.begin();
-  //  Serial.println("Ready");
-  //  Serial.print("IP address: ");
-  //  Serial.println(WiFi.localIP());
+
   // /OTA
 
   lcd.clear(); // очищаем дисплей
 
   tone(buz, 500, 100);
 
-  if (debug == 1)
-  {
-    telnet.println("LOG: steam_temp; pipe_temp; tank_temp; water_temp; air_temp; Pressure; Freemem; Timeloop");
-  }
-
-  if (debug == 4)
-  {
-    initDebug();
-  }
-} //void setup
+} // void setup
 
 #endif

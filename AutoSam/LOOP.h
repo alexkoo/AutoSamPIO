@@ -2,54 +2,20 @@
 #define loop_h
 #include "header.h"
 
-void loop0()// вынос функции loop в отдельную вкладку
-{    
-  //DEBSTOP
-  //DEBSTART
-                               
+void loop0() // вынос функции loop в отдельную вкладку
+{
+  if (debug>=1) timeloop_start = micros();
+
   free_mem = (ESP.getFreeHeap()); //свободная память
 
   ArduinoOTA.handle();
   HTTP.handleClient();
-  // delay(1);
-
-  if (millis() - ntp_timer > ntp_time_set)
-  {
-    ntp_timer = millis();
-    clok();
-  }
-
-  if (telnetServer.hasClient())
-  {
-    if (!telnet || !telnet.connected())
-    {
-      if (telnet)
-      {
-        telnet.stop();
-        Serial.println("Telnet Client Stop");
-      }
-      telnet = telnetServer.available();
-      Serial.println("New Telnet client");
-      telnet.print("Autosam telnet, debug mode: ");
-      telnet.println(debug);
-      telnet.flush(); // clear input buffer, else you get strange characters
-    }
-  }
-  while (telnet.available())
-  { // get data from Client
-    Serial.write(telnet.read());
-  }
-
-  if (millis() - lcd_timer > lcd_timer_set)
-  { // автопереключение экранов
-    lcd_timer = millis();
-    lcd_num++;
-    lcd.clear();
-    if (lcd_num > lcd_max_num)
-      lcd_num = 0;
-  }
+  ntp.tick();   // guiverNTP
+  telnetLoop(); // обработчик telnet
+  lcdChange();  // таймер переключения экранов
 
   //*************************************************************************** // считываем температуры с датчиков
+  static uint32_t bmx_timer; // таймер опроса датчика давления
   if (millis() - bmx_timer > bmx_time_set)
   {
     bmx_timer = millis();
@@ -57,39 +23,51 @@ void loop0()// вынос функции loop в отдельную вкладк
     air_temp = bme.readTemperature();               // и температуру воздуха 104ms
   }
 
-  if (millis() - ds_timer > ds_time_set)
-  { // период опроса датчиков, вычисления поправок
-    ds_timer = millis();
+  DEBSTART
+  sensors.requestTempAll(); // запрашиваем новые температуры 26-1200ms
 
-    sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
-    float steam_temp_nc = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
-    float pipe_temp_nc = sensors.getTempC(PipeSensor);
-    float water_temp = sensors.getTempC(WaterSensor);
-    float tank_temp_nc = sensors.getTempC(TankSensor);
+  delay(ds_time_set); // дает время отработать http
+  DEBSTOP
+  float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+  float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
+  float tank_temp_nc = sensors.getTemp(tank_sensor_num);
+  float water_temp = sensors.getTemp(water_sensor_num);
 
-    float steam_temp_filtered = SteamFilter.filtered(steam_temp_nc);
-    float tank_temp_filtered = TankFilter.filtered(tank_temp_nc); //
-    float pipe_temp_fitered = PipeFilter.filtered(pipe_temp_nc); //
+  delay(ds_time_set); // дает время отработать http
+  DEBSTOP
+  float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+  float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
+  float tank_temp_nc = sensors.getTemp(tank_sensor_num);
+  float water_temp = sensors.getTemp(water_sensor_num);
 
-    // поправки на давление и ручные 1-2mc
-    steam_temp = corrTemp(steam_temp_filtered) + 0.5; //  поправка. У меня  один из датчиков брешет
-    pipe_temp = corrTemp(pipe_temp_fitered) + 0.5;
-    tank_temp = corrTemp(tank_temp_filtered); //
+  float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
+  float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
+  float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
 
-    // вычисление крепости 0-2000мс
-    steam_temp_alc_st = concSteam(steam_temp); // 0,1mc
-    steam_temp_alc_fl = concFluid(steam_temp); // 70-90mc 0,1мс
-    pipe_temp_alc_st = concSteam(pipe_temp);
-    pipe_temp_alc_fl = concFluid(pipe_temp);
-    tank_temp_alc_st = concSteam(tank_temp);
-    tank_temp_alc_fl = concFluid(tank_temp);
-    set_steam_temp_alc_st = concSteam(set_temp_steam);
-  }
+  // поправки на давление и ручные 1-2mc
+  steam_temp = corrTemp(steam_temp_f) + 0.5; //  поправка. У меня  один из датчиков брешет
+  pipe_temp = corrTemp(pipe_temp_f) + 0.5;
+  tank_temp = corrTemp(tank_temp_f); //
+
+  // вычисление крепости 0-2000мс
+  steam_temp_alc_st = concSteam(steam_temp); // 0,1mc
+  steam_temp_alc_fl = concFluid(steam_temp); // 70-90mc 0,1мс
+  pipe_temp_alc_st = concSteam(pipe_temp);
+  pipe_temp_alc_fl = concFluid(pipe_temp);
+  tank_temp_alc_st = concSteam(tank_temp);
+  tank_temp_alc_fl = concFluid(tank_temp);
+  steam_temp_alc_st_set = concSteam(set_temp_steam);
+  //}
 
   // вычисление скорости отбора
+
+  static float steam_temp_prev;       // предыдущая температура
+  static float pipe_temp_prev;        // предыдущая температура
+  static float tank_temp_prev;        // предыдущая температура
+  static uint32_t heating_rate_timer; //таймер скорости изменения deltaT
   if (millis() - heating_rate_timer >= heating_rate_int)
-  {                                                                             // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
-    heating_rate_timer = millis();                                              // перезаводится
+  {                                                                                   // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
+    heating_rate_timer = millis();                                                    // перезаводится
     heating_rate_steam = (steam_temp - steam_temp_prev) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
     if (heating_rate_steam > 40 || heating_rate_steam < -40)
     {
@@ -130,6 +108,8 @@ void loop0()// вынос функции loop в отдельную вкладк
     lcd_max_num = 0;
     break;
   }
+
+  if (debug >= 1)  timeloop_stop = micros() - timeloop_start;  
   
 } // loop0
 

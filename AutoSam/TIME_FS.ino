@@ -1,6 +1,33 @@
+<<<<<<< HEAD
+=======
 
 #include "header.h"
 
+void telnetLoop()
+{
+  if (telnetServer.hasClient())
+  {
+    if (!telnet || !telnet.connected())
+    {
+      if (telnet)
+      {
+        telnet.stop();
+        Serial.println("Telnet Client Stop");
+      }
+      telnet = telnetServer.available();
+      Serial.println("New Telnet client");
+      telnet.print("Autosam telnet, debug mode: ");
+      telnet.println(debug);
+      telnet.flush(); // clear input buffer, else you get strange characters
+    }
+  }
+  while (telnet.available())
+  { // get data from Client
+    Serial.write(telnet.read());
+  }
+}
+
+/*
 void clok()
 {                                             // функция получения текущего времени с NTP сервера
   cur_ms = millis();                          // текущее количество миллисекунд
@@ -108,6 +135,7 @@ String millis2time() // функция формирования строки "в
 } // функция возвращает строку
 //***********************************************************************************************************************************
 String CurrentTime(void) // функция формирования строки "текущее время"
+
 {
   String Time = "";                // начинаем с пустой строки
   byte m = (ntp_time / 60) % 60;   // вычисляем количество минут
@@ -120,6 +148,8 @@ String CurrentTime(void) // функция формирования строки
   Time += (String)m; // добавляем минуты
   return Time;
 } // функция возвращает строку
+
+*/
 
 // Инициализация FFS
 void FS_init(void)
@@ -134,32 +164,31 @@ void FS_init(void)
     }
   }
 
-  //HTTP страницы для работы с FFS
-  // листинг директории
+  // HTTP страницы для работы с FFS
+  //  листинг директории
   HTTP.on("/list", HTTP_GET, handleFileList);
   // загрузка редактора editor
-  HTTP.on("/edit", HTTP_GET, []() {
+  HTTP.on("/edit", HTTP_GET, []()
+          {
     if (!handleFileRead("/edit.htm"))
-      HTTP.send(404, "text/plain", "FileNotFound");
-  });
+      HTTP.send(404, "text/plain", "FileNotFound"); });
   //Создание файла
   HTTP.on("/edit", HTTP_PUT, handleFileCreate);
   //Удаление файла
   HTTP.on("/edit", HTTP_DELETE, handleFileDelete);
-  //first callback is called after the request has ended with all parsed arguments
-  //second callback handles file uploads at that location
+  // first callback is called after the request has ended with all parsed arguments
+  // second callback handles file uploads at that location
   HTTP.on(
-      "/edit", HTTP_POST, []() {
-        HTTP.send(200, "text/plain", "");
-      },
+      "/edit", HTTP_POST, []()
+      { HTTP.send(200, "text/plain", ""); },
       handleFileUpload);
 
-  //called when the url is not defined here
-  //use it to load content from LittleFS
-  HTTP.onNotFound([]() {
+  // called when the url is not defined here
+  // use it to load content from LittleFS
+  HTTP.onNotFound([]()
+                  {
     if (!handleFileRead(HTTP.uri()))
-      HTTP.send(404, "text/plain", "FileNotFound");
-  });
+      HTTP.send(404, "text/plain", "FileNotFound"); });
 }
 
 // Здесь функции для работы с файловой системой
@@ -228,7 +257,7 @@ void handleFileUpload()
   }
   else if (upload.status == UPLOAD_FILE_WRITE)
   {
-    //DBG_OUTPUT_PORT.print("handleFileUpload Data: "); DBG_OUTPUT_PORT.println(upload.currentSize);
+    // DBG_OUTPUT_PORT.print("handleFileUpload Data: "); DBG_OUTPUT_PORT.println(upload.currentSize);
     if (fsUploadFile)
       fsUploadFile.write(upload.buf, upload.currentSize);
   }
@@ -269,6 +298,7 @@ void handleFileCreate()
   HTTP.send(200, "text/plain", "");
   path = String();
 }
+
 void handleFileList()
 {
 
@@ -298,3 +328,4 @@ void handleFileList()
 
   HTTP.send(200, "text/json", output);
 }
+>>>>>>> 019b280 (fix telnetLoop)

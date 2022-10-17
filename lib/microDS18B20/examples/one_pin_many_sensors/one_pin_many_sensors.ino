@@ -5,14 +5,14 @@
 
 #include <microDS18B20.h>
 #define DS_PIN 2 // пин для термометров
-
+ 
 // Уникальные адреса датчиков - считать можно в примере address_read
 uint8_t s1_addr[] = {0x28, 0xFF, 0xCD, 0x59, 0x51, 0x17, 0x4, 0xFE};
 uint8_t s2_addr[] = {0x28, 0xFF, 0x36, 0x94, 0x65, 0x15, 0x2, 0x80};
 
 MicroDS18B20<DS_PIN, s1_addr> sensor1;  // Создаем термометр с адресацией
 MicroDS18B20<DS_PIN, s2_addr> sensor2;  // Создаем термометр с адресацией
-
+ 
 void setup() {
   Serial.begin(9600);
 }

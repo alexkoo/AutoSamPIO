@@ -1,6 +1,16 @@
 #ifndef time_fs_h
 #define time_fs_h
 
+void telnetLoop(void);
+
+void FS_init(void);
+String getContentType(String);
+bool handleFileRead(String);
+void handleFileUpload();
+void handleFileDelete();
+void handleFileList();
+
+/*
 // Определяем переменные для процедур времени
 long t_correct = 0;
 unsigned long cur_ms = 0;
@@ -26,14 +36,7 @@ unsigned long sendNTPpacket(IPAddress &address);
 String millis2time();
 String CurrentTime(void);
 
-void FS_init(void);
-String getContentType(String filename);
-bool handleFileRead(String path);
-void handleFileUpload();
-void handleFileDelete();
-void handleFileList();
-
-
+*/
 
 
 

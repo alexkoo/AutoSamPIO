@@ -2,7 +2,7 @@
 
 void HTTP_Init(void) // функция инициализации HTTP
 {
-  FS_init(); // Включаем работу с файловой системой
+ FS_init(); // Включаем работу с файловой системой
 
   //Выполнение команды из браузера
   HTTP.on("/button", handleButton); // обрашение к кнопкам через web интерфейс
@@ -31,8 +31,8 @@ void handleSetForm()
   heating_rate = HTTP.arg("heating_rate_h").toFloat();
   EEPROM_Write(heating_rate_addr, heating_rate);
 
-  // press_corr = HTTP.arg("press_corr").toInt();
-  // EEPROM_write(press_corr_addr, press_corr);
+  // press_correction = HTTP.arg("press_correction").toInt();
+  // EEPROM_write(press_corr_addr, press_correction);
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ
   EEPROM.commit();
@@ -59,7 +59,7 @@ void handleButton()
   }
   if (button_state == 41)
   { // если передан номер кнопки 41 "Поиск датчиков"
-    findDS();
+    //findDS();
   }
   if (button_state == 42)
   { // если передан номер кнопки 42 "reset"
@@ -155,12 +155,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"MTT\":\"" + String(max_tank_temp);
   json += "\",\"HR\":\"" + String(heating_rate);
   json += "\",\"VS\":\"" + String(readValve());
-  /*
-  if (readValve() == true)
-    json += " ОТКРЫТ ";
-  else
-    json += " ЗАКРЫТ ";
-  */  
-  json += "\"}";                     // не забудем закрыть фигурную скобку!
+ 
+   json += "\"}";                     // не забудем закрыть фигурную скобку!
   HTTP.send(200, "text/json", json); // передаём json
 }
