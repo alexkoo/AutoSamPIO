@@ -66,6 +66,11 @@ bool readValve()
   return valve_status;
 }
 
+
+/*
+
+
+
 void findDS()
 {
   byte i;
@@ -108,6 +113,7 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
     Serial.print(deviceAddress[i], HEX);
   }
 }
+*/
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc

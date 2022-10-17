@@ -59,7 +59,7 @@ void handleButton()
   }
   if (button_state == 41)
   { // если передан номер кнопки 41 "Поиск датчиков"
-    findDS();
+    //findDS();
   }
   if (button_state == 42)
   { // если передан номер кнопки 42 "reset"

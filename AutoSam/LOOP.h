@@ -2,21 +2,20 @@
 #define loop_h
 #include "header.h"
 
-void loop0()// вынос функции loop в отдельную вкладку
-{    
+void loop0() // вынос функции loop в отдельную вкладку
+{
   DEBSTOP
   DEBSTART
-                               
+
   free_mem = (ESP.getFreeHeap()); //свободная память
 
   ArduinoOTA.handle();
   HTTP.handleClient();
 
-   ntp.tick(); //guiverNTP
+  ntp.tick(); // guiverNTP
   // delay(1);
 
- telnetLoop();
-
+  telnetLoop();
 
   if (millis() - lcd_timer > lcd_timer_set)
   { // автопереключение экранов
@@ -35,10 +34,26 @@ void loop0()// вынос функции loop в отдельную вкладк
     air_temp = bme.readTemperature();               // и температуру воздуха 104ms
   }
 
-  if (millis() - ds_timer > ds_time_set)
-  { // период опроса датчиков, вычисления поправок
-    sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
-    ds_timer = millis();
+  // конструкция программного таймера на 1c
+  static uint32_t tmr;
+  if (millis() - tmr >= 1000)
+  {
+    tmr = millis();
+
+    float SteamTempN = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+    float PipeTempN = sensors.getTemp(pipe_sensor_num);
+    float TankTempN = sensors.getTemp(tank_sensor_num);
+    float WaterTemp = sensors.getTemp(water_sensor_num);
+
+    // запрашиваем новые
+    sensors.requestTempAll();
+
+  
+    /*
+      if (millis() - ds_timer > ds_time_set)
+      { // период опроса датчиков, вычисления поправок
+        sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
+        ds_timer = millis();
 
     sensors.requestTemperatures();                    // запрашиваем температуру у всех датчиков 14ms
     float steam_temp_nc = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
@@ -109,7 +124,7 @@ void loop0()// вынос функции loop в отдельную вкладк
     lcd_max_num = 0;
     break;
   }
-  
+
 } // loop0
 
 #endif

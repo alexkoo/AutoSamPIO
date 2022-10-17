@@ -22,7 +22,7 @@ void setup() {
   // Установить разрешение 9-12 бит у всех датчиков на линии
   //sensors.setResolutionAll(10);
 }
-
+ 
 void loop() {
   // конструкция программного таймера на 1c
   static uint32_t tmr;
