@@ -69,6 +69,8 @@ float tank_temp_alc_fl = 0; // Содержание спирта в жидкос
 
 float steam_temp_alc_st_set = 0;
 
+
+
 float water_temp = -127; // температура охлаждающей воды или флегмы
 
 float atm_pressure = 754.0; // атмосферное давление текущее

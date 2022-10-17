@@ -137,7 +137,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"TF\":\"" + String(tank_temp_alc_fl);
   json += "\",\"TS\":\"" + String(tank_temp_alc_st);
   json += "\",\"WT\":\"" + String(water_temp);
-  json += "\",\"SSS\":\"" + String(set_steam_temp_alc_st);
+  json += "\",\"SSS\":\"" + String(steam_temp_alc_st_set);
   
   json += "\",\"HS\":\"" + String(heating_rate_steam);
   json += "\",\"HP\":\"" + String(heating_rate_pipe);
