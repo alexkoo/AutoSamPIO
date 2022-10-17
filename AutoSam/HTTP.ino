@@ -17,22 +17,22 @@ void handle_SetForm()
 { // функция изменения настроек с web страницы
 
   autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
-  EEPROM_write(autosam_mode_addr, autosam_mode);
+  EEPROM_Write(autosam_mode_addr, autosam_mode);
 
   min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat();
-  EEPROM_write(min_hot_temp_addr, min_hot_temp);
+  EEPROM_Write(min_hot_temp_addr, min_hot_temp);
 
   max_tank_temp = HTTP.arg("max_tank_temp_h").toFloat();
-  EEPROM_write(max_tank_temp_addr, max_tank_temp);
+  EEPROM_Write(max_tank_temp_addr, max_tank_temp);
 
   max_steam_temp = HTTP.arg("max_steam_temp_h").toFloat();
-  EEPROM_write(max_steam_temp_addr, max_steam_temp);
+  EEPROM_Write(max_steam_temp_addr, max_steam_temp);
 
   heating_rate = HTTP.arg("heating_rate_h").toFloat();
-  EEPROM_write(heating_rate_addr, heating_rate);
+  EEPROM_Write(heating_rate_addr, heating_rate);
 
-  // press_corr = HTTP.arg("press_corr").toInt();
-  // EEPROM_write(press_corr_addr, press_corr);
+  // press_correction = HTTP.arg("press_correction").toInt();
+  // EEPROM_write(press_corr_addr, press_correction);
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ
   EEPROM.commit();
