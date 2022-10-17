@@ -67,7 +67,7 @@ float tank_temp = -127;     // температура в кубе
 float tank_temp_alc_st = 0; // Содержание спирта в парах
 float tank_temp_alc_fl = 0; // Содержание спирта в жидкости
 
-float steam_temp_alc_st_set = 0;
+float set_steam_temp_alc_st = 0;
 
 float water_temp = -127; // температура охлаждающей воды или флегмы
 

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-=======
-
 #include "header.h"
 
 void telnetLoop()
@@ -328,4 +325,4 @@ void handleFileList()
 
   HTTP.send(200, "text/json", output);
 }
->>>>>>> 019b280 (fix telnetLoop)
+

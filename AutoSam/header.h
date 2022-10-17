@@ -69,9 +69,9 @@ WiFiClient telnet;
 #include "settings.h"
 #include "time_fs.h"
 #include "http.h"
-#include "lcd.h"
 #include "func.h"
 #include "logic.h"
+#include "lcd.h"
 #include "setup.h"
 #include "loop.h"
 
