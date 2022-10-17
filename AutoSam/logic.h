@@ -9,37 +9,37 @@ void samogon()
     // Управление самогонным аппаратом
 
     auto_status = "Дистилляция";
-    if (TankTemp <= 35 && pcountsam == 0)
+    if (tank_temp <= 35 && pcountsam == 0)
     {
         auto_status = "Не запущено";
         countsam = 0;
     }
-    if (TankTemp > 35 && TankTemp < min_hot_temp)
+    if (tank_temp > 35 && tank_temp < min_hot_temp)
     {
         auto_status = "Куб нагревается";
         countsam = 1;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp < min_hot_temp)
+    if (tank_temp >= min_hot_temp && steam_temp < min_hot_temp)
     {
         auto_status = "Сухопарник нагревается";
         countsam = 2;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && heating_rate_steam >= heating_rate)
+    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && heating_rate_steam >= heating_rate)
     {
         auto_status = "Отбор голов";
         countsam = 3;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && heating_rate_steam < heating_rate)
+    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && heating_rate_steam < heating_rate)
     {
         auto_status = "Отбор тела";
         countsam = 4;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempVolS < 45)
+    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 45)
     {
         auto_status = "Отбор хвостов";
         countsam = 5;
     }
-    if (TankTemp >= min_hot_temp && SteamTemp >= min_hot_temp && SteamTempVolS < 30)
+    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 30)
     {
         auto_status = "Конец отбора";
         countsam = 6;
@@ -66,7 +66,7 @@ void rect()
     }
     */
 
-    if (valve_auto_mode == true) // Управляем клапаном отбора по температуре пара перед дефлегматором SteamTemp
+    if (valve_auto_mode == true) // Управляем клапаном отбора по температуре пара перед дефлегматором steam_temp
     {
         if (set_temp_steam != 0) // если не ручной режим управления клапаном
         {
@@ -74,7 +74,7 @@ void rect()
             {
                 if (millis() - valve_pause >= delay_steam * 1000) // если время задержки вышло (delay_steam задаётся в секундах),
                 {
-                    if (SteamTemp < set_temp_steam)
+                    if (steam_temp < set_temp_steam)
                     {
                         digitalWrite(valve, ON); // если температура ниже уставки, включаем клапан (лог. 0)
                         auto_status = "Opened, Auto, Steam";
@@ -86,7 +86,7 @@ void rect()
             }
             else // если клапан открыт
             {
-                if (SteamTemp >= set_temp_steam) // если температура выше уставки,
+                if (steam_temp >= set_temp_steam) // если температура выше уставки,
                 {
                     digitalWrite(valve, OFF); // выключаем клапан отбора
                     auto_status = "Closed, Auto, Steam";
@@ -97,14 +97,14 @@ void rect()
         }
 
         //***************************************************************************************************************************
-        // Управляем клапаном отбора по температуре пара в царге на 2/3 колонны PipeTemp
+        // Управляем клапаном отбора по температуре пара в царге на 2/3 колонны pipe_temp
         if (set_temp_pipe != 0) // если не ручной режим управления клапаном
         {
             if (readValve() == false) // если клапан закрыт
             {
                 if (millis() - valve_pause >= delay_pipe * 1000) // если время задержки вышло (delay_pipe задаётся в секундах),
                 {
-                    if (PipeTemp < set_temp_pipe)
+                    if (pipe_temp < set_temp_pipe)
                     {
                         digitalWrite(valve, ON); // если температура ниже уставки, включаем клапан (лог. 0)
                         auto_status = "Opened, Auto, Pipe";
@@ -116,7 +116,7 @@ void rect()
             }
             else // если клапан открыт
             {
-                if (PipeTemp >= set_temp_pipe) // если температура выше уставки,
+                if (pipe_temp >= set_temp_pipe) // если температура выше уставки,
                 {
                     digitalWrite(valve, OFF); // выключаем клапан отбора
                     auto_status = "Closed, Auto, Pipe";

@@ -49,6 +49,7 @@ GyverNTP ntp(3);
 //#define ON LOW  //настройки для инвертирования клапапна
 //#define OFF HIGH
 
+
 #define DEBSTART if (debug==1) {debug_time_start = micros();}
 #define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debug_time_print();} 
 
@@ -60,9 +61,9 @@ File fsUploadFile;                  // Для файловой системы
 WiFiServer telnetServer(23);
 WiFiClient telnet;
 
-//OneWire oneWire(ONE_WIRE_BUS);
-//DallasTemperature sensors(&oneWire);
-#include <microDS18B20.h>
+
+#define DS_CRC_USE_TABLE true  // Использовать таблицу для CRC. Быстрее, но +256 байт flash (<1мкс VS ~6мкс) (умолч. false)microDS18B20.h> microDS18B20.h>
+#include <microDS18B20.h> //https://github.com/GyverLibs/microDS18B20
 
 
 #include "SETTINGS.h"

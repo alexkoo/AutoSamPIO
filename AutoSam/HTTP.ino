@@ -83,7 +83,7 @@ void handle_DeltaSteam()
     }
   }
   else
-    set_temp_steam = SteamTemp + delta_steam; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
+    set_temp_steam = steam_temp + delta_steam; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
   valve_auto_mode = true;
   telnet.print("DeltaSteam="); // выводим новое значение уставки на UART
   telnet.println(delta_steam);
@@ -107,7 +107,7 @@ void handle_DeltaPipe()
   }
 
   else
-    set_temp_pipe = PipeTemp + delta_pipe; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
+    set_temp_pipe = pipe_temp + delta_pipe; // устанавливаем температуру отключения клапана равной текущей температуре плюс дельта
   valve_auto_mode = true;
   telnet.print("Delta pipe="); // выводим новое значение уставки на UART
   telnet.println(delta_pipe);
@@ -127,17 +127,17 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"VER\":\"" + String(VER);
   json += "\",\"MOD\":\"" + String(autosam_mode);
   //head
-  json += "\",\"ST\":\"" + String(SteamTemp);
-  json += "\",\"SF\":\"" + String(SteamTempVolF);
-  json += "\",\"SS\":\"" + String(SteamTempVolS);
-  json += "\",\"PT\":\"" + String(PipeTemp);
-  json += "\",\"PF\":\"" + String(PipeTempVolF);
-  json += "\",\"PS\":\"" + String(PipeTempVolS);
-  json += "\",\"TT\":\"" + String(TankTemp);
-  json += "\",\"TF\":\"" + String(TankTempVolF);
-  json += "\",\"TS\":\"" + String(TankTempVolS);
-  json += "\",\"WT\":\"" + String(WaterTemp);
-  json += "\",\"SSS\":\"" + String(SetSteamTempVolS);
+  json += "\",\"ST\":\"" + String(steam_temp);
+  json += "\",\"SF\":\"" + String(steam_temp_alc_fl);
+  json += "\",\"SS\":\"" + String(steam_temp_alc_st);
+  json += "\",\"PT\":\"" + String(pipe_temp);
+  json += "\",\"PF\":\"" + String(pipe_temp_alc_fl);
+  json += "\",\"PS\":\"" + String(pipe_temp_alc_st);
+  json += "\",\"TT\":\"" + String(tank_temp);
+  json += "\",\"TF\":\"" + String(tank_temp_alc_fl);
+  json += "\",\"TS\":\"" + String(tank_temp_alc_st);
+  json += "\",\"WT\":\"" + String(water_temp);
+  json += "\",\"SSS\":\"" + String(steam_temp_alc_st_set);
   
   json += "\",\"HS\":\"" + String(heating_rate_steam);
   json += "\",\"HP\":\"" + String(heating_rate_pipe);

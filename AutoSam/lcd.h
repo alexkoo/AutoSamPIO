@@ -2,6 +2,25 @@
 #define lcd_h
 #include "header.h"
 
+
+uint8_t lcd_max_num = 2;                //количество экранов от 0
+uint8_t lcd_num = 0;                    // переменная "экран", от которой зависит, какие показания будут выводиться на дисплей
+uint32_t lcd_timer_set = 2000; //задержка автопереключения экрана, мс
+
+
+void lcdChange (){
+  static uint32_t lcd_timer;            //таймер автопереключения экрана
+  if (millis() - lcd_timer > lcd_timer_set) // автопереключение экранов
+  { 
+    lcd_timer = millis();
+    lcd_num++;
+    lcd.clear();
+    if (lcd_num > lcd_max_num)
+      lcd_num = 0;
+  }
+}
+  
+
 void lcd1()
 {
 
@@ -25,22 +44,22 @@ void lcd1()
   {
     lcd.setCursor(0, 0);
     lcd.print("ST");
-    lcd.print(SteamTemp);
+    lcd.print(steam_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 0);
     lcd.print("F");
-    lcd.print(SteamTempVolS);
+    lcd.print(steam_temp_alc_st);
     lcd.setCursor(15, 0);
     lcd.print("%");
     lcd.setCursor(0, 1);
     lcd.print("PT");
-    lcd.print(PipeTemp);
+    lcd.print(pipe_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 1);
     lcd.print("F");
-    lcd.print(PipeTempVolS);
+    lcd.print(pipe_temp_alc_st);
     lcd.setCursor(15, 1);
     lcd.print("%");
   }
@@ -48,17 +67,17 @@ void lcd1()
   {
     lcd.setCursor(0, 0);
     lcd.print("TT");
-    lcd.print(TankTemp);
+    lcd.print(tank_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 0);
     lcd.print("S");
-    lcd.print(TankTempVolF);
+    lcd.print(tank_temp_alc_fl);
     lcd.setCursor(15, 0);
     lcd.print("%");
     lcd.setCursor(0, 1);
     lcd.print("WT");
-    lcd.print(WaterTemp);
+    lcd.print(water_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
   }
@@ -87,23 +106,23 @@ void lcd2()
   {
     lcd.setCursor(0, 0);
     lcd.print("ST");
-    lcd.print(SteamTemp);
+    lcd.print(steam_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 0);
     lcd.print("F");
-    lcd.print(SteamTempVolS);
+    lcd.print(steam_temp_alc_st);
     lcd.setCursor(15, 0);
     lcd.print("%");
 
     lcd.setCursor(0, 1);
     lcd.print("TT");
-    lcd.print(TankTemp);
+    lcd.print(tank_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(10, 1);
     lcd.print("S");
-    lcd.print(TankTempVolF);
+    lcd.print(tank_temp_alc_fl);
     lcd.setCursor(15, 1);
     lcd.print("%");
   }
@@ -117,7 +136,7 @@ void lcd3()
     lcd.setCursor(0, 0); // устанавливаем курсор на первую позицию в верхней строке
     lcd.print(CurrentTime());
     lcd.setCursor(9, 0);
-    lcd.print(SteamTemp);
+    lcd.print(steam_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.print("s");
@@ -157,7 +176,7 @@ void lcd10()
   {
     lcd.setCursor(0, 0);
     lcd.print("Syx ");
-    lcd.print(SteamTemp);
+    lcd.print(steam_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(12, 0);
@@ -165,11 +184,11 @@ void lcd10()
 
     lcd.setCursor(0, 1);
     lcd.print("F");
-    lcd.print(SteamTempVolF);
+    lcd.print(steam_temp_alc_fl);
     lcd.print("%");
     lcd.setCursor(9, 1);
     lcd.print("S");
-    lcd.print(SteamTempVolS);
+    lcd.print(steam_temp_alc_st);
     lcd.print("%");
   }
 
@@ -177,7 +196,7 @@ void lcd10()
   {
     lcd.setCursor(0, 0);
     lcd.print("Bak ");
-    lcd.print(TankTemp);
+    lcd.print(tank_temp);
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
     lcd.setCursor(12, 0);
@@ -185,11 +204,11 @@ void lcd10()
 
     lcd.setCursor(0, 1);
     lcd.print("F");
-    lcd.print(TankTempVolF);
+    lcd.print(tank_temp_alc_fl);
     lcd.print("%");
     lcd.setCursor(9, 1);
     lcd.print("S");
-    lcd.print(TankTempVolS);
+    lcd.print(tank_temp_alc_st);
     lcd.print("%");
   }
 
@@ -198,7 +217,7 @@ void lcd10()
     lcd.setCursor(0, 0);
     lcd.print("Pressure");
     lcd.setCursor(9, 0);
-    if (BMP280 == true)
+    if (BMP280_used == true)
     {
       lcd.print(atm_pressure); // пишем атмосферное давление
     }
@@ -210,7 +229,7 @@ void lcd10()
     lcd.setCursor(0, 1);
     lcd.print(" Air T");
     lcd.setCursor(9, 1);
-    if (BMP280 == true)
+    if (BMP280_used == true)
     {
       lcd.print(air_temp); // пишем температуру воздуха
       lcd.print((char)223);
@@ -227,14 +246,14 @@ void lcd10()
     lcd.setCursor(0, 0);
     lcd.print("Water T");
     lcd.setCursor(9, 0);
-    lcd.print(WaterTemp); // пишем температуру флегмы/охлаждающей воды
+    lcd.print(water_temp); // пишем температуру флегмы/охлаждающей воды
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
 
     lcd.setCursor(0, 1);
     lcd.print(" Tank T");
     lcd.setCursor(9, 1);
-    lcd.print(TankTemp); // пишем температуру в кубе
+    lcd.print(tank_temp); // пишем температуру в кубе
     lcd.print((char)223);
     lcd.print("C"); // пишем символ градуса и символ цельсия
   }

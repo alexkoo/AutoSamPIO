@@ -2,7 +2,6 @@
 #define func_h
 #include "header.h"
 
-
 String millis2time() // функция формирования строки "время работы модуля"
 {
   String Time = ""; // начинаем с пустой строки
@@ -24,15 +23,17 @@ String millis2time() // функция формирования строки "в
   return Time;
 } // функция возвращает строку
 
-String CurrentTime (){
-  return ntp.timeString();
+String CurrentTime()
+{
+  String str = ntp.timeString();
+  str.remove(5); // s = "01:02:00"
+  return str;
 }
- 
 
 /*
 void fake_data() // генерирует случайные показания
 {
-  if (debug == 1){
+  if (debug >= 2){
 SteamTempN = random(80,90);
 PipeTempN  = random(80,90);
 TankTempN  = random(80,90);
@@ -47,21 +48,22 @@ void debug_time_print()
   #define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debug_time_print(); }
   DEBSTART
   DEBSTOP
+  timeloop_start = micros();
+  timeloop_stop = micros() - timeloop_start;
   */
-  if (debug == 1)
-  {
-    // timeloop1 = micros() - timeloop0;
-    double debug_time_stop_f = debug_time_stop;
 
+  if (debug >= 1)
+  {
+
+    double debug_time_stop_f = debug_time_stop;
+    double timeloop_stop_f = timeloop_stop;
     telnet.print("Time: ");
     telnet.print(millis2time());
-    // telnet.print("    loop, mks: ");
-    // telnet.print(timeloop1);
-    telnet.print("    debug: ");
+    telnet.print("    loop, ms: ");
+    telnet.print(timeloop_stop_f / 1000);
+    telnet.print("    debug, ms ");
     telnet.print(debug_time_stop_f / 1000);
     telnet.println();
-
-    timeloop0 = micros();
   }
 }
 
@@ -92,7 +94,6 @@ bool readValve()
   */
   return valve_status;
 }
-
 
 /*
 
@@ -144,7 +145,7 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc
-  if (BMP280 == true && temp > 75 && press_corr == 1)
+  if (BMP280_used == true && temp > 75 && press_corr == 1)
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
@@ -182,7 +183,6 @@ float EEPROM_read(int addr) // чтение данных из EEPROM (адрес
   float &num = (float &)raw;
   return num;
 }
-
 
 void EEPROM_write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
 {
