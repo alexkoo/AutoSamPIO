@@ -4,7 +4,7 @@
 
 //Настройки
 
-//wifi
+// wifi
 #ifndef STASSID
 #define STASSID "krakozyabra"
 #define STAPSK "10033val"
@@ -12,7 +12,7 @@
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-const String VER = "1.3.3"; // Версия
+const String VER = "1.3.5"; // Версия
 
 //**************************************************************************************************//EEPROM
 const int autosam_mode_addr = 0;
@@ -26,7 +26,6 @@ const int sens1_addr = 70;
 const int sens2_addr = 80;
 const int sens3_addr = 90;
 
-
 byte autosam_mode = 1;       //режим работы 1 ректификация 2 дистилляция 3 погода
 byte press_corr = 1;         // коррекция давления
 float min_hot_temp = 70.0;   //мин температура, при которой элемент считается горячим
@@ -34,6 +33,7 @@ float heating_rate = 1;      // заданная скорость нагрева
 float max_tank_temp = 95.0;  // макс температура в кубе
 float max_steam_temp = 90.0; // макс температура  пара
 
+/*
 // массив адресов датчиков
 //DeviceAddress SteamSensor, PipeSensor, WaterSensor, TankSensor;
 byte sens0[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -41,11 +41,38 @@ byte sens1[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 byte sens2[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 byte sens3[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-byte SteamSensor[] = {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE}; //Прописываем MAC адреса датчиков
-byte PipeSensor[] = {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A};
-byte TankSensor[] = {0x28, 0x35, 0x32, 0x46, 0x92, 0x09, 0x02, 0x9F};
-byte WaterSensor[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+*/
 
+uint8_t addr[][8] = {
+    {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE},
+    {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A},
+    {0x28, 0x35, 0x32, 0x46, 0x92, 0x09, 0x02, 0x9F},
+    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+};
+
+uint8_t steam_sensor_num = 0;
+uint8_t pipe_sensor_num = 1;
+uint8_t tank_sensor_num = 2;
+uint8_t water_sensor_num = 3;
+
+MicroDS18B20 <DS_PIN1, DS_ADDR_MODE, 4> sensors;
+//MicroDS18B20<DS_PIN, DS_ADDR_MODE> sensors;
+
+/*
+uint8_t steam_sensor_addr[] = {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE}; //Прописываем MAC адреса датчиков
+uint8_t pipe_sensor_addr[] = {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A};
+uint8_t tank_sensor_addr[] = {0x28, 0x35, 0x32, 0x46, 0x92, 0x09, 0x02, 0x9F};
+uint8_t water_sensor_addr[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+MicroDS18B20<DS_PIN, steam_sensor_addr> SteamSensor;  // Создаем термометр с адресацией
+MicroDS18B20<DS_PIN, pipe_sensor_addr> PipeSensor;
+MicroDS18B20<DS_PIN, tank_sensor_addr> TankSensor;
+MicroDS18B20<DS_PIN, water_sensor_addr> PipeSensor;
+
+*/
+
+/*
+ */
 //**************************************************************************************************// Управление
 
 int lcd_max_num = 2;                //количество экранов от 0
@@ -65,20 +92,20 @@ unsigned long ntp_timer;
 
 //**************************************************************************************************// основные переменные
 
-float SteamTemp = -127;   // температура пара вверху колонны / сухопарник
-float SteamTempVolS = 0;  // Содержание спирта в парах
-float SteamTempVolF = 0;  // Содержание спирта в жидкости
-float SteamTempO;         // предыдущая температура
+float SteamTemp = -127;  // температура пара вверху колонны / сухопарник
+float SteamTempVolS = 0; // Содержание спирта в парах
+float SteamTempVolF = 0; // Содержание спирта в жидкости
+float SteamTempO;        // предыдущая температура
 
-float PipeTemp = -127;   // температура в царге на 2/3 высоты
-float PipeTempVolS = 0;  // Содержание спирта в парах
-float PipeTempVolF = 0;  // Содержание спирта в жидкости
-float PipeTempO;         // предыдущая температура
+float PipeTemp = -127;  // температура в царге на 2/3 высоты
+float PipeTempVolS = 0; // Содержание спирта в парах
+float PipeTempVolF = 0; // Содержание спирта в жидкости
+float PipeTempO;        // предыдущая температура
 
-float TankTemp = -127;   // температура в кубе
-float TankTempVolS = 0;  // Содержание спирта в парах
-float TankTempVolF = 0;  // Содержание спирта в жидкости
-float TankTempO;         // предыдущая температура
+float TankTemp = -127;  // температура в кубе
+float TankTempVolS = 0; // Содержание спирта в парах
+float TankTempVolF = 0; // Содержание спирта в жидкости
+float TankTempO;        // предыдущая температура
 
 float SetSteamTempVolS = 0;
 
@@ -88,7 +115,6 @@ float atm_pressure = 754.0; // атмосферное давление теку�
 float air_temp = 20.00;     // температура окружающего воздуха
 
 bool BMP280 = true; // вспомогательная переменная при отсутствии датчика
-
 
 //**************************************************************************************************//самогонный модуль
 float set_temp_steam = 0;       // уставка по температуре пара вверху колонны, при достижении которой клапан отключается
@@ -108,7 +134,7 @@ unsigned long heating_rate_int = 30000; //интервал
 unsigned long heating_rate_timer;       //таймер скорости изменения deltaT
 
 //**************************************************************************************************//Прочее
-byte debug = 1;           // Редим отладки: 0 выкл 1-время выполнения  
+byte debug = 1;           // Редим отладки: 0 выкл 1-время выполнения
 unsigned long debug_time; //период опроса
 
 unsigned long free_mem;             ///память
@@ -117,12 +143,10 @@ unsigned long timeloop0, timeloop1; //отладка время выполнен
 unsigned long debug_time_start;
 unsigned long debug_time_stop;
 
-GMedian3<float> SteamFilter; // указываем тип данных в <>
-GMedian<8, float> PipeFilter; //20-30mc
-GMedian3<float> TankFilter; //6-11mc
+GMedian3<float> SteamFilter;  // указываем тип данных в <>
+GMedian<8, float> PipeFilter; // 20-30mc
+GMedian3<float> TankFilter;   // 6-11mc
 
-
-
-bool valve_invert = true; //true  NC false NO
+bool valve_invert = true; // true  NC false NO
 
 #endif
