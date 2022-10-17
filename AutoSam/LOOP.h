@@ -33,15 +33,16 @@ void loop0() // вынос функции loop в отдельную вклад�
   float tank_temp_nc = sensors.getTemp(tank_sensor_num);
   float water_temp = sensors.getTemp(water_sensor_num);
 
+  delay(ds_time_set); // дает время отработать http
+  DEBSTOP
+  float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+  float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
+  float tank_temp_nc = sensors.getTemp(tank_sensor_num);
+  float water_temp = sensors.getTemp(water_sensor_num);
 
-        float SteamTempN = sensors.getTempC(SteamSensor); // считываем с каждого датчика  13ms со всех 50ms
-        float PipeTempN = sensors.getTempC(PipeSensor);
-        float WaterTemp = sensors.getTempC(WaterSensor);
-        float TankTempN = sensors.getTempC(TankSensor);
-    */
-    float SteamTempF = SteamFilter.filtered(SteamTempN);
-    float TankTempF = TankFilter.filtered(TankTempN); //
-    float PipeTempF = PipeFilter.filtered(PipeTempN); //
+  float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
+  float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
+  float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
 
   // поправки на давление и ручные 1-2mc
   steam_temp = corrTemp(steam_temp_f) + 0.5; //  поправка. У меня  один из датчиков брешет

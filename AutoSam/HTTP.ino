@@ -2,7 +2,7 @@
 
 void HTTP_Init(void) // функция инициализации HTTP
 {
-  FS_init(); // Включаем работу с файловой системой
+ FS_init(); // Включаем работу с файловой системой
 
   //Выполнение команды из браузера
   HTTP.on("/button", handleButton); // обрашение к кнопкам через web интерфейс
@@ -155,12 +155,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"MTT\":\"" + String(max_tank_temp);
   json += "\",\"HR\":\"" + String(heating_rate);
   json += "\",\"VS\":\"" + String(readValve());
-  /*
-  if (readValve() == true)
-    json += " ОТКРЫТ ";
-  else
-    json += " ЗАКРЫТ ";
-  */  
-  json += "\"}";                     // не забудем закрыть фигурную скобку!
+ 
+   json += "\"}";                     // не забудем закрыть фигурную скобку!
   HTTP.send(200, "text/json", json); // передаём json
 }
