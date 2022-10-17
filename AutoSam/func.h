@@ -2,10 +2,38 @@
 #define func_h
 #include "header.h"
 
+String millis2time() // функция формирования строки "время работы модуля"
+{
+  String Time = ""; // начинаем с пустой строки
+  unsigned long ss;
+  byte mm, hh;
+  ss = millis() / 1000;            // вычисляем количество секунд с начала работы модуля
+  hh = ss / 3600;                  // вычисляем количество часов
+  mm = (ss - hh * 3600) / 60;      // вычисляем количество минут
+  ss = (ss - hh * 3600) - mm * 60; // вычисляем количество секунд
+  if (hh < 10)
+    Time += "0";            // добавляем незначащий ноль к часам
+  Time += (String)hh + ":"; // добавляем двоеточие между часами и минутами
+  if (mm < 10)
+    Time += "0";            // добавляем незначащий ноль к минутам
+  Time += (String)mm + ":"; // добавляем двоеточие между минутами и секундами
+  if (ss < 10)
+    Time += "0";      // добавляем незначащий ноль к секундам
+  Time += (String)ss; // добавляем секунды
+  return Time;
+} // функция возвращает строку
+
+String CurrentTime()
+{
+  String str = ntp.timeString();
+  str.remove(5); // s = "01:02:00"
+  return str;
+}
+
 /*
 void fakeData() // генерирует случайные показания
 {
-  if (debug == 1){
+  if (debug >= 2){
 SteamTempN = random(80,90);
 PipeTempN  = random(80,90);
 TankTempN  = random(80,90);
@@ -20,21 +48,22 @@ void debugTimePrint()
   #define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debugTimePrint(); }
   DEBSTART
   DEBSTOP
+  timeloop_start = micros();
+  timeloop_stop = micros() - timeloop_start;
   */
-  if (debug == 1)
-  {
-    // timeloop1 = micros() - timeloop0;
-    double debug_time_stop_f = debug_time_stop;
 
+  if (debug >= 1)
+  {
+
+    double debug_time_stop_f = debug_time_stop;
+    double timeloop_stop_f = timeloop_stop;
     telnet.print("Time: ");
     telnet.print(millis2time());
-    // telnet.print("    loop, mks: ");
-    // telnet.print(timeloop1);
-    telnet.print("    debug: ");
+    telnet.print("    loop, ms: ");
+    telnet.print(timeloop_stop_f / 1000);
+    telnet.print("    debug, ms ");
     telnet.print(debug_time_stop_f / 1000);
     telnet.println();
-
-    timeloop0 = micros();
   }
 }
 
@@ -65,7 +94,6 @@ bool readValve()
   */
   return valve_status;
 }
-
 
 /*
 

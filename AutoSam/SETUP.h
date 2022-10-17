@@ -2,13 +2,6 @@
 #define setup_h
 #include "header.h"
 
-void initDebug()
-{
-  set_temp_steam = 78.5;
-  set_temp_pipe = 78.6;
-  valve_auto_mode = true;
-}
-
 void setup0()
 {
 
@@ -64,105 +57,54 @@ void setup0()
 
   HTTP_Init(); //настраиваем HTTP интерфейс
   Serial.println("HTTP Ready, Starting UDP");
-  udp.begin(localPort); // Инициализация UDP соединения с NTP сервером
-  Serial.print("Local port: ");
-  Serial.println(udp.localPort());
-*/
-
   ntp.begin(); // GyverNTP.h
 
   telnetServer.begin();
   telnetServer.setNoDelay(true);
   Serial.println("Please connect Telnet Client, exit with ^] and 'quit'");
 
+  sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
+  sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
+                                                 /*
+                                                 // Время преобразования от точности
+                                                 12 бит   | 750 мс
+                                                 11 бит   | 375 мс
+                                                 10 бит   | 187 мс
+                                                 9 бит    | 93 мс
+                                                  */
 
-  sensors.setAddress((uint8_t *)addr); // устанавливаем адреса DS18B20
-   sensors.setResolutionAll(12); // Установить разрешение 9-12 бит у всех датчиков на линии
+  if (!bme.begin()) // Инициализируем BMP280
+  {
+    telnet.println(F("Could not find a valid BMP280 sensor, check wiring!"));
+    BMP280_used = false;
+  }
+  else
+  {
+    telnet.println("Find a valid BMP280 sensor");
+    BMP280_used = true;
+  }
+  if (BMP280_used == true)
+  {
+    bme.resetToDefaults();
+    bme.writeOversamplingPressure(BMx280MI::OSRS_P_x16);
+    bme.writeOversamplingTemperature(BMx280MI::OSRS_T_x16);
+  }
 
+  Serial.println("OTA start");
+  // Port defaults to 8266
+  // ArduinoOTA.setPort(8266);
+  // Hostname defaults to esp8266-[ChipID]
+  ArduinoOTA.setHostname("esp8266_samogon");
 
-/*
- sensors.begin(); // стартуем датчики температуры
- // определяем устройства на шине
- Serial.print("Locating DS18B20...Found ");
- Serial.print(sensors.getDeviceCount(), DEC);
- Serial.println(" devices.");
+  // No authentication by default
+  // ArduinoOTA.setPassword("1122");
 
- // Инициализируем датчики температуры по возрастанию серийных номеров
+  // Password can be set with it's md5 value as well
+  // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
+  // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
 
-   if (!sensors.getAddress(sens0, 0))
-   { Serial.println("Unable to find address for Device 0"); } // если адрес датчика 0 не найден
-   if (!sensors.getAddress(sens1, 1))
-   { Serial.println("Unable to find address for Device 1"); } // если адрес датчика 1 не найден
-   if (!sensors.getAddress(sens2, 1))
-   { Serial.println("Unable to find address for Device 2"); } // если адрес датчика 2 не найден
-   if (!sensors.getAddress(sens3, 1))
-   { Serial.println("Unable to find address for Device 3"); } // если адрес датчика 3 не найден
-*/
-/*
- sensors.setResolution(SteamSensor, 12); // устанавливаем разрешение для датчика 0
-  sensors.setResolution(PipeSensor, 12);  // устанавливаем разрешение для датчика 1
-  sensors.setResolution(WaterSensor, 12); // устанавливаем разрешение для датчика 2
-  sensors.setResolution(TankSensor, 12);  // устанавливаем разрешение для датчика 3
-
-  Serial.print("SteamSensor Address: "); // пишем адрес и разрешение датчика 0
-  printAddress(SteamSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(SteamSensor), DEC);
-
-  Serial.print("PipeSensor Address: "); // пишем адрес и разрешение датчика 1
-  printAddress(PipeSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(PipeSensor), DEC);
-
-  Serial.print("WaterSensor Address: "); // пишем адрес и разрешение датчика 2
-  printAddress(WaterSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(WaterSensor), DEC);
-
-  Serial.print("TankSensor Address: "); // пишем адрес и разрешение датчика 3
-  printAddress(TankSensor);
-  Serial.print(" Resolution: ");
-  Serial.println(sensors.getResolution(TankSensor), DEC);
-
-
-
- sensor[i].setAddress(addr[i]);
-*/
-// Инициализируем BMP280
-
-// Serial.println(F("BMP280 search..."));
-if (!bme.begin())
-{
-  Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
-  BMP280 = false;
-}
-else
-{
-  Serial.println("Find a valid BMP280 sensor");
-  BMP280 = true;
-}
-if (BMP280 == true)
-{
-  bme.resetToDefaults();
-  bme.writeOversamplingPressure(BMx280MI::OSRS_P_x16);
-  bme.writeOversamplingTemperature(BMx280MI::OSRS_T_x16);
-}
-
-Serial.println("OTA start");
-// Port defaults to 8266
-// ArduinoOTA.setPort(8266);
-// Hostname defaults to esp8266-[ChipID]
-ArduinoOTA.setHostname("esp8266_samogon");
-
-// No authentication by default
-// ArduinoOTA.setPassword("1122");
-
-// Password can be set with it's md5 value as well
-// MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
-// ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
-
-ArduinoOTA.onStart([]()
-                   {
+  ArduinoOTA.onStart([]()
+                     {
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH)
     {
@@ -174,13 +116,13 @@ ArduinoOTA.onStart([]()
     }
 
     // NOTE: if updating FS this would be the place to unmount FS using FS.end()
-    Serial.println("Start updating " + type); });
-ArduinoOTA.onEnd([]()
-                 { Serial.println("\nEnd"); });
-ArduinoOTA.onProgress([](unsigned int progress, unsigned int total)
-                      { Serial.printf("Progress: %u%%\r", (progress / (total / 100))); });
-ArduinoOTA.onError([](ota_error_t error)
-                   {
+    telnet.println("Start updating " + type); });
+  ArduinoOTA.onEnd([]()
+                   { Serial.println("\nEnd"); });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total)
+                        { Serial.printf("Progress: %u%%\r", (progress / (total / 100))); });
+  ArduinoOTA.onError([](ota_error_t error)
+                     {
     Serial.printf("Error[%u]: ", error);
     if (error == OTA_AUTH_ERROR)
     {
@@ -202,25 +144,14 @@ ArduinoOTA.onError([](ota_error_t error)
     {
       Serial.println("End Failed");
     } });
-ArduinoOTA.begin();
-//  Serial.println("Ready");
-//  Serial.print("IP address: ");
-//  Serial.println(WiFi.localIP());
-// /OTA
+  ArduinoOTA.begin();
 
-lcd.clear(); // очищаем дисплей
+  // /OTA
 
-tone(buz, 500, 100);
+  lcd.clear(); // очищаем дисплей
 
-  if (debug == 1)
-  {
-    telnet.println("LOG: steam_temp; pipe_temp; tank_temp; water_temp; air_temp; Pressure; Freemem; Timeloop");
-  }
+  tone(buz, 500, 100);
 
-if (debug == 4)
-{
-  initDebug();
-}
 } // void setup
 
 #endif

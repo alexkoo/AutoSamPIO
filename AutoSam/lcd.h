@@ -2,6 +2,25 @@
 #define lcd_h
 #include "header.h"
 
+
+uint8_t lcd_max_num = 2;                //количество экранов от 0
+uint8_t lcd_num = 0;                    // переменная "экран", от которой зависит, какие показания будут выводиться на дисплей
+uint32_t lcd_timer_set = 2000; //задержка автопереключения экрана, мс
+
+
+void lcdChange (){
+  static uint32_t lcd_timer;            //таймер автопереключения экрана
+  if (millis() - lcd_timer > lcd_timer_set) // автопереключение экранов
+  { 
+    lcd_timer = millis();
+    lcd_num++;
+    lcd.clear();
+    if (lcd_num > lcd_max_num)
+      lcd_num = 0;
+  }
+}
+  
+
 void lcd1()
 {
 
