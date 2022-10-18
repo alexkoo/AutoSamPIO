@@ -4,7 +4,6 @@
 //#define header_h
 
 //**************************************************************************************************// LIB
-//#include <dummy.h>
 //#include <Arduino.h>
 #include <ESP8266WiFi.h>      //https://github.com/esp8266/Arduino
 #include <WiFiManager.h>      //https://github.com/tzapu/WiFiManager
@@ -31,16 +30,16 @@
 GyverNTP ntp(3);
 
 //**************************************************************************************************// GPIO
-#define buz (16)         // (d0) Динамик GPIO 16  бел
+#define buzzer_pin (16)         // (d0) Динамик GPIO 16  бел
 // i2c scl (d1) син;
 // i2c sda (d2) зел;
-#define button (0)       // (d3, FLASH) GPIO0 кнопка (отпущена - HIGH, нажата - LOW)
-#define DS_PIN1 (2)   // (d4) GPIO 2   шина OneWire
+#define button (0)              // (d3, FLASH) GPIO0 кнопка (отпущена - HIGH, нажата - LOW)
+#define DS_PIN1 (2)             // (d4) GPIO 2   шина OneWire
 //3v3;
 //gnd;
-#define valve (14)       // (d5) GPIO 14  клапан отбора 
-#define I2C_ADDRESS_BMx 0x76 //BMx280I2C
-#define I2C_ADDRESS_LCD 0x27 //LCD
+#define valve (14)              // (d5) GPIO 14  клапан отбора 
+#define I2C_ADDRESS_BMx 0x76    //BMx280I2C
+#define I2C_ADDRESS_LCD 0x27    //LCD
 //**************************************************************************************************// INIT
 
 #define ON HIGH  //настройки для инвертирования клапапна

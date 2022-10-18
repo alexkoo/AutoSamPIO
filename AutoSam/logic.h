@@ -47,7 +47,7 @@ void samogon()
 
     if (pcountsam != countsam)
     {
-        tone(buz, 400, 200);
+        tone(buzzer_pin, 400, 200);
         pcountsam = countsam;
         telnet.println(" Статус дистилляции: ");
         telnet.print(auto_status);

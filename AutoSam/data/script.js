@@ -1,5 +1,5 @@
 ﻿//<!--
-var xmlHttp = createXmlHttpObject();
+var xmlHttp = createXmlHttpObject(); //запрос
 var allData;
 var modeVisible;
 var loaded = 0;
@@ -15,7 +15,6 @@ function process() { //цикл выполнения
         valve_status();
         if (distPlug == 1) {
             invis();
-
         }
     }
     setTimeout('process()', 1000);
@@ -42,7 +41,7 @@ function request_new(server) { //Запрос к серверу
 }
 
 
-function handleServerResponse() { // чтение данных с сервера
+function handleServerResponse() { // парсинг json
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         allData = JSON.parse(xmlHttp.responseText);
         //head
@@ -88,7 +87,6 @@ function valve_status() {
     }
 }
 
-//document.getElementById('VALVE').value = allData.VS;
 
 
 function load_once() {

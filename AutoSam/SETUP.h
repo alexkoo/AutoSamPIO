@@ -6,9 +6,9 @@ void setup0()
 {
 
   pinMode(valve, OUTPUT); // назначаем выводу клапана функцию выхода
-  pinMode(buz, OUTPUT);
+  pinMode(buzzer_pin, OUTPUT);
   digitalWrite(valve, 0);
-  digitalWrite(buz, 0);
+  digitalWrite(buzzer_pin, 0);
   // Wire.begin();
   Serial.begin(115200); // Настраиваем вывод отладки
   delay(500);           // пауза небольшая
@@ -148,7 +148,7 @@ void setup0()
 
   lcd.clear(); // очищаем дисплей
 
-  tone(buz, 500, 100);
+  tone(buzzer_pin, 500, 100);
 
 } // void setup
 

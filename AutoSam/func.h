@@ -72,7 +72,7 @@ void beep()
   telnet.print(millis2time());
   telnet.print("   ");
   telnet.println(auto_status); // выводим сообщение на UART
-  tone(buz, 400, 200);
+  tone(buzzer_pin, 400, 200);
 }
 
 bool readValve()
@@ -95,53 +95,7 @@ bool readValve()
   return valve_status;
 }
 
-/*
 
-
-
-void findDS()
-{
-  byte i;
-  // byte j;
-  byte addr[8];
-  byte numDS = sensors.getDeviceCount();
-  telnet.println("Поиск датчиков ");
-  telnet.print("Найдено датчиков ");
-  telnet.println(numDS); // вывод на экран общего количества найденых датчиков
-  if (numDS == 0)
-  {
-    telnet.print("Error, no sensors found, please check");
-    return;
-  }
-  for (i = 0; i < numDS; i++)
-  {
-    if (!oneWire.search(addr))
-    {
-      telnet.println(" No more addresses.");
-      telnet.println();
-      oneWire.reset_search();
-      delay(250);
-      return;
-    }
-    telnet.print(" ROM =");
-    for (i = 0; i < 8; i++)
-    {
-      telnet.write(' ');
-      telnet.print(addr[i], HEX);
-    }
-  }
-}
-
-void printAddress(DeviceAddress deviceAddress) // функция печати адреса DS18B20
-{
-  for (uint8_t i = 0; i < 8; i++)
-  {
-    if (deviceAddress[i] < 16)
-      Serial.print("0"); // вставляем незначащие нули
-    Serial.print(deviceAddress[i], HEX);
-  }
-}
-*/
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc
@@ -196,4 +150,52 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
   EEPROM.commit();
 }
 
+
+
+
+/*
+
+void findDS()
+{
+  byte i;
+  // byte j;
+  byte addr[8];
+  byte numDS = sensors.getDeviceCount();
+  telnet.println("Поиск датчиков ");
+  telnet.print("Найдено датчиков ");
+  telnet.println(numDS); // вывод на экран общего количества найденых датчиков
+  if (numDS == 0)
+  {
+    telnet.print("Error, no sensors found, please check");
+    return;
+  }
+  for (i = 0; i < numDS; i++)
+  {
+    if (!oneWire.search(addr))
+    {
+      telnet.println(" No more addresses.");
+      telnet.println();
+      oneWire.reset_search();
+      delay(250);
+      return;
+    }
+    telnet.print(" ROM =");
+    for (i = 0; i < 8; i++)
+    {
+      telnet.write(' ');
+      telnet.print(addr[i], HEX);
+    }
+  }
+}
+
+void printAddress(DeviceAddress deviceAddress) // функция печати адреса DS18B20
+{
+  for (uint8_t i = 0; i < 8; i++)
+  {
+    if (deviceAddress[i] < 16)
+      Serial.print("0"); // вставляем незначащие нули
+    Serial.print(deviceAddress[i], HEX);
+  }
+}
+*/
 #endif
