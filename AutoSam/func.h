@@ -153,8 +153,25 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
 
 
 
-/*
 
+void findDS() {
+
+uint8_t address[8];       // Создаем массив для адреса
+
+  // читаем адрес термометра в указанный массив
+  if (sensors.readAddress(address)) {  // если успешно, выводим
+    Serial.print('{');
+    for (uint8_t i = 0; i < 8; i++) {
+      telnet.print("0x");
+      telnet.print(address[i], HEX);  // Выводим адрес
+      if (i < 7) telnet.print(", ");
+    }
+    telnet.println('}');
+
+  } else telnet.println("Not connected");
+  delay(1000);
+}
+/*
 void findDS()
 {
   byte i;
@@ -187,6 +204,12 @@ void findDS()
     }
   }
 }
+
+
+
+*/
+
+/*
 
 void printAddress(DeviceAddress deviceAddress) // функция печати адреса DS18B20
 {

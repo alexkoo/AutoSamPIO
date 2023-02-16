@@ -38,7 +38,7 @@ void setup0()
     sens3[f] = EEPROM.read(sens3_addr + f);
   }
   */
-  WiFiManager wifiManager; //Включаем WiFiManager
+  WiFiManager wifiManager; // Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети.
   // Если не удалось подключиться, (например, неизвестны SSID и пароль),
   // модуль запускается в режиме AP (точки доступа).
@@ -46,14 +46,14 @@ void setup0()
 
   wifiManager.autoConnect("AutoSamAP"); // задаём имя новой WiFi сети без пароля
   // wifiManager.autoConnect("AutoSamAP", "password"); // задаём имя новой WiFi сети c паролем (минимум 8 символов!)
-  Serial.println("Connected! :)"); //если подключение произошло, сообщаем
+  Serial.println("Connected! :)"); // если подключение произошло, сообщаем
   lcd.setCursor(0, 1);
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
-
+  WiFi.hostname("AutoSam");
   delay(500);
 
-  HTTP_Init(); //настраиваем HTTP интерфейс
+  HTTP_Init(); // настраиваем HTTP интерфейс
   Serial.println("HTTP Ready, Starting UDP");
   ntp.begin(); // GyverNTP.h
 
@@ -88,11 +88,11 @@ void setup0()
     bme.writeOversamplingTemperature(BMx280MI::OSRS_T_x16);
   }
 
-  Serial.println("OTA start");
+    Serial.println("OTA start");
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
   // Hostname defaults to esp8266-[ChipID]
-  ArduinoOTA.setHostname("esp8266_samogon");
+  ArduinoOTA.setHostname("AutoSam");
 
   // No authentication by default
   // ArduinoOTA.setPassword("1122");
