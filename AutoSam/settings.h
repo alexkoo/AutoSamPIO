@@ -2,7 +2,7 @@
 #define settings_h
 #include "header.h"
 
-//Настройки
+// Настройки
 
 // wifi
 #ifndef STASSID
@@ -26,18 +26,18 @@ const uint8_t sens1_addr = 70;
 const uint8_t sens2_addr = 80;
 const uint8_t sens3_addr = 90;
 
-uint8_t autosam_mode = 1;    //режим работы 1 ректификация 2 дистилляция 3 погода
-uint8_t press_correction = 1;      // коррекция давления
-float min_hot_temp = 70.0;   //мин температура, при которой элемент считается горячим
-float heating_rate = 1;      // заданная скорость нагрева, гр/мин
-float max_tank_temp = 95.0;  // макс температура в кубе
-float max_steam_temp = 90.0; // макс температура  пара
+uint8_t autosam_mode = 1;     // режим работы 1 ректификация 2 дистилляция 3 погода
+uint8_t press_correction = 1; // коррекция давления
+float min_hot_temp = 70.0;    // мин температура, при которой элемент считается горячим
+float heating_rate = 1;       // заданная скорость нагрева, гр/мин
+float max_tank_temp = 95.0;   // макс температура в кубе
+float max_steam_temp = 90.0;  // макс температура  пара
 
 uint8_t sensor_address[][8] = {
     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor;
     {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE},
     {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A},
-    {0x28, 0x35, 0x32, 0x46, 0x92, 0x09, 0x02, 0x9F},
+    {0x28, 0xA8, 0x97, 0x46, 0x92, 0xF, 0x2, 0x2F},
     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 };
 
@@ -46,7 +46,7 @@ uint8_t pipe_sensor_num = 1;
 uint8_t tank_sensor_num = 2;
 uint8_t water_sensor_num = 3;
 
-MicroDS18B20<DS_PIN1, DS_ADDR_MODE, 4> sensors; //пин, (DS_ADDR_MODE) что будем работать с адресацией. Сам адрес передадим позже (в setAddress()), количество датчиков
+MicroDS18B20<DS_PIN1, DS_ADDR_MODE, 4> sensors; // пин, (DS_ADDR_MODE) что будем работать с адресацией. Сам адрес передадим позже (в setAddress()), количество датчиков
 
 //**************************************************************************************************// Управление
 
@@ -76,7 +76,6 @@ float air_temp = 20.00;     // температура окружающего в�
 
 bool BMP280_used = true; // вспомогательная переменная при отсутствии датчика
 
-
 //**************************************************************************************************//самогонный модуль
 float set_temp_steam = 0;     // уставка по температуре пара вверху колонны, при достижении которой клапан отключается
 float set_temp_pipe = 0;      // уставка по температуре пара на 2/3 колонны, при достижении которой клапан отключается
@@ -91,14 +90,14 @@ uint8_t countsam = 0;               // стадия процесса
 float heating_rate_steam;           // скорость нагрева сухопарника, гр/мин
 float heating_rate_pipe;            // скорость 2/3, гр/мин
 float heating_rate_tank;            // скорость нагрева бака, гр/мин
-uint32_t heating_rate_int = 30000;  //интервал таймер скорости изменения deltaT
+uint32_t heating_rate_int = 30000;  // интервал таймер скорости изменения deltaT
 
 //**************************************************************************************************//Прочее
-uint8_t debug = 1;   // Редим отладки: 0 выкл 1-время выполнения
+uint8_t debug = 1; // Редим отладки: 0 выкл 1-время выполнения
 
 uint32_t debug_time_start, debug_time_stop, debug_time;
-uint32_t free_mem;             ///память
-uint32_t timeloop_start, timeloop_stop; //отладка время выполнения
+uint32_t free_mem;                      /// память
+uint32_t timeloop_start, timeloop_stop; // отладка время выполнения
 
 GMedian3<float> SteamFilter;  // указываем тип данных в <>
 GMedian<8, float> PipeFilter; // 20-30mc

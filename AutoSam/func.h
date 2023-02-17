@@ -154,7 +154,7 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
 
 
 
-void findDS() {
+void findDS() { //ПОДКЛюЧИТЬ ОДИН ДАТТЧИК
 
 uint8_t address[8];       // Создаем массив для адреса
 
