@@ -23,12 +23,13 @@ void loop0() // вынос функции loop в отдельную вклад�
     bmx_timer = millis();
     atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление  104ms
     air_temp = bme.readTemperature();               // и температуру воздуха 104ms
+    air_temp = round(air_temp*10)/10;     
   }
-
+  yield(); // прервание для работы wifi
   DEBSTART
   sensors.requestTempAll(); // запрашиваем новые температуры 26-1200ms
 
-  yield(); // прервание для работы wifi
+ 
   delay(ds_time_set); // дает время отработать http
   DEBSTOP
 
@@ -97,17 +98,17 @@ void loop0() // вынос функции loop в отдельную вклад�
   {
   case 1:
     rectification(); // логика ректификации
-    lcd1();          // вызываем функцию вывода на дисплей 60mc
+    lcdRect();          // вызываем функцию вывода на дисплей 60mc
     lcd_max_num = 2;
 
     break;
   case 2:
     samogon(); // логика самогонного аппарата
-    lcd2();    // вызываем функцию вывода на дисплей
+    lcdSam();    // вызываем функцию вывода на дисплей
     lcd_max_num = 1;
     break;
   case 3:
-    lcd3(); // вызываем функцию вывода на дисплей
+    lcdTerm(); // вызываем функцию вывода на дисплей
     lcd_max_num = 0;
     break;
   }

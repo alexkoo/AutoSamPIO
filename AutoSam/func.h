@@ -99,11 +99,13 @@ bool readValve()
 
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc
+  float temp0;
   if (BMP280_used == true && temp > 75 && press_correction == 1)
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
-  return temp;
+  temp0 = round (temp*20)/20; // округление до 0.5
+  return temp0;
 }
 
 float concFluid(float t) // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html //70-90mc
