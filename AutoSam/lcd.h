@@ -1,5 +1,4 @@
-#ifndef lcd_h
-#define lcd_h
+#pragma once
 #include "header.h"
 
 
@@ -271,4 +270,4 @@ void lcd10()
   */
 }
 
-#endif
+

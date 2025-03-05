@@ -1,5 +1,4 @@
-#ifndef loop_h
-#define loop_h
+#pragma once
 #include "header.h"
 
 void loop0() // вынос функции loop в отдельную вкладку
@@ -106,4 +105,3 @@ void loop0() // вынос функции loop в отдельную вклад�
   
 } // loop0
 
-#endif

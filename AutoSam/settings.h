@@ -1,5 +1,4 @@
-#ifndef settings_h
-#define settings_h
+#pragma once
 #include "header.h"
 
 // Настройки
@@ -12,7 +11,7 @@
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-const String VER = "1.4.1"; // Версия
+const String VER = "1.4.2"; // Версия
 
 //**************************************************************************************************//EEPROM
 const uint8_t autosam_mode_addr = 0;
@@ -105,4 +104,4 @@ GMedian3<float> TankFilter;   // 6-11mc
 
 bool valve_invert = true; // true  NC false NO
 
-#endif
+

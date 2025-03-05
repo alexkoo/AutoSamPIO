@@ -1,5 +1,5 @@
-#ifndef func_h
-#define func_h
+
+#pragma once
 #include "header.h"
 
 String millis2time() // функция формирования строки "время работы модуля"
@@ -25,7 +25,7 @@ String millis2time() // функция формирования строки "в
 
 String CurrentTime()
 {
-  String str = ntp.timeString();
+  String str = ntp.timeToString();
   str.remove(5); // s = "01:02:00"
   return str;
 }
@@ -221,4 +221,4 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
   }
 }
 */
-#endif
+

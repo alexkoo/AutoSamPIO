@@ -1,5 +1,4 @@
-#ifndef setup_h
-#define setup_h
+#pragma once
 #include "header.h"
 
 void setup0()
@@ -152,4 +151,4 @@ void setup0()
 
 } // void setup
 
-#endif
+#pragma once

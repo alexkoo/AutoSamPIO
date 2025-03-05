@@ -1,5 +1,4 @@
-#ifndef http_h
-#define http_h
+#pragma once
 
 void HTTP_Init(void);
 void handleDeltaSteam();
@@ -8,6 +7,3 @@ void handleButton();
 void handleSetForm();
 void handleData();
 
-
-
-#endif

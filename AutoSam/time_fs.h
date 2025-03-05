@@ -1,5 +1,4 @@
-#ifndef time_fs_h
-#define time_fs_h
+#pragma once
 
 void telnetLoop(void);
 
@@ -40,4 +39,3 @@ String CurrentTime(void);
 
 
 
-#endif

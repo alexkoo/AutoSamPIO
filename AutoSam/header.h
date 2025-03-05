@@ -1,8 +1,5 @@
 #pragma once
 
-//#ifndef header_h
-//#define header_h
-
 //**************************************************************************************************// LIB
 //#include <Arduino.h>
 #include <ESP8266WiFi.h>      //https://github.com/esp8266/Arduino
@@ -78,7 +75,3 @@ WiFiClient telnet;
 
 
 //debug
-
-
-
-//#endif

@@ -1,7 +1,5 @@
 
-#ifndef logic_h
-#define logic_h
-
+#pragma once
 #include "header.h"
 
 void samogon()
@@ -131,4 +129,4 @@ void rectification()
 
 } // void rectification
 
-#endif
+
