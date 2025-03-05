@@ -51,8 +51,8 @@ MicroDS18B20<DS_PIN1, DS_ADDR_MODE, 4> sensors; // пин, (DS_ADDR_MODE) что
 
 //**************************************************************************************************// Управление
 
-//nt32_t ds_time_set = 1000;
-uint32_t bmx_time_set = 5000; // частота опроса BMX и DS
+uint32_t ds_time_set = 1500;  //частота опроса DS
+uint32_t bmx_time_set = 5000; // частота опроса BMX 
 
 //**************************************************************************************************// основные переменные
 
@@ -92,7 +92,7 @@ float heating_rate_steam;           // скорость нагрева сухо�
 float heating_rate_pipe;            // скорость 2/3, гр/мин
 float heating_rate_tank;            // скорость нагрева бака, гр/мин
 
-uint32_t heating_rate_int = 5;  // интервал таймера скорости изренения deltaT, с
+uint32_t heating_rate_int = 2;  // интервал таймера скорости изренения deltaT, с
 
 //**************************************************************************************************//Прочее
 uint8_t debug = 1; // Редим отладки: 0 выкл 1-время выполнения
@@ -105,12 +105,12 @@ GMedian3<float> SteamFilter;  // указываем тип данных в <>
 GMedian<8, float> PipeFilter; // 20-30mc
 GMedian3<float> TankFilter;   // 6-11mc
 
-RingAverage<float, 12> steam_rate; //фильтр скорости нагрева < тип, выборка >
-RingAverage<float, 12> pipe_rate; //фильтр скорости нагрева < тип, выборка >
-RingAverage<float, 12> tank_rate; //фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 4> steam_rate; //фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 4> pipe_rate; //фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 4> tank_rate; //фильтр скорости нагрева < тип, выборка >
 
 bool valve_invert = true; // true  NC false NO
 
-uint8_t lcd_max_num = 2;
+
 
 
