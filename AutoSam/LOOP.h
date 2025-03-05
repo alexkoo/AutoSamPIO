@@ -65,10 +65,28 @@ void loop0() // вынос функции loop в отдельную вклад�
 
   // вычисление скорости отбора
 
+  static uint32_t heating_rate_timer; // таймер скорости изменения deltaT
+  static float steam_temp_prev, heating_rate_steam0;    // предыдущая температура
+  if (millis() - heating_rate_timer >= heating_rate_int*1000)
+  {   
+    heating_rate_timer = millis();   
+    heating_rate_steam0 = (steam_temp - steam_temp_prev) * (60/ heating_rate_int);
+    heating_rate_steam = Rate.filtered( heating_rate_steam0 );
+    steam_temp_prev = steam_temp;
+  }
+
+
+
+
+
+
+/*
   static float steam_temp_prev;       // предыдущая температура
   static float pipe_temp_prev;        // предыдущая температура
   static float tank_temp_prev;        // предыдущая температура
+
   static uint32_t heating_rate_timer; // таймер скорости изменения deltaT
+
   if (millis() - heating_rate_timer >= heating_rate_int)
   {                                                                                   // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
     heating_rate_timer = millis();                                                    // перезаводится
@@ -93,6 +111,10 @@ void loop0() // вынос функции loop в отдельную вклад�
     }
     tank_temp_prev = tank_temp;
   }
+
+
+*/
+
   yield(); // прервание для работы wifi
   switch (autosam_mode)
   {

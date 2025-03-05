@@ -89,7 +89,8 @@ uint8_t countsam = 0;               // стадия процесса
 float heating_rate_steam;           // скорость нагрева сухопарника, гр/мин
 float heating_rate_pipe;            // скорость 2/3, гр/мин
 float heating_rate_tank;            // скорость нагрева бака, гр/мин
-uint32_t heating_rate_int = 30000;  // интервал таймер скорости изменения deltaT
+
+uint32_t heating_rate_int = 5;  // интервал таймер скорости изменения deltaT, C
 
 //**************************************************************************************************//Прочее
 uint8_t debug = 1; // Редим отладки: 0 выкл 1-время выполнения
@@ -101,6 +102,8 @@ uint32_t timeloop_start, timeloop_stop; // отладка время выпол�
 GMedian3<float> SteamFilter;  // указываем тип данных в <>
 GMedian<8, float> PipeFilter; // 20-30mc
 GMedian3<float> TankFilter;   // 6-11mc
+
+RingAverage<float, 12> Rate;
 
 bool valve_invert = true; // true  NC false NO
 
