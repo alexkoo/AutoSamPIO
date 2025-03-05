@@ -17,6 +17,8 @@
 //#include <WiFiUdp.h>           //esp8266 core
 #include <ArduinoOTA.h>        //esp8266 core
 
+#include <WString.h> //esp8266 core
+
 #include <GyverFilters.h>      //https://alexgyver.ru/gyverfilters/
 #include <LiquidCrystal_I2C.h> //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
 // #include <OneWire.h>           //https://github.com/PaulStoffregen/OneWire

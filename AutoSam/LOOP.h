@@ -23,119 +23,113 @@ void loop0() // вынос функции loop в отдельную вклад�
     bmx_timer = millis();
     atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление  104ms
     air_temp = bme.readTemperature();               // и температуру воздуха 104ms
-    air_temp = round(air_temp*10)/10;     
-  }
-  yield(); // прервание для работы wifi
-  DEBSTART
-  sensors.requestTempAll(); // запрашиваем новые температуры 26-1200ms
+    air_temp = round(air_temp * 10) / 10;           // округляем до 0,1
+    yield();                                        // прервание для работы wifi
+    DEBSTART
+    sensors.requestTempAll(); // запрашиваем новые температуры 26-1200ms
+    DEBSTOP
 
- 
-  delay(ds_time_set); // дает время отработать http
-  DEBSTOP
+    // detime_set); // дает время отработать http
+    yield(); // прервание для работы wifi
 
-  float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
-  yield(); // прервание для работы wifi
-  float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
-  yield(); // прервание для работы wifi
-  float tank_temp_nc = sensors.getTemp(tank_sensor_num);
-  yield(); // прервание для работы wifi
-  float water_temp = sensors.getTemp(water_sensor_num);
-  yield(); // прервание для работы wifi
+    float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+    yield();                                                 // прервание для работы wifi
+    float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
+    yield(); // прервание для работы wifi
+    float tank_temp_nc = sensors.getTemp(tank_sensor_num);
+    yield(); // прервание для работы wifi
+    float water_temp = sensors.getTemp(water_sensor_num);
+    yield(); // прервание для работы wifi
 
-  float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
-  float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
-  float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
+    float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
+    float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
+    float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
 
-  // поправки на давление и ручные 1-2mc
-  steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет
-  pipe_temp = corrTemp(pipe_temp_f);
-  tank_temp = corrTemp(tank_temp_f); //
+    // поправки на давление и ручные 1-2mc
+    steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет
+    pipe_temp = corrTemp(pipe_temp_f);
+    tank_temp = corrTemp(tank_temp_f); //
 
-  // вычисление крепости 0-2000мс
-  steam_temp_alc_st = concSteam(steam_temp); // 0,1mc
-  steam_temp_alc_fl = concFluid(steam_temp); // 70-90mc 0,1мс
-  yield(); // прервание для работы wifi
-  pipe_temp_alc_st = concSteam(pipe_temp);
-  pipe_temp_alc_fl = concFluid(pipe_temp);
-  yield(); // прервание для работы wifi
-  tank_temp_alc_st = concSteam(tank_temp);
-  tank_temp_alc_fl = concFluid(tank_temp);
-  set_steam_temp_alc_st = concSteam(set_temp_steam);
-  //}
+    // вычисление крепости 0-2000мс
+    steam_temp_alc_st = concSteam(steam_temp); // 0,1mc
+    steam_temp_alc_fl = concFluid(steam_temp); // 70-90mc 0,1мс
+    yield();                                   // прервание для работы wifi
+    pipe_temp_alc_st = concSteam(pipe_temp);
+    pipe_temp_alc_fl = concFluid(pipe_temp);
+    yield(); // прервание для работы wifi
+    tank_temp_alc_st = concSteam(tank_temp);
+    tank_temp_alc_fl = concFluid(tank_temp);
+    set_steam_temp_alc_st = concSteam(set_temp_steam);
+    //}
 
-  // вычисление скорости отбора
+    // вычисление скорости отбора
 
-  static uint32_t heating_rate_timer; // таймер скорости изменения deltaT
-  static float steam_temp_prev, heating_rate_steam0;    // предыдущая температура
-  if (millis() - heating_rate_timer >= heating_rate_int*1000)
-  {   
-    heating_rate_timer = millis();   
-    heating_rate_steam0 = (steam_temp - steam_temp_prev) * (60/ heating_rate_int);
-    heating_rate_steam = Rate.filtered( heating_rate_steam0 );
-    steam_temp_prev = steam_temp;
-  }
-
-
-
-
-
-
-/*
-  static float steam_temp_prev;       // предыдущая температура
-  static float pipe_temp_prev;        // предыдущая температура
-  static float tank_temp_prev;        // предыдущая температура
-
-  static uint32_t heating_rate_timer; // таймер скорости изменения deltaT
-
-  if (millis() - heating_rate_timer >= heating_rate_int)
-  {                                                                                   // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
-    heating_rate_timer = millis();                                                    // перезаводится
-    heating_rate_steam = (steam_temp - steam_temp_prev) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
-    if (heating_rate_steam > 40 || heating_rate_steam < -40)
+    static uint32_t heating_rate_timer;                // таймер скорости изменения deltaT
+    static float steam_temp_prev, heating_rate_steam0; // предыдущая температура
+    if (millis() - heating_rate_timer >= heating_rate_int * 1000)
     {
-      heating_rate_steam = 0;
+      heating_rate_timer = millis();
+      heating_rate_steam0 = (steam_temp - steam_temp_prev) * (60 / heating_rate_int);
+      heating_rate_steam = steam_rate.filtered(heating_rate_steam0);
+      steam_temp_prev = steam_temp;
     }
-    steam_temp_prev = steam_temp;
 
-    heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
-    if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
+    /*
+      static float steam_temp_prev;       // предыдущая температура
+      static float pipe_temp_prev;        // предыдущая температура
+      static float tank_temp_prev;        // предыдущая температура
+
+      static uint32_t heating_rate_timer; // таймер скорости изменения deltaT
+
+      if (millis() - heating_rate_timer >= heating_rate_int)
+      {                                                                                   // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
+        heating_rate_timer = millis();                                                    // перезаводится
+        heating_rate_steam = (steam_temp - steam_temp_prev) * (60000 / heating_rate_int); // heating_rate_steam - скорость нагрева град/мин
+        if (heating_rate_steam > 40 || heating_rate_steam < -40)
+        {
+          heating_rate_steam = 0;
+        }
+        steam_temp_prev = steam_temp;
+
+        heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
+        if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
+        {
+          heating_rate_pipe = 0;
+        }
+        pipe_temp_prev = pipe_temp;
+
+        heating_rate_tank = (tank_temp - tank_temp_prev) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
+        if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
+        {
+          heating_rate_pipe = 0;
+        }
+        tank_temp_prev = tank_temp;
+      }
+
+
+    */
+
+    yield(); // прервание для работы wifi
+    switch (autosam_mode)
     {
-      heating_rate_pipe = 0;
+    case 1:
+      rectification(); // логика ректификации
+      lcdRect();       // вызываем функцию вывода на дисплей 60mc
+      lcd_max_num = 2;
+
+      break;
+    case 2:
+      samogon(); // логика самогонного аппарата
+      lcdSam();  // вызываем функцию вывода на дисплей
+      lcd_max_num = 1;
+      break;
+    case 3:
+      lcdTerm(); // вызываем функцию вывода на дисплей
+      lcd_max_num = 0;
+      break;
     }
-    pipe_temp_prev = pipe_temp;
 
-    heating_rate_tank = (tank_temp - tank_temp_prev) * (60000 / heating_rate_int); // heating_rate_pipe - скорость нагрева град/мин
-    if (heating_rate_pipe > 40 || heating_rate_pipe < -40)
-    {
-      heating_rate_pipe = 0;
-    }
-    tank_temp_prev = tank_temp;
-  }
+    if (debug >= 1)
+      timeloop_stop = micros() - timeloop_start;
 
-
-*/
-
-  yield(); // прервание для работы wifi
-  switch (autosam_mode)
-  {
-  case 1:
-    rectification(); // логика ректификации
-    lcdRect();          // вызываем функцию вывода на дисплей 60mc
-    lcd_max_num = 2;
-
-    break;
-  case 2:
-    samogon(); // логика самогонного аппарата
-    lcdSam();    // вызываем функцию вывода на дисплей
-    lcd_max_num = 1;
-    break;
-  case 3:
-    lcdTerm(); // вызываем функцию вывода на дисплей
-    lcd_max_num = 0;
-    break;
-  }
-
-  if (debug >= 1)
-    timeloop_stop = micros() - timeloop_start;
-
-} // loop0
+  } // loop0

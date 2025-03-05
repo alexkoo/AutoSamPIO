@@ -3,6 +3,8 @@
 
 // Настройки
 
+const String VER = "1.4.2"; // Версия
+
 // wifi
 #ifndef STASSID
 #define STASSID "krakozyabra"
@@ -11,9 +13,9 @@
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-const String VER = "1.4.2"; // Версия
 
-//**************************************************************************************************//EEPROM
+
+//**************************************************** EEPROM
 const uint8_t autosam_mode_addr = 0;
 const uint8_t press_corr_addr = 10;
 const uint8_t min_hot_temp_addr = 20;
@@ -49,8 +51,8 @@ MicroDS18B20<DS_PIN1, DS_ADDR_MODE, 4> sensors; // пин, (DS_ADDR_MODE) что
 
 //**************************************************************************************************// Управление
 
-uint32_t ds_time_set = 500;
-uint32_t bmx_time_set = 5000;
+//nt32_t ds_time_set = 1000;
+uint32_t bmx_time_set = 5000; // частота опроса BMX и DS
 
 //**************************************************************************************************// основные переменные
 
@@ -66,7 +68,7 @@ float tank_temp = -127;     // температура в кубе
 float tank_temp_alc_st = 0; // Содержание спирта в парах
 float tank_temp_alc_fl = 0; // Содержание спирта в жидкости
 
-float set_steam_temp_alc_st = 0;
+float set_steam_temp_alc_st = 0; // установленная крепость
 
 float water_temp = -127; // температура охлаждающей воды или флегмы
 
@@ -90,7 +92,7 @@ float heating_rate_steam;           // скорость нагрева сухо�
 float heating_rate_pipe;            // скорость 2/3, гр/мин
 float heating_rate_tank;            // скорость нагрева бака, гр/мин
 
-uint32_t heating_rate_int = 5;  // интервал таймер скорости изменения deltaT, C
+uint32_t heating_rate_int = 5;  // интервал таймера скорости изренения deltaT, с
 
 //**************************************************************************************************//Прочее
 uint8_t debug = 1; // Редим отладки: 0 выкл 1-время выполнения
@@ -103,7 +105,9 @@ GMedian3<float> SteamFilter;  // указываем тип данных в <>
 GMedian<8, float> PipeFilter; // 20-30mc
 GMedian3<float> TankFilter;   // 6-11mc
 
-RingAverage<float, 12> Rate;
+RingAverage<float, 12> steam_rate; //фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 12> pipe_rate; //фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 12> tank_rate; //фильтр скорости нагрева < тип, выборка >
 
 bool valve_invert = true; // true  NC false NO
 
