@@ -104,4 +104,6 @@ GMedian3<float> TankFilter;   // 6-11mc
 
 bool valve_invert = true; // true  NC false NO
 
+uint8_t lcd_max_num = 2;
+
 

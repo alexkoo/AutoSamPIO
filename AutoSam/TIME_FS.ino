@@ -24,6 +24,8 @@ void telnetLoop()
   }
 }
 
+
+/*
 /*
 void clok()
 {                                             // функция получения текущего времени с NTP сервера
@@ -148,6 +150,7 @@ String CurrentTime(void) // функция формирования строки
 
 */
 
+
 // Инициализация FFS
 void FS_init(void)
 {
@@ -187,6 +190,8 @@ void FS_init(void)
     if (!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "FileNotFound"); });
 }
+
+
 
 // Здесь функции для работы с файловой системой
 String getContentType(String filename)

@@ -3,15 +3,18 @@
 
 void loop0() // вынос функции loop в отдельную вкладку
 {
-  if (debug>=1) timeloop_start = micros();
+  if (debug >= 1)
+    timeloop_start = micros();
 
-  free_mem = (ESP.getFreeHeap()); //свободная память
+  free_mem = (ESP.getFreeHeap()); // свободная память
 
   ArduinoOTA.handle();
   HTTP.handleClient();
   ntp.tick();   // guiverNTP
   telnetLoop(); // обработчик telnet
   lcdChange();  // таймер переключения экранов
+
+  yield(); // прервание для работы wifi
 
   //*************************************************************************** // считываем температуры с датчиков
   static uint32_t bmx_timer; // таймер опроса датчика давления
@@ -25,27 +28,35 @@ void loop0() // вынос функции loop в отдельную вклад�
   DEBSTART
   sensors.requestTempAll(); // запрашиваем новые температуры 26-1200ms
 
+  yield(); // прервание для работы wifi
   delay(ds_time_set); // дает время отработать http
   DEBSTOP
+
   float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+  yield(); // прервание для работы wifi
   float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
+  yield(); // прервание для работы wifi
   float tank_temp_nc = sensors.getTemp(tank_sensor_num);
+  yield(); // прервание для работы wifi
   float water_temp = sensors.getTemp(water_sensor_num);
+  yield(); // прервание для работы wifi
 
   float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
   float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
   float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
 
   // поправки на давление и ручные 1-2mc
-  steam_temp = corrTemp(steam_temp_f) + 0.5; //  поправка. У меня  один из датчиков брешет
-  pipe_temp = corrTemp(pipe_temp_f) + 0.5;
+  steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет
+  pipe_temp = corrTemp(pipe_temp_f);
   tank_temp = corrTemp(tank_temp_f); //
 
   // вычисление крепости 0-2000мс
   steam_temp_alc_st = concSteam(steam_temp); // 0,1mc
   steam_temp_alc_fl = concFluid(steam_temp); // 70-90mc 0,1мс
+  yield(); // прервание для работы wifi
   pipe_temp_alc_st = concSteam(pipe_temp);
   pipe_temp_alc_fl = concFluid(pipe_temp);
+  yield(); // прервание для работы wifi
   tank_temp_alc_st = concSteam(tank_temp);
   tank_temp_alc_fl = concFluid(tank_temp);
   set_steam_temp_alc_st = concSteam(set_temp_steam);
@@ -56,7 +67,7 @@ void loop0() // вынос функции loop в отдельную вклад�
   static float steam_temp_prev;       // предыдущая температура
   static float pipe_temp_prev;        // предыдущая температура
   static float tank_temp_prev;        // предыдущая температура
-  static uint32_t heating_rate_timer; //таймер скорости изменения deltaT
+  static uint32_t heating_rate_timer; // таймер скорости изменения deltaT
   if (millis() - heating_rate_timer >= heating_rate_int)
   {                                                                                   // таймер heating_rate_timer сбрасывается каждые heating_rate_int миллисекунд
     heating_rate_timer = millis();                                                    // перезаводится
@@ -81,12 +92,12 @@ void loop0() // вынос функции loop в отдельную вклад�
     }
     tank_temp_prev = tank_temp;
   }
-
+  yield(); // прервание для работы wifi
   switch (autosam_mode)
   {
   case 1:
     rectification(); // логика ректификации
-    lcd1(); // вызываем функцию вывода на дисплей 60mc
+    lcd1();          // вызываем функцию вывода на дисплей 60mc
     lcd_max_num = 2;
 
     break;
@@ -101,7 +112,7 @@ void loop0() // вынос функции loop в отдельную вклад�
     break;
   }
 
-  if (debug >= 1)  timeloop_stop = micros() - timeloop_start;  
-  
-} // loop0
+  if (debug >= 1)
+    timeloop_stop = micros() - timeloop_start;
 
+} // loop0
