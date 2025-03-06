@@ -13,7 +13,7 @@ const String VER = "1.4.2"; // Версия
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-
+#define HOSTNAME "autosam.local"
 
 //**************************************************** EEPROM
 const uint8_t autosam_mode_addr = 0;
@@ -86,6 +86,7 @@ uint32_t valve_pause = 0;     // минимальное время нахожд�
 bool valve_auto_mode = false; // ручное управление клапаном
 
 String auto_status = "Closed, Def"; // предупреждения
+
 uint8_t pcountsam = 0;              // пауза (пред стадия)
 uint8_t countsam = 0;               // стадия процесса
 float heating_rate_steam;           // скорость нагрева сухопарника, гр/мин

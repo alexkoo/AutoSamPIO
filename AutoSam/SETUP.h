@@ -49,7 +49,7 @@ void setup0()
   lcd.setCursor(0, 1);
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
-  WiFi.hostname("AutoSam");
+  WiFi.hostname("HOSTNAME");
   delay(500);
 
   HTTP_Init(); // настраиваем HTTP интерфейс
@@ -91,7 +91,7 @@ void setup0()
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
   // Hostname defaults to esp8266-[ChipID]
-  ArduinoOTA.setHostname("AutoSam");
+  ArduinoOTA.setHostname("autosam.local");
 
   // No authentication by default
   // ArduinoOTA.setPassword("1122");
