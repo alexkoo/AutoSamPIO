@@ -51,7 +51,7 @@ function handleServerResponse() {
     document.getElementById("CURRENTTIME").value = allData.TIME;
     document.getElementById("RUNTIME").value = allData.RTIM;
     document.getElementById("VERSION").value = allData.VER;
-    document.getElementById("MODEI").value = allData.MOD;
+    //document.getElementById("MODEI").value = allData.MOD;
     //dist
     if (distPlug == 1) {
       document.getElementById("STEAMTEMP").value = allData.ST;
@@ -76,10 +76,18 @@ function handleServerResponse() {
       document.getElementById("MEMFREE").value = allData.FM;
       valveStatus = allData.VS;
       modeVisible = allData.MOD;
-      modei = allData.MOD;
+      //modei = allData.MOD;
     }
     // settings
     loaded = 1;
+  }
+}
+
+function mode_inf() {
+  if (modeVisible == 1) {
+    document.getElementById("MODEI").value = "Рект";
+  } else {
+    document.getElementById("MODEI").value = "Дист";
   }
 }
 
