@@ -20,7 +20,7 @@
 		includeHTML();
 	</script>
 	<!-- /вставка -->
-<!--
+
 	<div>
 		<form id="MODE" name="form1">
 			<select name="MODE">
@@ -31,22 +31,22 @@
 		</form>
 
 	</div>
--->
+
 
     <div>
         <table class="details">
             <caption>Температура в узле отбора</caption>
             <tr>
                 <td align="right">Текущее значение, &#176C </td>
-                <td align="left"><input type="submit" id="STEAMTEMP" value="??" size="8" ></td>
+                <td align="left"><input type="submit" class="inp"id="STEAMTEMP" value="??"  ></td>
                 <td align="right">Уставка, &#176C</td>
                 <td align="center"><output id="SETTEMPS"></td>
 </tr>
 <tr>
 	<td align="right">Время задержки, c</td>
-	<td align="left"><input type="number" class="inp" id="DELAY_S" value="30" min="30" max="300" step="30" size="4"c></td>
+	<td align="left"><input type="number" class="inp" id="DELAY_S" value="30" min="30" max="300" step="30" c></td>
 	<td align="right">Дельта, &#176C</td>
-	<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0"  max="1" step="0.05" size="4"></td>
+	<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0"  max="1" step="0.05" ></td>
 
 
 			</tr>
@@ -69,15 +69,15 @@
 <caption>Температура  в царге на 2/3 колонны</caption>
 <tr>
 	<td align="right">Текущее значение, &#176C</td>
-	<td align="left"><input type="submit" id="PIPETEMP" value="??" size="8"></td>
+	<td align="left"><input type="submit" class="inp" id="PIPETEMP" value="??" ></td>
 	<td align="right">Уставка, &#176C</td>
 	<td align="center"><output t id="SETTEMPP" ></td>
 </tr>
 <tr>
 	<td align="right">Время задержки, c</td>
-	<td align="left"><input type="number" class="inp" id="DELAY_P" value="30" min="30" max="300" step="30" size="5"></td>
+	<td align="left"><input type="number" class="inp" id="DELAY_P" value="30" min="30" max="300" step="30" ></td>
 	<td align="right">Дельта, &#176C</td>
-	<td align="center"><input type="number"class="inp" id="DELTA_P" value="0.0" min="0"  max="1" step="0.05" size="5"></td>
+	<td align="center"><input type="number"class="inp" id="DELTA_P" value="0.0" min="0"  max="1" step="0.05" ></td>
 <tr>
 	<td align="right">Конц. в жидкости / парах, %об</td>
 	<td><table><td align="right"><output  id="PIPETEMPF" ></td><td align="left">/ <output id="PIPETEMPS" ></td></table></td>

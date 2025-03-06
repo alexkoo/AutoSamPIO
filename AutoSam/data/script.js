@@ -13,7 +13,7 @@ function process() {
     xmlHttp.send(null);
     xmlHttp.onreadystatechange = handleServerResponse;
     valve_status();
-    mode_inf() ;
+    mode_inf();
     if (distPlug == 1) {
       invis();
     }
@@ -51,6 +51,7 @@ function handleServerResponse() {
     document.getElementById("CURRENTTIME").value = allData.TIME;
     document.getElementById("RUNTIME").value = allData.RTIM;
     document.getElementById("VERSION").value = allData.VER;
+    document.getElementById("MODEI").value = allData.MOD;
     //dist
     if (distPlug == 1) {
       document.getElementById("STEAMTEMP").value = allData.ST;
@@ -81,6 +82,7 @@ function handleServerResponse() {
     loaded = 1;
   }
 }
+
 
 function valve_status() {
   if (valveStatus == 1) {
