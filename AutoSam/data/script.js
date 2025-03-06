@@ -14,7 +14,7 @@ function process() { //цикл выполнения
         xmlHttp.send(null);
         xmlHttp.onreadystatechange = handleServerResponse;
         valve_status();
-         mode_inf();
+        mode_inf();
         if (distPlug == 1) {
             invis();
         }
@@ -50,7 +50,7 @@ function handleServerResponse() { // парсинг json
         document.getElementById('CURRENTTIME').value = allData.TIME;
         document.getElementById('RUNTIME').value = allData.RTIM;
         document.getElementById('VERSION').value = allData.VER;
-        modei= allData.MOD;
+        modei = allData.MOD;
         //dist
         if (distPlug == 1) {
             document.getElementById('STEAMTEMP').value = allData.ST;
