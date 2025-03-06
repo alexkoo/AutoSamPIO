@@ -5,6 +5,7 @@ var modeVisible;
 var loaded = 0;
 var distPlug = 1;
 var valveStatus;
+var modei;
 
 
 function process() { //цикл выполнения
@@ -13,6 +14,7 @@ function process() { //цикл выполнения
         xmlHttp.send(null);
         xmlHttp.onreadystatechange = handleServerResponse;
         valve_status();
+         mode_inf();
         if (distPlug == 1) {
             invis();
         }
@@ -48,7 +50,7 @@ function handleServerResponse() { // парсинг json
         document.getElementById('CURRENTTIME').value = allData.TIME;
         document.getElementById('RUNTIME').value = allData.RTIM;
         document.getElementById('VERSION').value = allData.VER;
-        document.getElementById('MODEI').value = allData.MOD;
+        modei= allData.MOD;
         //dist
         if (distPlug == 1) {
             document.getElementById('STEAMTEMP').value = allData.ST;
@@ -76,6 +78,14 @@ function handleServerResponse() { // парсинг json
         }
         // settings
         loaded = 1;
+    }
+}
+
+function mode_inf() {
+    if (modei == 1) {
+        document.getElementById('MODEI').value = "Рект";
+    } else {
+        document.getElementById('MODEI').value = "Дист";
     }
 }
 
