@@ -98,7 +98,7 @@ void setup0()
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
   // Hostname defaults to esp8266-[ChipID]
-  ArduinoOTA.setHostname("autosam.local");
+  ArduinoOTA.setHostname("autosamotg.local");
 
   // No authentication by default
   // ArduinoOTA.setPassword("1122");
