@@ -4,13 +4,14 @@
 void setup0()
 {
 
+  
   pinMode(valve, OUTPUT); // назначаем выводу клапана функцию выхода
   pinMode(buzzer_pin, OUTPUT);
   digitalWrite(valve, 0);
   digitalWrite(buzzer_pin, 0);
   // Wire.begin();
   Serial.begin(115200); // Настраиваем вывод отладки
-  delay(500);           // пауза небольшая
+  //delay(500);           // пауза небольшая
   Serial.print("AutoSam Version ");
   Serial.println(VER);
 
@@ -37,12 +38,16 @@ void setup0()
     sens3[f] = EEPROM.read(sens3_addr + f);
   }
   */
+ 
+
+
   WiFiManager wifiManager; // Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети.
   // Если не удалось подключиться, (например, неизвестны SSID и пароль),
   // модуль запускается в режиме AP (точки доступа).
   // Доступ к настройкам по адресу http://192.168.4.1
 
+  
   wifiManager.autoConnect("AutoSamAP"); // задаём имя новой WiFi сети без пароля
   // wifiManager.autoConnect("AutoSamAP", "password"); // задаём имя новой WiFi сети c паролем (минимум 8 символов!)
   Serial.println("Connected! :)"); // если подключение произошло, сообщаем
@@ -50,6 +55,8 @@ void setup0()
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
   WiFi.hostname("HOSTNAME");
+
+
   delay(500);
 
   HTTP_Init(); // настраиваем HTTP интерфейс
