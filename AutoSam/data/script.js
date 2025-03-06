@@ -1,9 +1,9 @@
 ﻿//<!--
 var xmlHttp = createXmlHttpObject(); //запрос
 var allData;
-var modeVisible;
+var modeVisible = 0;
 var loaded = 0;
-var distPlug = 1;
+var distPlug = 1; // индикатор что загружен индекс
 var valveStatus;
 
 function process() {
@@ -14,6 +14,7 @@ function process() {
     xmlHttp.onreadystatechange = handleServerResponse;
     valve_status();
     mode_inf();
+
     if (distPlug == 1) {
       invis();
     }
@@ -51,6 +52,7 @@ function handleServerResponse() {
     document.getElementById("CURRENTTIME").value = allData.TIME;
     document.getElementById("RUNTIME").value = allData.RTIM;
     document.getElementById("VERSION").value = allData.VER;
+    modeVisible = allData.MOD;
     //document.getElementById("MODEI").value = allData.MOD;
     //dist
     if (distPlug == 1) {
@@ -75,8 +77,8 @@ function handleServerResponse() {
       document.getElementById("AUTOSTATUS").value = allData.AS;
       document.getElementById("MEMFREE").value = allData.FM;
       valveStatus = allData.VS;
-      modeVisible = allData.MOD;
-      //modei = allData.MOD;
+      //modeVisible = allData.MOD;
+
     }
     // settings
     loaded = 1;
@@ -85,9 +87,13 @@ function handleServerResponse() {
 
 function mode_inf() {
   if (modeVisible == 1) {
-    document.getElementById("MODEI").value = "Рект";
-  } else {
-    document.getElementById("MODEI").value = "Дист";
+    document.getElementById("MODEI").value = " Рект ";
+  }
+  if (modeVisible == 2) {
+    document.getElementById("MODEI").value = " Дист ";
+  }
+  else {
+    document.getElementById("MODEI").value = "ERR";
   }
 }
 
@@ -149,15 +155,12 @@ function invis() {
 
   if (modeVisible == 2) {
     document.getElementById("rect_table").style.display = "none";
-   // document.getElementById("MODEI").value = "Дист";
-  } else {
-    if (modeVisible == 1) {
-      //document.getElementById("MODEI").value = "Рект";
-    } else {
-    //  document.getElementById("MODEI").value = "ХЗ";
-      document.getElementById("rect_table").style.display = "block";
-    }
   }
+
+  else {
+    document.getElementById("rect_table").style.display = "block";
+  }
+
 }
 
 
