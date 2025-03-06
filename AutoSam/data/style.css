@@ -9,10 +9,18 @@ body {
     text-align: center;
 }
 
+
+
 input {
-    font-size: 28pt;
+    font-size: 26pt;
     font-style: bold;
-}
+   }
+
+.inp {
+
+    width: 6rem;
+}   
+
 
 form.details {
     font-size: 17pt;
