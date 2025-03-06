@@ -2,36 +2,36 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>AutoSam</title>
-    <link rel="stylesheet" href="style.css">
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>AutoSam</title>
+	<link rel="stylesheet" href="style.css">
 
-    <script src="/script.js"></script>
-    <script>
-        dist_plug = 1;
-    </script>
+	<script src="/script.js"></script>
+	<script>
+		dist_plug = 1;
+	</script>
 </head>
 
 <BODY onload="process();">
 
-    <!-- вставка -->
-    <div w3-include-html="head.htm"></div>
-    <script>
-        includeHTML();
-    </script>
-    <!-- /вставка -->
+	<!-- вставка -->
+	<div w3-include-html="head.htm"></div>
+	<script>
+		includeHTML();
+	</script>
+	<!-- /вставка -->
+<!--
+	<div>
+		<form id="MODE" name="form1">
+			<select name="MODE">
+				<option value="1"> 1-Ректификация </option>
+				<option value="2"> 2- Дистилляция </option>
+			</select>
+			<input type="button" value="Сохранить" onclick="send_form_mode()">
+		</form>
 
-    <div>
-        <form id="MODE" name="form1">
-            <select name="MODE">
-			<option value = "1"> 1-Ректификация </option>
-			<option value = "2"> 2- Дистилляция </option>
-		</select>
-            <input type="button" value=" Сохранить " onclick="send_form_mode()">
-        </form>
-
-    </div>
-
+	</div>
+-->
 
     <div>
         <table class="details">
@@ -49,15 +49,20 @@
 	<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0"  max="1" step="0.05" size="4"></td>
 
 
-</tr>
-<tr>
-	<td align="right">Конц. в жидкости / парах, %об</td>
-	<td align="left"> <table><td align="right"><output  id="STEAMTEMPF" ></td><td align="left">/ <output id="STEAMTEMPS" ></td> </table></td>
-	<td align="right">&#916 S, &#176/мин <output  id="DELTAS" ></td>  
-	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelS()"></td>
-</tr>
-</table>
-</div>
+			</tr>
+			<tr>
+				<td align="right">Конц. в жидкости / парах, %об</td>
+				<td align="left">
+					<table>
+						<td align="right"><output id="STEAMTEMPF"></td>
+						<td align="left">/ <output id="STEAMTEMPS"></td>
+					</table>
+				</td>
+				<td align="right">&#916 S, &#176/мин <output id="DELTAS"></td>
+				<td align="center"><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelS()"></td>
+			</tr>
+		</table>
+	</div>
 
 <div id = "rect_table">
 <table  class="details">
@@ -82,59 +87,65 @@
 </table>
 	</div>
 
-<div>
-<table class="details">
-<caption>Температура в кубе</caption>
-<tr>
-	<td align="right">Температура в кубе, &#176C</td>
-	<td align="left"><input type="submit" id="TANKTEMP" value="??" size="8"></td>
-	<td align="right">Температура  воды, &#176C</td>
-	<td align="left"><output type="submit" id="WATERTEMP" value="??" size="8"></td>
-</tr>
-<tr>
-	<td align="right">Конц. в жидкости / парах, %об</td>
-	<td align="left"> <table><td align="right"><output  id="TANKTEMPF" ></td><td  align="left">/ <output  id="TANKTEMPS" ></td></table></td>
-	<td align="right">&#916 T, &#176/мин</td>
-	<td align="left"><output  id="DELTAT"></td> 
-</tr>
-</table>
-</div>
+	<div>
+		<table class="details">
+			<caption>Температура в кубе</caption>
+			<tr>
+				<td align="right">Температура в кубе, &#176C</td>
+				<td align="left"><input type="submit" id="TANKTEMP" value="??" size="8"></td>
+				<td align="right">Температура воды, &#176C</td>
+				<td align="left"><output type="submit" id="WATERTEMP" value="??" size="8"></td>
+			</tr>
+			<tr>
+				<td align="right">Конц. в жидкости / парах, %об</td>
+				<td align="left">
+					<table>
+						<td align="right"><output id="TANKTEMPF"></td>
+						<td align="left">/ <output id="TANKTEMPS"></td>
+					</table>
+				</td>
+				<td align="right">&#916 T, &#176/мин</td>
+				<td align="left"><output id="DELTAT"></td>
+			</tr>
+		</table>
+	</div>
 
-<div>
-<table >
-<tr> 
-	<td align="left">Статус</td>	
-		<td align="left"><input type="submit" id="AUTOSTATUS" value="??" size="8"></td> 
-		<td align="left"><input type="submit" id="SETSTEAMS" value="??" size="8"></td>
-</tr>
-</table>
-<table class="details">
-<tr>
-	<td align="right">Текущее атм. давление, мм рт. ст.</td>
-	<td align="left"><input type="submit" id="APRESS2" value="??" size="8"></td>
-	<td align="right">Комнатная температура</td>
-	<td align="left"><input type="submit" id="AIRTEMP" value="??" size="8"></td>
+	<div>
+		<table>
+			<tr>
+				<td align="left">Статус</td>
+				<td align="left"><input type="submit" id="AUTOSTATUS" value="??" size="8"></td>
+				<td align="left"><input type="submit" id="SETSTEAMS" value="??" size="8"></td>
+			</tr>
+		</table>
+		<table class="details">
+			<tr>
+				<td align="right">Текущее атм. давление, мм рт. ст.</td>
+				<td align="left"><input type="submit" id="APRESS2" value="??" size="8"></td>
+				<td align="right">Комнатная температура</td>
+				<td align="left"><input type="submit" id="AIRTEMP" value="??" size="8"></td>
 
-</tr>
-<tr>
-	<td align="right">АД в начале работы, мм рт. ст.</td>
-	<td align="left"><output  id="APRESS1" ></td>
-	<td align="right">Свободная память</td>
-	<td align="left"><output  id="MEMFREE" ></td>
-</tr>
- </table>
-<table class="details">
-<caption>Управление клапаном отбора</caption>
-<tr>
-	<td align="center"><input type="submit" name="open" value=" ОТКРЫТЬ " onclick="sendbutton(6);"></td>
-	<td align="center"><input type="submit" id="VALVE" value="??" size="8"></td>
-	<td align="center"><input type="submit" name="close" value=" ЗАКРЫТЬ " onclick="sendbutton(7);"></td>
-</tr> 
-</table>
+			</tr>
+			<tr>
+				<td align="right">АД в начале работы, мм рт. ст.</td>
+				<td align="left"><output id="APRESS1"></td>
+				<td align="right">Свободная память</td>
+				<td align="left"><output id="MEMFREE"></td>
+			</tr>
+		</table>
+		<table class="details">
+			<caption>Управление клапаном отбора</caption>
+			<tr>
+				<td align="center"><input type="submit" name="open" value=" ОТКРЫТЬ " onclick="sendbutton(6);"></td>
+				<td align="center"><input type="submit" id="VALVE" value="??" size="8"></td>
+				<td align="center"><input type="submit" name="close" value=" ЗАКРЫТЬ " onclick="sendbutton(7);"></td>
+			</tr>
+		</table>
 
-</div>
-</div>
+	</div>
+	</div>
 
-<div display="none"> </div>
+	<div display="none"> </div>
 </body>
+
 </html>
