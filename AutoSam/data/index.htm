@@ -35,7 +35,18 @@
 
 	<div>
 		<table class="details">
-			<caption>Температура в узле отбора</caption>
+			<caption>Температура в узле отбора</caption> 
+			<form id="MODE" name="form1">
+				<select name="MODE">
+					<option> </option>
+					<option value="1"> 1-Рект </option>
+					<option value="2"> 2- Дист </option>
+				</select>
+				<input type="button" value="Ок" onclick="send_form_mode()">
+			</form>
+
+
+			
 			<tr>
 				<td align="right">Текущее значение, &#176C </td>
 				<td align="left"><input type="submit" id="STEAMTEMP" value="??" size="8"></td>
