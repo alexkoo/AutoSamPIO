@@ -8,33 +8,62 @@
 
 	<script src="/script.js"></script>
 	<script>
-		dist_plug = 1;
+		distPlug = 1;
 	</script>
 </head>
 
 <BODY onload="process();">
 
-	<!-- вставка -->
-	<div w3-include-html="head.htm"></div>
-	<script>
-		includeHTML();
-	</script>
-	<!-- /вставка -->
 
-    <div>
-        <table class="details">
-            <caption>Температура в узле отбора</caption>
-            <tr>
-                <td align="right">Текущее значение, &#176C </td>
-                <td align="left"><input type="submit" class="inp"id="STEAMTEMP" value="??"  ></td>
-                <td align="right">Уставка, &#176C</td>
-                <td align="center"><output id="SETTEMPS"></td>
-</tr>
-<tr>
-	<td align="right">Время задержки, c</td>
-	<td align="left"><input type="number" class="inp" id="DELAY_S" value="30" min="30" max="300" step="30" c></td>
-	<td align="right">Дельта, &#176C</td>
-	<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0"  max="1" step="0.05" ></td>
+	<!--   ШАПКА  -->
+	<div>
+		<h1 class="top"> <img src="/logo.png" height="36"> AutoSam v <output id="VERSION" value="??" class="top"></h1>
+		<table class="details">
+			<tr>
+				<td align="right">Текущее время:<input type="submit" id="CURRENTTIME" value="??"></td>
+				<td align="right">Время работы :<input type="submit" id="RUNTIME" value="??"></td>
+				<td align="right"> Режим <input type="submit" id="MODEI" value="??"></td>
+				<td> </td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<a href="index.htm">Работа </a>
+					<a href="settings.htm" target="blank"> Настройки </a>
+				</td>
+
+				<td align="right">
+					<form name="form1">
+						<select class="inp" name="MODE">
+							<option> </option>
+							<option value="1">Рект</option>
+							<option value="2">Дист</option>
+						</select>
+						<input type="button" value="Ок" onclick="send_form_mode()">
+					</form>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<!--   ШАПКА  -->
+
+
+
+	<div>
+		<table class="details">
+			<caption>Температура в узле отбора</caption>
+			<tr>
+				<td align="right">Текущее значение, &#176C </td>
+				<td align="left"><input type="submit" class="inp" id="STEAMTEMP" value="??"></td>
+				<td align="right">Уставка, &#176C</td>
+				<td align="center"><output id="SETTEMPS"></td>
+			</tr>
+			<tr>
+				<td align="right">Время задержки, c</td>
+				<td align="left"><input type="number" class="inp" id="DELAY_S" value="30" min="30" max="300" step="30"
+						c></td>
+				<td align="right">Дельта, &#176C</td>
+				<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0" max="1"
+						step="0.05"></td>
 
 
 			</tr>
@@ -52,27 +81,34 @@
 		</table>
 	</div>
 
-<div id = "rect_table">
-<table  class="details">
-<caption>Температура  в царге на 2/3 колонны</caption>
-<tr>
-	<td align="right">Текущее значение, &#176C</td>
-	<td align="left"><input type="submit" class="inp" id="PIPETEMP" value="??" ></td>
-	<td align="right">Уставка, &#176C</td>
-	<td align="center"><output t id="SETTEMPP" ></td>
-</tr>
-<tr>
-	<td align="right">Время задержки, c</td>
-	<td align="left"><input type="number" class="inp" id="DELAY_P" value="30" min="30" max="300" step="30" ></td>
-	<td align="right">Дельта, &#176C</td>
-	<td align="center"><input type="number"class="inp" id="DELTA_P" value="0.0" min="0"  max="1" step="0.05" ></td>
-<tr>
-	<td align="right">Конц. в жидкости / парах, %об</td>
-	<td><table><td align="right"><output  id="PIPETEMPF" ></td><td align="left">/ <output id="PIPETEMPS" ></td></table></td>
-	<td align="right">&#916 P, &#176/мин <output  id="DELTAP" ></td> 
-	<td align="center" ><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelP()"></td>
-</tr>
-</table>
+	<div id="rect_table">
+		<table class="details">
+			<caption>Температура в царге на 2/3 колонны</caption>
+			<tr>
+				<td align="right">Текущее значение, &#176C</td>
+				<td align="left"><input type="submit" class="inp" id="PIPETEMP" value="??"></td>
+				<td align="right">Уставка, &#176C</td>
+				<td align="center"><output t id="SETTEMPP"></td>
+			</tr>
+			<tr>
+				<td align="right">Время задержки, c</td>
+				<td align="left"><input type="number" class="inp" id="DELAY_P" value="30" min="30" max="300" step="30">
+				</td>
+				<td align="right">Дельта, &#176C</td>
+				<td align="center"><input type="number" class="inp" id="DELTA_P" value="0.0" min="0" max="1"
+						step="0.05"></td>
+			<tr>
+				<td align="right">Конц. в жидкости / парах, %об</td>
+				<td>
+					<table>
+						<td align="right"><output id="PIPETEMPF"></td>
+						<td align="left">/ <output id="PIPETEMPS"></td>
+					</table>
+				</td>
+				<td align="right">&#916 P, &#176/мин <output id="DELTAP"></td>
+				<td align="center"><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelP()"></td>
+			</tr>
+		</table>
 	</div>
 
 	<div>

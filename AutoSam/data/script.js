@@ -14,10 +14,8 @@ function process() {
     xmlHttp.onreadystatechange = handleServerResponse;
     valve_status();
     mode_inf();
-
-    if (distPlug == 1) {
-      invis();
-    }
+    if (distPlug == 1)  invis();
+    
   }
   setTimeout("process()", 1000);
 }
@@ -52,7 +50,7 @@ function handleServerResponse() {
     document.getElementById("CURRENTTIME").value = allData.TIME;
     document.getElementById("RUNTIME").value = allData.RTIM;
     document.getElementById("VERSION").value = allData.VER;
-    modeVisible = allData.MOD;
+    modeVisible = Number(allData.MOD);
     //document.getElementById("MODEI").value = allData.MOD;
     //dist
     if (distPlug == 1) {
@@ -86,10 +84,10 @@ function handleServerResponse() {
 }
 
 function mode_inf() {
-  if (modeVisible == 1) {
+  if (modeVisible = 1) {
     document.getElementById("MODEI").value = " Рект ";
   }
-  if (modeVisible == 2) {
+  else if (modeVisible == 2) {
     document.getElementById("MODEI").value = " Дист ";
   }
   else {
@@ -181,35 +179,4 @@ function sendDelP() {
   request_new(server);
 }
 
-function includeHTML() {
-  // Скрипт включения в страницу https://www.w3schools.com/howto/howto_html_include.asp https://html5css.ru/howto/howto_html_include.php
-  var z, i, elmnt, file, xhttp;
-  /*loop through a collection of all HTML elements:*/
-  z = document.getElementsByTagName("*");
-  for (i = 0; i < z.length; i++) {
-    elmnt = z[i];
-    /*search for elements with a certain atrribute:*/
-    file = elmnt.getAttribute("w3-include-html");
-    if (file) {
-      /*make an HTTP request using the attribute value as the file name:*/
-      xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-          if (this.status == 200) {
-            elmnt.innerHTML = this.responseText;
-          }
-          if (this.status == 404) {
-            elmnt.innerHTML = "Page not found.";
-          }
-          /*remove the attribute, and call this function once more:*/
-          elmnt.removeAttribute("w3-include-html");
-          includeHTML();
-        }
-      };
-      xhttp.open("GET", file, true);
-      xhttp.send();
-      /*exit the function:*/
-      return;
-    }
-  }
-}
+

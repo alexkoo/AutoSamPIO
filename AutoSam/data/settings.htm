@@ -13,13 +13,36 @@
 
 <BODY onload=" process() ">
 
-    <!-- вставка -->
+    <!--   ШАПКА  -->
+    <div>
+        <h1 class="top"> <img src="/logo.png" height="36"> AutoSam v <output id="VERSION" value="??" class="top"></h1>
+        <table class="details">
+            <tr>
+                <td align="right">Текущее время:<input type="submit" id="CURRENTTIME" value="??"></td>
+                <td align="right">Время работы :<input type="submit" id="RUNTIME" value="??"></td>
+                <td align="right"> Режим <input type="submit" id="MODEI" value="??"></td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <a href="index.htm">Работа </a>
+                    <a href="settings.htm" target="blank"> Настройки </a>
+                </td>
 
-    <div w3-include-html="head.htm"></div>
-    <script>
-        includeHTML();
-    </script>
-    <!-- /вставка -->
+                <td align="right">
+                    <form name="form1">
+                        <select class="inp" name="MODE">
+                            <option> </option>
+                            <option value="1">Рект</option>
+                            <option value="2">Дист</option>
+                        </select>
+                        <input type="button" value="Ок" onclick="send_form_mode()">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--   ШАПКА  -->
 
     <div>
         <br>
@@ -50,7 +73,8 @@
             </tr>
             <tr>
                 <td align="left"> <input type="submit" name="get_addr" value=" get_addr" onclick="sendbutton(41);"></td>
-                <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="send_form_settings()"> </td>
+                <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="send_form_settings()">
+                </td>
             </tr>
         </table>
 
@@ -68,8 +92,10 @@
             <br> Клапан d5 (14)
             <br>DS18B20: d4 (2)
             <br>
-            <br> byte addr1[8] = {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE}; // Узел отбора SteamSensor ЧЕРНЫЙ (28A80A46920902DE)
-            <br> byte addr2[8] = {0x28, 0xA8, 0x97, 0x46, 0x92, 0xF, 0x2, 0x2F}; // Бак TankSensor БЕЛЫЙ (283532469209029F)
+            <br> byte addr1[8] = {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE}; // Узел отбора SteamSensor ЧЕРНЫЙ
+            (28A80A46920902DE)
+            <br> byte addr2[8] = {0x28, 0xA8, 0x97, 0x46, 0x92, 0xF, 0x2, 0x2F}; // Бак TankSensor БЕЛЫЙ
+            (283532469209029F)
             <br> byte addr3[8] = {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A}; // 2/3 царги PipeSensor ЗЕЛЕНЫЙ
             <br>
             <br> Калибровка крана:
@@ -87,7 +113,8 @@
 
 
         <div class="copyright">
-            Использованы материалы сайта <a href="http://ESP8266-ArduinoIDE.ru" target="_blank">ESP8266-ArduinoIDE.ru</a>
+            Использованы материалы сайта <a href="http://ESP8266-ArduinoIDE.ru"
+                target="_blank">ESP8266-ArduinoIDE.ru</a>
         </div>
 
         <div class="copyright">
