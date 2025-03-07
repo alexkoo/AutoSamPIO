@@ -154,7 +154,7 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
 
 void findDS(){
 
-static uint64_t addr_s = ds_single.readAddress();
+ uint64_t addr_s = ds_single.readAddress();
   telnet.print("address: ");
     String addr_p = gds::addressToString(addr_s);
   telnet.print (addr_p);

@@ -3,7 +3,7 @@ var xmlHttp = createXmlHttpObject(); //запрос
 var allData;
 var modeVisible = 0;
 var loaded = 0;
-var distPlug = 1; // индикатор что загружен индекс
+var indexLoad = 1; // индикатор что загружен индекс
 var valveStatus;
 
 function process() {
@@ -12,9 +12,12 @@ function process() {
     xmlHttp.open("PUT", "/data.json", true);
     xmlHttp.send(null);
     xmlHttp.onreadystatechange = handleServerResponse;
-    valve_status();
-    mode_inf();
-    if (distPlug == 1)  invis();
+      mode_inf();
+    if (indexLoad == 1) {
+       valve_status();
+      invis();
+
+    } 
     
   }
   setTimeout("process()", 1000);
@@ -53,10 +56,11 @@ function handleServerResponse() {
     modeVisible = Number(allData.MOD);
     //document.getElementById("MODEI").value = allData.MOD;
     //dist
-    if (distPlug == 1) {
+    if (indexLoad == 1) {
       document.getElementById("STEAMTEMP").value = allData.ST;
       document.getElementById("STEAMTEMPF").value = allData.SF;
       document.getElementById("STEAMTEMPS").value = allData.SS;
+
       document.getElementById("PIPETEMP").value = allData.PT;
       document.getElementById("PIPETEMPF").value = allData.PF;
       document.getElementById("PIPETEMPS").value = allData.PS;
