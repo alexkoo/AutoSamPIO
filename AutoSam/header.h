@@ -43,6 +43,7 @@
 //#define DS_CRC_USE_TABLE true  // Использовать таблицу для CRC. Быстрее, но +256 байт flash (<1мкс VS ~6мкс) (умолч. false)microDS18B20.h> microDS18B20.h>
 #include <GyverFilters.h>      //https://alexgyver.ru/gyverfilters/
 
+#include <GyverIO.h>//https://github.com/GyverLibs/GyverIO?tab=readme-ov-file //нуден для GyverDS18
 #include <GyverDS18.h>      // https://github.com/GyverLibs/GyverDS18
 #include <GyverDS18Array.h>     // https://github.com/GyverLibs/GyverDS18
 //#include <microDS18B20.h> //https://github.com/GyverLibs/microDS18B20
@@ -97,7 +98,7 @@ uint8_t sensor_address[][8] = {
 MicroDS18B20<ds_pin, DS_ADDR_MODE, 4> ds_; // пин, (DS_ADDR_MODE) что будем работать с адресацией. Сам адрес передадим позже (в setAddress()), количество датчиков
 */
 
-uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ;
+uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
     0xDE020992460AA828,
     0x3A00189843120F28,
     0x2F020F924697A828,

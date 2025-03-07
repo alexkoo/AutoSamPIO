@@ -153,10 +153,14 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
 }
 
 void findDS(){
-uint64_t addr = ds_single.readAddress();
-if (addr) {
+uint64_t addr_s = ds_single.readAddress();
+
   telnet.print("address: ");
-    gds::printAddress(addr, telnet);
+  telnet.print (addr_s);
+
+if (addr_s) {
+
+   // gds::printAddress(addr, telnet);
 } else {
   telnet.println("error");
 }
