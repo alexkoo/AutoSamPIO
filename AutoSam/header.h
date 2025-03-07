@@ -105,6 +105,9 @@ uint64_t ds_address[] = {     // массив адресов датчиков St
 };
 GyverDS18Array ds_sensors(ds_pin, ds_address, 4);
 GyverDS18Single ds_single(ds_pin);  
+bool setResolution(12);
+
+// uint16_t getConversionTime();  // получить текущее время измерения температуры, мс
 
 
 uint8_t steam_sensor_num = 0;
