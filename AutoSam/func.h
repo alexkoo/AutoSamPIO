@@ -78,18 +78,18 @@ void beep()
 bool readValve()
 {
   bool valve_status;
-  valve_status = digitalRead(valve);
+  valve_status = digitalRead(valve_pin);
 
   /*
 
 
   if (valve_invert == true)
   {
-    valve_status = !digitalRead(valve);
+    valve_status = !digitalRead(valve_pin);
   }
   else
   {
-    valve_status = digitalRead(valve);
+    valve_status = digitalRead(valve_pin);
   }
   */
   return valve_status;
@@ -152,17 +152,27 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
   EEPROM.commit();
 }
 
+void findDS(){
+uint64_t addr = ds_single.readAddress();
+if (addr) {
+  telnet.print("address: ");
+    gds::printAddress(addr, telnet);
+} else {
+  telnet.println("error");
+}
+}
 
 
 
+/*
 
 void findDS() { //ПОДКЛюЧИТЬ ОДИН ДАТТЧИК
 
 uint8_t address[8];       // Создаем массив для адреса
 
   // читаем адрес термометра в указанный массив
-  if (sensors.readAddress(address)) {  // если успешно, выводим
-    Serial.print('{');
+  if (ds_sensors.readAddress(ds_address)) {  // если успешно, выводим
+    telnet.print('{');
     for (uint8_t i = 0; i < 8; i++) {
       telnet.print("0x");
       telnet.print(address[i], HEX);  // Выводим адрес
@@ -173,6 +183,7 @@ uint8_t address[8];       // Создаем массив для адреса
   } else telnet.println("Not connected");
   delay(1000);
 }
+*/
 /*
 void findDS()
 {

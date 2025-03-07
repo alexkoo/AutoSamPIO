@@ -26,26 +26,51 @@ void loop0() // вынос функции loop в отдельную вклад�
   }
     yield(); // прервание для работы wifi
 
-    static uint32_t ds_timer; // таймер опроса датчика давления
+
+
+
+
+    static uint32_t ds_timer; // таймер опроса датчиков
     if (millis() - ds_timer > ds_time_set)
+    
+    //if (ds_sensors.ready()) {  // измерения готовы по таймеру новая функция
     {
       ds_timer = millis();
+    
+/*
+      //DEBSTART
+      //DEBSTOP
+
       yield(); // прервание для работы wifi
-
-      DEBSTART
-      sensors.requestTempAll(); // запрашиваем новые температуры 26-1200ms
-      DEBSTOP
-
-      yield(); // прервание для работы wifi
-
-      float steam_temp_nc = sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+      float steam_temp_nc = ds_sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
       yield();                                                 // прервание для работы wifi
-      float pipe_temp_nc = sensors.getTemp(pipe_sensor_num);
+      float pipe_temp_nc = ds_sensors.getTemp(pipe_sensor_num);
       yield(); // прервание для работы wifi
-      float tank_temp_nc = sensors.getTemp(tank_sensor_num);
+      float tank_temp_nc = ds_sensors.getTemp(tank_sensor_num);
       yield(); // прервание для работы wifi
-      float water_temp = sensors.getTemp(water_sensor_num);
+      float water_temp = ds_sensors.getTemp(water_sensor_num);
       yield(); // прервание для работы wifi
+
+      */
+     yield(); // прервание для работы wifi
+     float steam_temp_nc = ds_sensors.readTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
+     yield();                                                 // прервание для работы wifi
+     float pipe_temp_nc = ds_sensors.readTemp(pipe_sensor_num);
+     yield(); // прервание для работы wifi
+     float tank_temp_nc = ds_sensors.readTemp(tank_sensor_num);
+     yield(); // прервание для работы wifi
+     float water_temp = ds_sensors.readTemp(water_sensor_num);
+     yield(); // прервание для работы wifi
+
+
+      ds_sensors.requestTemp(); // запрашиваем новые температуры 26-1200ms
+  yield(); // прервание для работы wifi
+
+
+
+
+
+
 
       float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
       float tank_temp_f = TankFilter.filtered(tank_temp_nc); //

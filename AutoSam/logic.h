@@ -74,7 +74,7 @@ void rectification()
                 {
                     if (steam_temp < set_temp_steam)
                     {
-                        digitalWrite(valve, ON); // если температура ниже уставки, включаем клапан (лог. 0)
+                        digitalWrite(valve_pin, ON); // если температура ниже уставки, включаем клапан (лог. 0)
                         auto_status = "Opened, Auto, Steam";
                         beep();
                     }
@@ -86,7 +86,7 @@ void rectification()
             {
                 if (steam_temp >= set_temp_steam) // если температура выше уставки,
                 {
-                    digitalWrite(valve, OFF); // выключаем клапан отбора
+                    digitalWrite(valve_pin, OFF); // выключаем клапан отбора
                     auto_status = "Closed, Auto, Steam";
                     beep();
                     valve_pause = millis(); // заводим таймер
@@ -104,7 +104,7 @@ void rectification()
                 {
                     if (pipe_temp < set_temp_pipe)
                     {
-                        digitalWrite(valve, ON); // если температура ниже уставки, включаем клапан (лог. 0)
+                        digitalWrite(valve_pin, ON); // если температура ниже уставки, включаем клапан (лог. 0)
                         auto_status = "Opened, Auto, Pipe";
                         beep();
                     }
@@ -116,7 +116,7 @@ void rectification()
             {
                 if (pipe_temp >= set_temp_pipe) // если температура выше уставки,
                 {
-                    digitalWrite(valve, OFF); // выключаем клапан отбора
+                    digitalWrite(valve_pin, OFF); // выключаем клапан отбора
                     auto_status = "Closed, Auto, Pipe";
 
                     beep();

@@ -34,20 +34,6 @@ float heating_rate = 1;       // заданная скорость нагрев�
 float max_tank_temp = 95.0;   // макс температура в кубе
 float max_steam_temp = 90.0;  // макс температура  пара
 
-uint8_t sensor_address[][8] = {
-    // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor;
-    {0x28, 0xA8, 0x0A, 0x46, 0x92, 0x09, 0x02, 0xDE},
-    {0x28, 0x0F, 0x12, 0x43, 0x98, 0x18, 0x00, 0x3A},
-    {0x28, 0xA8, 0x97, 0x46, 0x92, 0xF, 0x2, 0x2F},
-    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
-};
-
-uint8_t steam_sensor_num = 0;
-uint8_t pipe_sensor_num = 1;
-uint8_t tank_sensor_num = 2;
-uint8_t water_sensor_num = 3;
-
-MicroDS18B20<DS_PIN1, DS_ADDR_MODE, 4> sensors; // пин, (DS_ADDR_MODE) что будем работать с адресацией. Сам адрес передадим позже (в setAddress()), количество датчиков
 
 //**************************************************************************************************// Управление
 

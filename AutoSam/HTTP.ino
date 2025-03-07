@@ -46,14 +46,14 @@ void handleButton()
   if (button_state == 6) // если передан номер кнопки 6 "Открыть"
   {
     valve_auto_mode = false;
-    digitalWrite(valve, ON);
+    digitalWrite(valve_pin, ON);
     auto_status = "Opened, Man";
     beep();
   }
   if (button_state == 7) // если передан номер кнопки 7 "Закрыть"
   {
     valve_auto_mode = false;
-    digitalWrite(valve, OFF); // выключаем клапан
+    digitalWrite(valve_pin, OFF); // выключаем клапан
     auto_status = "Closed, Man";
     beep();
   }

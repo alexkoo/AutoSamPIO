@@ -5,9 +5,9 @@ void setup0()
 {
 
   
-  pinMode(valve, OUTPUT); // назначаем выводу клапана функцию выхода
+  pinMode(valve_pin, OUTPUT); // назначаем выводу клапана функцию выхода
   pinMode(buzzer_pin, OUTPUT);
-  digitalWrite(valve, 0);
+  digitalWrite(valve_pin, 0);
   digitalWrite(buzzer_pin, 0);
   // Wire.begin();
   Serial.begin(115200); // Настраиваем вывод отладки
@@ -67,8 +67,10 @@ void setup0()
   telnetServer.setNoDelay(true);
   Serial.println("Please connect Telnet Client, exit with ^] and 'quit'");
 
-  sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
-  sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
+
+  ds_sensors.requestTemp();
+  //sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
+  //sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
   /*
                                                  // Время преобразования от точности
                                                  12 бит   | 750 мс 0.0625
