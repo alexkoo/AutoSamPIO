@@ -36,13 +36,6 @@ GyverNTP ntp(3);
 
 
 
-
-
-
-
-
-
-
 //**************************************************************************************************// GPIO
 #define buzzer_pin (16)         // (d0) Динамик GPIO 16  бел
 // i2c scl (d1) син;
@@ -71,7 +64,6 @@ ESP8266WebServer HTTP(80);          // Web интерфейс для устро�
 File fsUploadFile;                  // Для файловой системы
 WiFiServer telnetServer(23);
 WiFiClient telnet;
-
 
 
 
