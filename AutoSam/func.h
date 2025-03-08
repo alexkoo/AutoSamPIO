@@ -156,7 +156,7 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
 }
 
 static uint64_t addr_64 = 0 ;
-static String addr_str = "str";
+static String addr_str = "0x0000000000000000";
 
 void findDS()
 {

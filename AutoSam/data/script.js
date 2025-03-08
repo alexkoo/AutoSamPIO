@@ -184,11 +184,12 @@ function send_form_settings() {
 function sendbutton(button) {
   //отправка значений кнопок
   var server = "/button?state=" + button;
-    request_new(server);
+  request_new(server);
+  if (button = 41) setTimeout(load_once, 3000);
 }
 
 function invis() //скрывет лишнее поле 
-{   
+{
   if (st_mode == 2) {
     document.getElementById("rect_table").style.display = "none";
   }

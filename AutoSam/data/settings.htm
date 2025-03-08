@@ -50,18 +50,25 @@
                 <td> Скорость изменения температуры</td>
                 <td> <input type="number" id="HEATR" value="1" min="0" max="3" step="0.1" size="2"></td>
             </tr>
+
+
             <tr>
-                <td align="left"> <input type="submit" name="reset" value=" Reset " onclick="sendbutton(42)"> </td>
-                <td align="left"> <input type="submit" name="Reload" value=" Обновить " onclick="load_once()"> </td>
+                <td align="left"> <input type="button" value=" Reset " onclick="sendbutton(42)"> </td>
+                <td align="left"> <input type="button" value=" Обновить " onclick="load_once()"> </td>
 
             </tr>
             <tr>
-                <td align="left"> <span><input type="submit" name="get_addr" value=" get_addr"
-                            onclick="sendbutton(41);"> </span> <span><output id="ADDR"></output></span> </td>
+                <td align="left">
+                    <span><input type="button" value=" get_addr" onclick="sendbutton(41);"> </span>
+                    <span> <output id="ADDR"></output> </span>
+                    <span> <input type="button" value=" set " onclick="sendbutton(43)"> </span>
+                </td>
                 <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="send_form_settings()">
                 </td>
             </tr>
         </table>
+
+
 
 
 
