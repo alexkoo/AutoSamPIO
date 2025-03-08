@@ -65,7 +65,7 @@ void setup0()
 
   ds_sensors.requestTemp();
   ds_sensors.setResolution(12);
-  
+
   // sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
   // sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
   /*
@@ -106,6 +106,9 @@ void setup0()
   // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
   // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
 
+
+
+  
   ArduinoOTA.onStart([]()
                      {
     String type;

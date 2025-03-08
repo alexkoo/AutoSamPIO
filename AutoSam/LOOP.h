@@ -26,7 +26,7 @@ void loop0()
   }
   yield(); // прервание для работы wifi
 
-  uint32_t ds_timer; // таймер опроса датчиков
+  uint32_t ds_timer =0 ; // таймер опроса датчиков
   uint32_t ds_time = (millis() - ds_timer);
   if (ds_time > ds_time_set)
   {                                          //   DS18 timer
@@ -84,8 +84,8 @@ void loop0()
 
     // вычисление скорости отбора
    
-    uint32_t heating_rate_timer;                           // таймер скорости изменения deltaT
-    float steam_temp_prev, pipe_temp_prev, tank_temp_prev; // предыдущая температура
+    uint32_t heating_rate_timer =0 ;                           // таймер скорости изменения deltaT
+    float steam_temp_prev = steam_temp, pipe_temp_prev = pipe_temp, tank_temp_prev = tank_temp; // предыдущая температура
 
     if (millis() - heating_rate_timer >= ds_time)
     {
