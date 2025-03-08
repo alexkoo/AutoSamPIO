@@ -10,6 +10,7 @@ void HTTP_Init(void) // функция инициализации HTTP
   HTTP.on("/DelS", handleDeltaSteam); // обрашение к уставке steam_temp через web интерфейс
   HTTP.on("/DelP", handleDeltaPipe);  // обрашение к уставке pipe_temp(2/3) через web интерфейс
   HTTP.on("/data.json", handleData);   // формирование json файла для передачи данных в web интерфейс
+ // HTTP.on("/dataS.json", handleData);   // формирование json файла для передачи данных в web интерфейс
   HTTP.begin();                        // Запускаем HTTP сервер
 }
 
@@ -67,6 +68,10 @@ void handleButton()
   if (button_state == 42)
   { // если передан номер кнопки 42 "reset"
     ESP.restart();
+  }
+  if (button_state == 43)
+  { // если передан номер кнопки 43 "сохранить датчик"
+    saveDS();
   }
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ

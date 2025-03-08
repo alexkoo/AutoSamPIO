@@ -184,23 +184,18 @@ function send_form_settings() {
 function sendbutton(button) {
   //отправка значений кнопок
   var server = "/button?state=" + button;
-  request_new(server);
+    request_new(server);
 }
 
-function invis() {
-  //скрывет лишнее поле 
-
+function invis() //скрывет лишнее поле 
+{   
   if (st_mode == 2) {
     document.getElementById("rect_table").style.display = "none";
   }
-
   else {
     document.getElementById("rect_table").style.display = "block";
   }
-
 }
-
-
 
 function sendDelS() {
   // отправка уставки steam на сервер

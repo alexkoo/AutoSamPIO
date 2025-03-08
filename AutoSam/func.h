@@ -155,10 +155,13 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
   EEPROM.commit();
 }
 
+static uint64_t addr_64 = 0 ;
+static String addr_str = "str";
+
 void findDS()
 {
   ds_reset.reset();
-  static uint64_t addr_64 = ds_single.readAddress();
+   addr_64 = ds_single.readAddress();
  if (addr_64)
   {
 
@@ -171,6 +174,13 @@ void findDS()
   {
     telnet.println("error searsh");
   }
+}
+
+
+void saveDS()
+{
+  ds_address[1] = addr_64;
+
 }
 
 /*
