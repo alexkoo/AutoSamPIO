@@ -41,6 +41,8 @@ TankTempN  = random(80,90);
 }
 */
 
+//*******************************************************// debug
+
 void debugTimePrint()
 {
   /*
@@ -95,8 +97,6 @@ bool readValve()
   return valve_status;
 }
 
-
-
 float corrTemp(float temp) // корректировка по давлению http://alcodistillers.ru/forum/viewtopic.php?pid=10973#p10973
 {                          // функция принимает текущую температуру //1-2mc
   float temp0;
@@ -104,7 +104,7 @@ float corrTemp(float temp) // корректировка по давлению h
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
-  temp0 = round (temp*20)/20; // округление до 0.5
+  temp0 = round(temp * 20) / 20; // округление до 0.5
   return temp0;
 }
 
@@ -112,7 +112,7 @@ float concFluid(float t) // Определение содержания спир
 {
   float Ti, f;
   Ti = (t - 89) / 6.49;
-  f = (17.26 - Ti * (18.32 - Ti * (7.81 - Ti * (1.77 - Ti * (4.81 - Ti * (2.95 + Ti * (1.43 - Ti * (0.8 + 0.05 * Ti)))))))); //Содержание спирта в кубе,%об
+  f = (17.26 - Ti * (18.32 - Ti * (7.81 - Ti * (1.77 - Ti * (4.81 - Ti * (2.95 + Ti * (1.43 - Ti * (0.8 + 0.05 * Ti)))))))); // Содержание спирта в кубе,%об
   if (f <= 0 || f >= 100 || t >= 100 || t < 78)
   {
     f = 0;
@@ -120,16 +120,19 @@ float concFluid(float t) // Определение содержания спир
   return f;
 }
 
-float concSteam(float t) //Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/  //20-60mc // 0,1mc
+float concSteam(float t) // Определение содержания спирта в парах,%об методом аппроксимации. Взято с онлайн-калькулятора https://planetcalc.ru/5992/  //20-60mc // 0,1mc
 {
   float s;
-  s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); //Содержание спирта в парах %об
+  s = (-0.015146 * t * t * t + 3.875947 * t * t - 332.596610 * t + 9645.394183); // Содержание спирта в парах %об
   if (s <= 0 || s >= 100 || t >= 100 || t < 78)
   {
     s = 0;
   };
   return s;
 }
+
+//*******************************************************// eeprom
+
 
 float EEPROM_Read(int addr) // чтение данных из EEPROM (адрес)
 {
@@ -143,7 +146,7 @@ float EEPROM_Read(int addr) // чтение данных из EEPROM (адрес
 void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
 {
   if (EEPROM_Read(addr) != num)
-  { //если сохраняемое отличается
+  { // если сохраняемое отличается
     byte raw[4];
     (float &)raw = num;
     for (byte i = 0; i < 4; i++)
@@ -152,22 +155,22 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
   EEPROM.commit();
 }
 
-void findDS(){
+void findDS()
+{
+  ds_reset.reset();
+  static uint64_t addr_64 = ds_single.readAddress();
+ if (addr_64)
+  {
 
- uint64_t addr_s = ds_single.readAddress();
   telnet.print("address: ");
-    String addr_p = gds::addressToString(addr_s);
-  telnet.print (addr_p);
-  
-  if (addr_s) {
-
-  // gds::printAddress(addr_s, telnet);
-} else {
-  telnet.println("error");
+  static String addr_str = gds::addressToString(addr_64);
+  telnet.print(addr_str);
+  }
+  else
+  {
+    telnet.println("error searsh");
+  }
 }
-}
-
-
 
 /*
 
@@ -239,4 +242,3 @@ void printAddress(DeviceAddress deviceAddress) // функция печати а
   }
 }
 */
-

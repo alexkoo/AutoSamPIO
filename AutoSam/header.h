@@ -11,8 +11,8 @@
 //#include <SPI.h>                  //esp8266 core, нужен в platformio для BMx280I2C
 //#include <FS.h>                   //esp8266 core
 //#include <WString.h>              //esp8266 core
-// #include <OneWire.h>             //https://github.com/PaulStoffregen/OneWire
 // #include <DallasTemperature.h>   //https://github.com/milesburton/Arduino-Temperature-Control-Library
+//#include <microDS18B20.h>         //https://github.com/GyverLibs/microDS18B20
 
 #include <ESP8266WebServer.h>        //esp8266 core
 #include <EEPROM.h>                 //esp8266 core
@@ -21,14 +21,12 @@
 #include <WiFiManager.h>            //https://github.com/tzapu/WiFiManager
 #include <LiquidCrystal_I2C.h>      //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
 #include <BMx280I2C.h>              //https://bitbucket.org/christandlg/bmx280mi/
+#include <OneWire.h>                //https://github.com/PaulStoffregen/OneWire        нужен для reset
 
 #include <GyverFilters.h>           //https://alexgyver.ru/gyverfilters/
 #include <GyverIO.h>                //https://github.com/GyverLibs/GyverIO?tab=readme-ov-file //нуден для GyverDS18
 #include <GyverDS18.h>              // https://github.com/GyverLibs/GyverDS18
 #include <GyverDS18Array.h>         // https://github.com/GyverLibs/GyverDS18
-//#include <microDS18B20.h>         //https://github.com/GyverLibs/microDS18B20
-//#define DS_CRC_USE_TABLE true     // Использовать таблицу для CRC. Быстрее, но +256 байт flash (<1мкс VS ~6мкс) (умолч. false)microDS18B20.h> microDS18B20.h>
-
 #include <GyverNTP.h>
 GyverNTP ntp(3);
 
@@ -86,8 +84,9 @@ uint64_t ds_address[] = {     // массив адресов датчиков St
 };
 GyverDS18Single ds_single(ds_pin);  
 GyverDS18Array ds_sensors(ds_pin, ds_address, 4);
+OneWire ds_reset(ds_pin);
 
-//bool setResolution(12);
+
 
 // uint16_t getConversionTime();  // получить текущее время измерения температуры, мс
 

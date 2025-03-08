@@ -1,4 +1,5 @@
 #pragma once
+#include <WString.h> // хз зачем
 
 void telnetLoop(void);
 
@@ -9,7 +10,3 @@ bool handleFileRead(String);
 void handleFileUpload();
 void handleFileDelete();
 void handleFileList();
-
-
-
-

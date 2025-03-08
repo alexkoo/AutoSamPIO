@@ -1,7 +1,7 @@
 #pragma once
 #include "header.h"
 
-void loop0() // вынос функции loop в отдельную вкладку
+void loop0()
 {
   if (debug >= 1)
     timeloop_start = micros();
@@ -26,28 +26,15 @@ void loop0() // вынос функции loop в отдельную вклад�
   }
   yield(); // прервание для работы wifi
 
-  static uint32_t ds_timer; // таймер опроса датчиков
-  if (millis() - ds_timer > ds_time_set)
-
-  // if (ds_sensors.ready()) {  // измерения готовы по таймеру новая функция
+  uint32_t ds_timer; // таймер опроса датчиков
+  uint32_t ds_time = (millis() - ds_timer);
+  if (ds_time > ds_time_set)
   {
+
     ds_timer = millis();
 
-    /*
-          //DEBSTART
-          //DEBSTOP
-
-          yield(); // прервание для работы wifi
-          float steam_temp_nc = ds_sensors.getTemp(steam_sensor_num); // считываем с каждого датчика  13ms со всех 50ms
-          yield();                                                 // прервание для работы wifi
-          float pipe_temp_nc = ds_sensors.getTemp(pipe_sensor_num);
-          yield(); // прервание для работы wifi
-          float tank_temp_nc = ds_sensors.getTemp(tank_sensor_num);
-          yield(); // прервание для работы wifi
-          float water_temp = ds_sensors.getTemp(water_sensor_num);
-          yield(); // прервание для работы wifi
-
-          */
+    // DEBSTART
+    // DEBSTOP
 
     float steam_temp_nc, pipe_temp_nc, tank_temp_nc, water_temp_nc; // температуры сырые
     yield();                                                        // прервание для работы wifi
@@ -63,11 +50,13 @@ void loop0() // вынос функции loop в отдельную вклад�
     yield(); // прервание для работы wifi
     if (ds_sensors.readTemp(tank_sensor_num))
       tank_temp_nc = ds_sensors.getTemp();
-    else tank_temp_nc = -127;
+    else
+      tank_temp_nc = -127;
     yield(); // прервание для работы wifi
     if (ds_sensors.readTemp(water_sensor_num))
       water_temp_nc = ds_sensors.getTemp();
-    else water_temp_nc = -127;
+    else
+      water_temp_nc = -127;
     yield(); // прервание для работы wifi
 
     ds_sensors.requestTemp(); // запрашиваем новые температуры 26-1200ms
@@ -76,6 +65,7 @@ void loop0() // вынос функции loop в отдельную вклад�
     float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
     float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
     float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
+    water_temp = water_temp_nc;
 
     // поправки на давление и ручные 1-2mc
     steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет
@@ -99,22 +89,25 @@ void loop0() // вынос функции loop в отдельную вклад�
     static uint32_t heating_rate_timer;                           // таймер скорости изменения deltaT
     static float steam_temp_prev, pipe_temp_prev, tank_temp_prev; // предыдущая температура
 
-    if (millis() - heating_rate_timer >= heating_rate_int * 1000)
+    if (millis() - heating_rate_timer >= ds_time)
     {
       heating_rate_timer = millis();
 
-      heating_rate_steam = (steam_temp - steam_temp_prev) * (60 / heating_rate_int);
+      heating_rate_steam = (steam_temp - steam_temp_prev) * (60 / ds_time);
       heating_rate_steam = steam_rate.filtered(heating_rate_steam);
       steam_temp_prev = steam_temp;
 
-      heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60 / heating_rate_int);
+      heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60 / ds_time);
       heating_rate_pipe = pipe_rate.filtered(heating_rate_pipe);
       pipe_temp_prev = pipe_temp;
 
-      heating_rate_tank = (tank_temp - tank_temp_prev) * (60 / heating_rate_int);
+      heating_rate_tank = (tank_temp - tank_temp_prev) * (60 / ds_time);
       heating_rate_tank = tank_rate.filtered(heating_rate_tank);
       tank_temp_prev = tank_temp;
     }
+
+    telnet.print("ds_time");
+    telnet.println(ds_time);
   }
 
   yield(); // прервание для работы wifi

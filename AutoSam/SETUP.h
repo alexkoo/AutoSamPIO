@@ -4,14 +4,14 @@
 void setup0()
 {
 
-  
   pinMode(valve_pin, OUTPUT); // назначаем выводу клапана функцию выхода
   pinMode(buzzer_pin, OUTPUT);
   digitalWrite(valve_pin, 0);
   digitalWrite(buzzer_pin, 0);
+
   // Wire.begin();
   Serial.begin(115200); // Настраиваем вывод отладки
-  //delay(500);           // пауза небольшая
+  // delay(500);           // пауза небольшая
   Serial.print("AutoSam Version ");
   Serial.println(VER);
 
@@ -38,8 +38,6 @@ void setup0()
     sens3[f] = EEPROM.read(sens3_addr + f);
   }
   */
- 
-
 
   WiFiManager wifiManager; // Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети.
@@ -47,7 +45,6 @@ void setup0()
   // модуль запускается в режиме AP (точки доступа).
   // Доступ к настройкам по адресу http://192.168.4.1
 
-  
   wifiManager.autoConnect("AutoSamAP"); // задаём имя новой WiFi сети без пароля
   // wifiManager.autoConnect("AutoSamAP", "password"); // задаём имя новой WiFi сети c паролем (минимум 8 символов!)
   Serial.println("Connected! :)"); // если подключение произошло, сообщаем
@@ -55,7 +52,6 @@ void setup0()
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
   WiFi.hostname("HOSTNAME");
-
 
   delay(500);
 
@@ -67,10 +63,11 @@ void setup0()
   telnetServer.setNoDelay(true);
   Serial.println("Please connect Telnet Client, exit with ^] and 'quit'");
 
-
   ds_sensors.requestTemp();
-  //sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
-  //sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
+  ds_sensors.setResolution(12);
+  
+  // sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
+  // sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
   /*
                                                  // Время преобразования от точности
                                                  12 бит   | 750 мс 0.0625
@@ -96,7 +93,7 @@ void setup0()
     bme.writeOversamplingTemperature(BMx280MI::OSRS_T_x16);
   }
 
-    Serial.println("OTA start");
+  Serial.println("OTA start");
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
   // Hostname defaults to esp8266-[ChipID]
@@ -159,5 +156,3 @@ void setup0()
   tone(buzzer_pin, 500, 100);
 
 } // void setup
-
-#pragma once
