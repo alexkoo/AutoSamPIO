@@ -13,8 +13,8 @@ void HTTP_Init(void) // функция инициализации HTTP
   HTTP.begin();                        // Запускаем HTTP сервер
 }
 
-void handleSetForm()
-{ // функция изменения настроек с web страницы
+void handleSetForm() // функция изменения настроек с web страницы
+{ 
 
   autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
   EEPROM_Write(autosam_mode_addr, autosam_mode);
@@ -153,10 +153,10 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"AS\":\"" + String(auto_status);
   //json += "\",\"FM\":\"" + String(free_mem);
   // SETTINGS
-  json += "\",\"MIT\":\"" + String(min_hot_temp);
-  json += "\",\"MST\":\"" + String(max_steam_temp);
-  json += "\",\"MTT\":\"" + String(max_tank_temp);
-  json += "\",\"HR\":\"" + String(heating_rate);
+  json += "\",\"MIT\":\"" + String(min_hot_temp, 1);
+  json += "\",\"MST\":\"" + String(max_steam_temp, 1);
+  json += "\",\"MTT\":\"" + String(max_tank_temp, 1);
+  json += "\",\"HR\":\"" + String(heating_rate, 0);
   //json += "\",\"VS\":\"" + String(readValve());
   json += "\",\"ADDR\":\"" + String(addr_str);
    json += "\"}";                     // не забудем закрыть фигурную скобку!
