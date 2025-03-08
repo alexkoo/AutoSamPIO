@@ -27,8 +27,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<a href="index.htm">Работа     </a>
-					<a href="settings.htm" target="blank">      Настройки </a>
+					<a href="index.htm">Работа </a>
+					<a href="settings.htm" target="blank"> Настройки </a>
 				</td>
 
 				<td align="right">
@@ -147,23 +147,26 @@
 		<table class="details">
 			<tr>
 				<td align="right">Текущее атм. давление, мм рт. ст.</td>
-				<td align="left"><input type="submit" id="APRESS2" value="??" size="8"></td>
+				<td align="left"><output id="APRESS2" value="??" size="8"></td>
 				<td align="right">Комнатная температура</td>
-				<td align="left"><input type="submit" id="AIRTEMP" value="??" size="8"></td>
+				<td align="left"><output id="AIRTEMP" value="??" size="8"></td>
 
 			</tr>
 			<tr>
 				<td align="right">АД в начале работы, мм рт. ст.</td>
 				<td align="left"><output id="APRESS1"></td>
-				<td align="right">Свободная память</td>
+					<td></td> <td></td>
+	<!--   <td align="right">Свободная память</td>
 				<td align="left"><output id="MEMFREE"></td>
+					  -->
+				
 			</tr>
 		</table>
 		<table class="details">
 			<caption>Управление клапаном отбора</caption>
 			<tr>
-				<td align="center"><input type="submit" name="open" value=" ОТКРЫТЬ " onclick="sendbutton(6);"></td>
-				<td align="center"><input type="submit" id="VALVE" value="??" size="8"></td>
+				<td align="center"><input type="submit" name="open" value=" ОТКРЫТЬ " onclick="sendbutton(6);"></td> 
+				<!--   <td align="center"><input type="submit" id="VALVE" value="??" size="8"></td>   -->
 				<td align="center"><input type="submit" name="close" value=" ЗАКРЫТЬ " onclick="sendbutton(7);"></td>
 			</tr>
 		</table>

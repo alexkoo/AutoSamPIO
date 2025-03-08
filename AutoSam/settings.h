@@ -55,9 +55,9 @@ GMedian3<float> PipeFilter;  // 20-30mc
 GMedian3<float> TankFilter;  // 6-11mc
 
 static float heating_rate_steam, heating_rate_pipe, heating_rate_tank; // скорость нагрева  гр/мин
-RingAverage<float, 4> steam_rate; // фильтр скорости нагрева < тип, выборка >
-RingAverage<float, 4> pipe_rate;  // фильтр скорости нагрева < тип, выборка >
-RingAverage<float, 4> tank_rate;  // фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 4> steam_rate;                                      // фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 4> pipe_rate;                                       // фильтр скорости нагрева < тип, выборка >
+RingAverage<float, 4> tank_rate;                                       // фильтр скорости нагрева < тип, выборка >
 
 float atm_pressure = 754.0; // атмосферное давление текущее
 float air_temp = 20.00;     // температура окружающего воздуха
@@ -69,10 +69,10 @@ uint32_t delay_steam = 30, delay_pipe = 30;  // временная задерж�
 uint32_t valve_pause = 0;                    // минимальное время нахождения клапана в закрытом состоянии
 bool valve_auto_mode = false;                // ручное управление клапаном
 
-String auto_status = "Closed, Def"; // предупреждения
-
-uint8_t pcountsam = 0; // пауза (пред стадия)
-uint8_t countsam = 0;  // стадия процесса
+String auto_status = "990000"; //(status_process) (status_auto) (status_valve) (autosam_mode) предупреждения
+uint8_t status_process = 0;  // 0 начало 1 бак нагревается 2  бак нагрет 3 нагрев узла 4 узел нагревается!! 5 узел нагрет 6 отбор хвостов 7 конец отбора
+uint8_t status_auto = 0;     // 0 man 1auto, steam 2 auto, pipe
+uint8_t status_valve = 0;    // 0 close 1 open
 
 //**************************************************************************************************//Прочее
 uint8_t debug = 1; // Редим отладки: 0 выкл 1-время выполнения
@@ -81,4 +81,4 @@ uint32_t debug_time_start, debug_time_stop, debug_time;
 uint32_t free_mem;                      /// память
 uint32_t timeloop_start, timeloop_stop; // отладка время выполнения
 
-bool valve_invert = true;               // true  NC false NO
+bool valve_invert = true; // true  NC false NO

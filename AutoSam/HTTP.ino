@@ -47,14 +47,17 @@ void handleButton()
   {
     valve_auto_mode = false;
     digitalWrite(valve_pin, ON);
-    auto_status = "Opened, Man";
+    status_auto = 0;  
+    status_valve = 1;
+
     beep();
   }
   if (button_state == 7) // если передан номер кнопки 7 "Закрыть"
   {
     valve_auto_mode = false;
     digitalWrite(valve_pin, OFF); // выключаем клапан
-    auto_status = "Closed, Man";
+    status_auto = 0;  
+    status_valve = 0;
     beep();
   }
   if (button_state == 41)
@@ -125,7 +128,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\"TIME\":\"" + String(CurrentTime());    // кавычки экранируются!
   json += "\",\"RTIM\":\"" + String(millis2time()); // только 2 символа
   json += "\",\"VER\":\"" + String(VER);
-  json += "\",\"MOD\":\"" + String(autosam_mode);
+  //json += "\",\"MOD\":\"" + String(autosam_mode);
   //head
   json += "\",\"ST\":\"" + String(steam_temp);
   json += "\",\"SF\":\"" + String(steam_temp_alc_fl);
@@ -145,16 +148,16 @@ void handleData() // функция передачи файла data.json кли
 
   json += "\",\"STS\":\"" + String(set_temp_steam);
   json += "\",\"STP\":\"" + String(set_temp_pipe);
-  json += "\",\"AP\":\"" + String(atm_pressure);
-  json += "\",\"AT\":\"" + String(air_temp);
+  json += "\",\"AP\":\"" + String(atm_pressure, 1);
+  json += "\",\"AT\":\"" + String(air_temp, 1);
   json += "\",\"AS\":\"" + String(auto_status);
-  json += "\",\"FM\":\"" + String(free_mem);
+  //json += "\",\"FM\":\"" + String(free_mem);
   // SETTINGS
   json += "\",\"MIT\":\"" + String(min_hot_temp);
   json += "\",\"MST\":\"" + String(max_steam_temp);
   json += "\",\"MTT\":\"" + String(max_tank_temp);
   json += "\",\"HR\":\"" + String(heating_rate);
-  json += "\",\"VS\":\"" + String(readValve());
+  //json += "\",\"VS\":\"" + String(readValve());
  
    json += "\"}";                     // не забудем закрыть фигурную скобку!
   HTTP.send(200, "text/json", json); // передаём json

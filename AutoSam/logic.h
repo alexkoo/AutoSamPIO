@@ -2,67 +2,72 @@
 #pragma once
 #include "header.h"
 
-void samogon()
+void temp_status()
 {
     // Управление самогонным аппаратом
 
-    auto_status = "Дистилляция";
-    if (tank_temp <= 35 && pcountsam == 0)
+    uint8_t process_status_prev = 0;
+
+    if (tank_temp < 35)
     {
-        auto_status = "Не запущено";
-        countsam = 0;
-    }
-    if (tank_temp > 35 && tank_temp < min_hot_temp)
-    {
-        auto_status = "Куб нагревается";
-        countsam = 1;
-    }
-    if (tank_temp >= min_hot_temp && steam_temp < min_hot_temp)
-    {
-        auto_status = "Сухопарник нагревается";
-        countsam = 2;
-    }
-    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && heating_rate_steam >= heating_rate)
-    {
-        auto_status = "Отбор голов";
-        countsam = 3;
-    }
-    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && heating_rate_steam < heating_rate)
-    {
-        auto_status = "Отбор тела";
-        countsam = 4;
-    }
-    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 45)
-    {
-        auto_status = "Отбор хвостов";
-        countsam = 5;
-    }
-    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 30)
-    {
-        auto_status = "Конец отбора";
-        countsam = 6;
+        status_process = 0;
     }
 
-    if (pcountsam != countsam)
+    if (tank_temp >= 35 && tank_temp < min_hot_temp)
+    {
+        status_process = 1;
+    }
+    if ((tank_temp >= min_hot_temp && (steam_temp || pipe_temp) < min_hot_temp && (heating_rate_steam || heating_rate_pipe) < heating_rate))
+    {
+        status_process = 2;
+    }
+    if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) < min_hot_temp && (heating_rate_steam || heating_rate_pipe) >= heating_rate)
+    {
+        status_process = 3;
+    }
+
+    if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && (heating_rate_steam || heating_rate_pipe) >= heating_rate)
+    {
+        status_process = 4;
+    }
+
+    if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && (heating_rate_steam || heating_rate_pipe) < heating_rate)
+    {
+        status_process = 5;
+    }
+
+    if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && steam_temp_alc_st < 45)
+    {
+        status_process = 6;
+    }
+    if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 20)
+    {
+        status_process = 7;
+    }
+
+    if (process_status_prev != status_process)
     {
         tone(buzzer_pin, 400, 200);
-        pcountsam = countsam;
-        telnet.println(" Статус дистилляции: ");
-        telnet.print(auto_status);
+
+        // telnet.println(" process_status ");
+        // telnet.print(process_status);
+        if (status_process = (3 || 4))
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                tone(buzzer_pin, 400, 200);
+            }
+        }
+
+        process_status_prev = status_process;
     }
 
-} //void samogon
+} // void samogon
 
 //***********************************************************************************************************************
 
 void rectification()
 {
-    /*
-    if (set_temp_steam == 0 && set_temp_pipe == 0) // если  обе уставки равны 0 (ручное управление)
-    {
-        valve_auto_mode = false;
-    }
-    */
 
     if (valve_auto_mode == true) // Управляем клапаном отбора по температуре пара перед дефлегматором steam_temp
     {
@@ -75,7 +80,8 @@ void rectification()
                     if (steam_temp < set_temp_steam)
                     {
                         digitalWrite(valve_pin, ON); // если температура ниже уставки, включаем клапан (лог. 0)
-                        auto_status = "Opened, Auto, Steam";
+                        status_auto = 1;
+                        status_valve = 1;
                         beep();
                     }
                     else
@@ -87,7 +93,8 @@ void rectification()
                 if (steam_temp >= set_temp_steam) // если температура выше уставки,
                 {
                     digitalWrite(valve_pin, OFF); // выключаем клапан отбора
-                    auto_status = "Closed, Auto, Steam";
+                    status_auto = 1;
+                    status_valve = 0;
                     beep();
                     valve_pause = millis(); // заводим таймер
                 }
@@ -105,7 +112,8 @@ void rectification()
                     if (pipe_temp < set_temp_pipe)
                     {
                         digitalWrite(valve_pin, ON); // если температура ниже уставки, включаем клапан (лог. 0)
-                        auto_status = "Opened, Auto, Pipe";
+                        status_auto = 2;
+                        status_valve = 1;
                         beep();
                     }
                     else
@@ -117,8 +125,8 @@ void rectification()
                 if (pipe_temp >= set_temp_pipe) // если температура выше уставки,
                 {
                     digitalWrite(valve_pin, OFF); // выключаем клапан отбора
-                    auto_status = "Closed, Auto, Pipe";
-
+                    status_auto = 2;
+                    status_valve = 0;
                     beep();
 
                     valve_pause = millis();
@@ -128,5 +136,3 @@ void rectification()
     }
 
 } // void rectification
-
-

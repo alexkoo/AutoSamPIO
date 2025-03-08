@@ -4,7 +4,8 @@ var allData;
 var modeVisible = 0;
 var loaded = 0;
 var indexLoad = 1; // индикатор что загружен индекс
-var valveStatus;
+//var valveStatus;
+var autoStatus;
 
 function process() {
   //цикл выполнения
@@ -12,13 +13,14 @@ function process() {
     xmlHttp.open("PUT", "/data.json", true);
     xmlHttp.send(null);
     xmlHttp.onreadystatechange = handleServerResponse;
-      mode_inf();
+    mode_inf();
     if (indexLoad == 1) {
-       valve_status();
+      //valve_status();
       invis();
+      auto_status();
 
-    } 
-    
+    }
+
   }
   setTimeout("process()", 1000);
 }
@@ -76,9 +78,10 @@ function handleServerResponse() {
       document.getElementById("SETTEMPP").value = allData.STP;
       document.getElementById("APRESS2").value = allData.AP;
       document.getElementById("AIRTEMP").value = allData.AT;
-      document.getElementById("AUTOSTATUS").value = allData.AS;
-      document.getElementById("MEMFREE").value = allData.FM;
-      valveStatus = allData.VS;
+      //document.getElementById("AUTOSTATUS").value = allData.AS;
+      //document.getElementById("MEMFREE").value = allData.FM;
+      autoStatus = allData.AS;
+      //valveStatus = allData.VS;
       //modeVisible = allData.MOD;
 
     }
@@ -87,6 +90,7 @@ function handleServerResponse() {
   }
 }
 
+/*
 function mode_inf() {
   if (modeVisible = 1) {
     document.getElementById("MODEI").value = " Рект ";
@@ -99,7 +103,36 @@ function mode_inf() {
   }
 }
 
+*/
 
+function mode_inf() {
+  st_mode = String(autoStatus)[4];
+  st_mode_arr = [" ", "Рект", "Дист", "Погода"]
+  modeVisible = st_mode_arr[st_mode];
+  document.getElementById("MODEI").value = modeVisible;
+}
+
+
+function auto_status() {
+
+  st_proc = String(autoStatus)[2];
+  st_auto = String(autoStatus)[3];
+  st_valve = String(autoStatus)[4];
+
+  st_proc_arr = [" ", "Бак нагревается  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "конец отбора ",];
+  st_auto_arr = ["MAN ", "Auto  Pipe ", "Auto Steam "];
+  st_valve_arr = ["Closed ", "Open "];
+
+  st_proc_val = st_proc_arr[st_proc];
+  st_auto_val = st_auto_arr[st_auto];
+  st_valve_val = st_valve_arr[st_valve];
+
+  status_str = st_proc_val + st_valve_val + st_auto_val;
+
+  document.getElementById("AUTOSTATUS").value = status_str;
+
+}
+/*
 function valve_status() {
   if (valveStatus == 1) {
     document.getElementById("VALVE").value = "Открыт";
@@ -108,6 +141,7 @@ function valve_status() {
   }
 }
 
+*/
 function load_once() {
   if (loaded == 1) {
     document.getElementById("MINT").value = allData.MIT;

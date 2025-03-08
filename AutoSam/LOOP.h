@@ -5,7 +5,7 @@ void loop0()
 {
   if (debug >= 1)
     timeloop_start = micros();
-  free_mem = (ESP.getFreeHeap()); // свободная память
+  //free_mem = (ESP.getFreeHeap()); // свободная память
 
   ArduinoOTA.handle();
   HTTP.handleClient();
@@ -114,12 +114,12 @@ void loop0()
   {
   case 1:
     rectification(); // логика ректификации
+    temp_status();
     lcdRect();       // вызываем функцию вывода на дисплей 60mc
     lcd_max_num = 2;
-
     break;
   case 2:
-    samogon(); // логика самогонного аппарата
+    temp_status(); // логика самогонного аппарата
     lcdSam();  // вызываем функцию вывода на дисплей
     lcd_max_num = 1;
     break;
@@ -129,7 +129,19 @@ void loop0()
     break;
   }
 
+
+      auto_status = 99; 
+      auto_status +=status_process;
+      auto_status +=status_auto;
+      auto_status += status_valve;
+      auto_status += autosam_mode;
+    // telnet.println(auto_status);
+     
+
   if (debug >= 1)
     timeloop_stop = micros() - timeloop_start;
+
+      
+
 
 } // loop0
