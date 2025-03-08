@@ -3,7 +3,10 @@
 
 // Настройки
 
-const String VER = "1.5.1"; // Версия
+String addr_str = "str";
+
+
+const String VER = "1.6.1"; // Версия
 
 // wifi
 #ifndef STASSID

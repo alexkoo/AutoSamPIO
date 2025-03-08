@@ -158,7 +158,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"MTT\":\"" + String(max_tank_temp);
   json += "\",\"HR\":\"" + String(heating_rate);
   //json += "\",\"VS\":\"" + String(readValve());
- 
+  json += "\",\"ADDR\":\"" + String(addr_str);
    json += "\"}";                     // не забудем закрыть фигурную скобку!
   HTTP.send(200, "text/json", json); // передаём json
 }

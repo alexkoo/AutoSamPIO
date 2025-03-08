@@ -148,6 +148,7 @@ function load_once() {
     document.getElementById("MAXT").value = allData.MTT;
     document.getElementById("MAXS").value = allData.MST;
     document.getElementById("HEATR").value = allData.HR;
+    document.getElementById("ADDR").value = allData.ADDR;
   } else setTimeout(load_once, 1000);
 }
 

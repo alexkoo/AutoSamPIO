@@ -163,7 +163,8 @@ void findDS()
   {
 
   telnet.print("address: ");
-  static String addr_str = gds::addressToString(addr_64);
+  addr_str = gds::addressToString(addr_64);
+  //static String addr_str = gds::addressToString(addr_64);
   telnet.print(addr_str);
   }
   else
