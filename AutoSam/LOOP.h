@@ -29,12 +29,10 @@ void loop0()
   uint32_t ds_timer; // таймер опроса датчиков
   uint32_t ds_time = (millis() - ds_timer);
   if (ds_time > ds_time_set)
-  {
+  {                                          //   DS18 timer
 
     ds_timer = millis();
 
-    // DEBSTART
-    // DEBSTOP
 
     float steam_temp_nc, pipe_temp_nc, tank_temp_nc, water_temp_nc; // температуры сырые
     yield();                                                        // прервание для работы wifi
@@ -85,9 +83,9 @@ void loop0()
     //}
 
     // вычисление скорости отбора
-
-    static uint32_t heating_rate_timer;                           // таймер скорости изменения deltaT
-    static float steam_temp_prev, pipe_temp_prev, tank_temp_prev; // предыдущая температура
+   
+    uint32_t heating_rate_timer;                           // таймер скорости изменения deltaT
+    float steam_temp_prev, pipe_temp_prev, tank_temp_prev; // предыдущая температура
 
     if (millis() - heating_rate_timer >= ds_time)
     {
@@ -106,9 +104,9 @@ void loop0()
       tank_temp_prev = tank_temp;
     }
 
-    telnet.print("ds_time");
-    telnet.println(ds_time);
-  }
+    //telnet.print("ds_time");
+    //telnet.println(ds_time);
+  } //DS18 timer
 
   yield(); // прервание для работы wifi
 

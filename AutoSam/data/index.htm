@@ -27,8 +27,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<a href="index.htm">Работа </a>
-					<a href="settings.htm" target="blank"> Настройки </a>
+					<a href="index.htm">Работа     </a>
+					<a href="settings.htm" target="blank">      Настройки </a>
 				</td>
 
 				<td align="right">
@@ -49,31 +49,33 @@
 
 
 	<div>
+
+
+
+
 		<table class="details">
 			<caption>Температура в узле отбора</caption>
 			<tr>
 				<td align="right">Текущее значение, &#176C </td>
 				<td align="left"><input type="submit" class="inp" id="STEAMTEMP" value="??"></td>
 				<td align="right">Уставка, &#176C/%об</td>
-				<td align="center"><output id="SETTEMPS">/<output id="SETSTEAMS"></output> </td>
+				<td align="center"> <span><output id="SETTEMPS"> </span>/<span> <output id="SETSTEAMS"> </span></td>
+
+
 			</tr>
 			<tr>
 				<td align="right">Время задержки, c</td>
 				<td align="left"><input type="number" class="inp" id="DELAY_S" value="30" min="30" max="300" step="30"
 						c></td>
 				<td align="right">Дельта, &#176C</td>
-				<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0" max="1"
+				<td align="center"><input type="number" class="inp" id="DELTA_S" value="0.0" min="0" max="100"
 						step="0.05"></td>
 
 
 			</tr>
 			<tr>
 				<td align="right">Конц. в жидкости / парах, %об</td>
-				<td align="left">
-					<table>
-						<td align="right"><output id="STEAMTEMPF"></td>
-						<td align="left">/ <output id="STEAMTEMPS"></td>
-					</table>
+				<td align="left"> <span> <output id="STEAMTEMPF"></span> <span> <output id="STEAMTEMPS"></output></span>
 				</td>
 				<td align="right">&#916 S, &#176/мин <output id="DELTAS"></td>
 				<td align="center"><input type="submit" name="Set" value=" ЗАДАТЬ " onclick="sendDelS()"></td>
@@ -139,7 +141,7 @@
 			<tr>
 				<td align="left">Статус</td>
 				<td align="left"><input type="submit" id="AUTOSTATUS" value="??" size="8"></td>
-			
+
 			</tr>
 		</table>
 		<table class="details">

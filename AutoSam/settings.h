@@ -54,9 +54,7 @@ GMedian3<float> SteamFilter; // указываем тип данных в <>
 GMedian3<float> PipeFilter;  // 20-30mc
 GMedian3<float> TankFilter;  // 6-11mc
 
-float heating_rate_steam, heating_rate_pipe, heating_rate_tank; // скорость нагрева  гр/мин
-
-
+static float heating_rate_steam, heating_rate_pipe, heating_rate_tank; // скорость нагрева  гр/мин
 RingAverage<float, 4> steam_rate; // фильтр скорости нагрева < тип, выборка >
 RingAverage<float, 4> pipe_rate;  // фильтр скорости нагрева < тип, выборка >
 RingAverage<float, 4> tank_rate;  // фильтр скорости нагрева < тип, выборка >
