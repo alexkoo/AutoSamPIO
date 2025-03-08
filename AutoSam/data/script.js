@@ -1,7 +1,7 @@
 ﻿//<!--
 var xmlHttp = createXmlHttpObject(); //запрос
 var allData;
-var modeVisible = 0;
+var st_mode = 0;
 var loaded = 0;
 var indexLoad = 1; // индикатор что загружен индекс
 //var valveStatus;
@@ -13,12 +13,12 @@ function process() {
     xmlHttp.open("PUT", "/data.json", true);
     xmlHttp.send(null);
     xmlHttp.onreadystatechange = handleServerResponse;
-    mode_inf();
+
     if (indexLoad == 1) {
       //valve_status();
       invis();
       auto_status();
-
+      mode_inf();
     }
 
   }
@@ -55,7 +55,7 @@ function handleServerResponse() {
     document.getElementById("CURRENTTIME").value = allData.TIME;
     document.getElementById("RUNTIME").value = allData.RTIM;
     document.getElementById("VERSION").value = allData.VER;
-    modeVisible = Number(allData.MOD);
+    st_mode = Number(allData.MOD);
     //document.getElementById("MODEI").value = allData.MOD;
     //dist
     if (indexLoad == 1) {
@@ -106,10 +106,10 @@ function mode_inf() {
 */
 
 function mode_inf() {
-  st_mode = String(autoStatus)[4];
+  st_mode = String(autoStatus)[5];
   st_mode_arr = [" ", "Рект", "Дист", "Погода"]
-  modeVisible = st_mode_arr[st_mode];
-  document.getElementById("MODEI").value = modeVisible;
+  st_mode_val = st_mode_arr[st_mode];
+  document.getElementById("MODEI").value = st_mode_val;
 }
 
 
@@ -189,7 +189,7 @@ function sendbutton(button) {
 function invis() {
   //скрывет лишнее поле 
 
-  if (modeVisible == 2) {
+  if (st_mode == 2) {
     document.getElementById("rect_table").style.display = "none";
   }
 
