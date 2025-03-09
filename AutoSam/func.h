@@ -104,9 +104,12 @@ float corrTemp(float temp) // корректировка по давлению h
   {
     temp += (760 - atm_pressure) * 0.04; // приведение температуры к 760ммрт, при падении давления 1 мм относительно 760 температура падает на  0.04С
   }
-  temp0 = round(temp * 20) / 20; // округление до 0.5
+  temp0 = round(temp * 20) / 20; // округление до 0.05
   return temp0;
 }
+
+
+
 
 float concFluid(float t) // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html //70-90mc
 {
@@ -155,6 +158,16 @@ void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (�
   EEPROM.commit();
 }
 
+
+void EEPROM_Reset() {
+  for (int i = 0; i < 512; i++) {
+    EEPROM.write(i, 0);
+  }
+  EEPROM.commit();
+  beep();
+  delay(500);
+}
+
 static uint64_t addr_64 = 0 ;
 static String addr_str = "0x0000000000000000";
 
@@ -179,7 +192,7 @@ void findDS()
 
 void saveDS()
 {
-  ds_address[1] = addr_64;
+  ds_address[ds_index] = addr_64;
 
 }
 

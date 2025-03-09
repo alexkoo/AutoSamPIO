@@ -54,20 +54,53 @@
 
             <tr>
                 <td align="left"> <input type="button" value=" Reset " onclick="sendbutton(42)"> </td>
-                <td align="left"> <input type="button" value=" Обновить " onclick="load_once()"> </td>
+                <td align="left">
+                    <span><input type="button" value=" Обновить " onclick="load_once()"> </span>
+                    <span> <input type="submit" name="Set" value=" Сохранить " onclick="send_form_settings()"></span>
+                </td>
+
 
             </tr>
+
+        </table>
+<br>
+        <table class="details">
             <tr>
                 <td align="left">
-                    <span><input type="button" value=" get_addr" onclick="sendbutton(41);"> </span>
+
+                    <span> </span>
+                    <span><input type="button" value="get_addr" onclick="sendbutton(41);"> </span>
                     <span> <output id="ADDR"></output> </span>
-                    <span> <input type="button" value=" set " onclick="sendbutton(43)"> </span>
+
+
                 </td>
-                <td align="left"> <input type="submit" name="Set" value=" Сохранить " onclick="send_form_settings()">
+
+                <td>
+
+                    <span>
+                        <form name="form_index">
+                            <select name="DS_IND">
+                                <option> </option>
+                                <option value="0">Steam</option>
+                                <option value="1">Pipe</option>
+                                <option value="2">Tank</option>
+                                <option value="3">Water</option>
+                            </select>
+                            <input type="button" value="Set" onclick="send_form_index()">
+                        </form>
+                    </span>
+
+                <td>
+
+
+                    <span>
+                        <input type="button" value="EEPROM reset" onclick="sendbutton(43)">
+                    </span>
+
                 </td>
+
             </tr>
         </table>
-
 
 
 

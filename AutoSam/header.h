@@ -76,6 +76,8 @@ uint8_t sensor_address[][8] = {
 MicroDS18B20<ds_pin, DS_ADDR_MODE, 4> ds_; // пин, (DS_ADDR_MODE) что будем работать с адресацией. Сам адрес передадим позже (в setAddress()), количество датчиков
 */
 
+
+uint8_t ds_index;
 uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
     0xDE020992460AA828,
     0x3A00189843120F28,

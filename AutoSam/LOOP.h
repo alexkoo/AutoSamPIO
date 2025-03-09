@@ -63,7 +63,7 @@ void loop0()
     float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
     float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
     float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
-    water_temp = water_temp_nc;
+    water_temp = round(water_temp_nc * 10) / 10; // округление до 0.1
 
     // поправки на давление и ручные 1-2mc
     steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет

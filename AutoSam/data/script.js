@@ -107,7 +107,7 @@ function mode_inf() {
 
 function mode_inf() {
   st_mode = String(autoStatus)[5];
-  st_mode_arr = [" ", "Рект", "Дист", "Погода"]
+  st_mode_arr = ["ERR", "Рект", "Дист", "Погода"]
   st_mode_val = st_mode_arr[st_mode];
   document.getElementById("MODEI").value = st_mode_val;
 }
@@ -152,14 +152,20 @@ function load_once() {
   } else setTimeout(load_once, 1000);
 }
 
+
 function send_form_mode() {
   //отправка значения статуса
-  var autosam_mode = document.form1.MODE.value;
-  var s_autosam_mode = "/SetForm?autosam_mode_h=" + autosam_mode;
-  server = s_autosam_mode;
+  var autosam_mode = document.form_mode.MODE.value;
+  server = "/SetFormMode?autosam_mode_h=" + autosam_mode;
   request_new(server);
-  //setTimeout(load_once, 5000);
 }
+function send_form_index() {
+  var ds_index = document.form_index.DS_IND.value;
+  server = "/SetFormIndex?ds_index=" + ds_index;
+  request_new(server);
+}
+
+
 
 function send_form_settings() {
   var min_hot_temp = document.getElementById("MINT").value;

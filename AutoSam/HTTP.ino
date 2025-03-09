@@ -7,6 +7,8 @@ void HTTP_Init(void) // функция инициализации HTTP
   //Выполнение команды из браузера
   HTTP.on("/button", handleButton); // обрашение к кнопкам через web интерфейс
   HTTP.on("/SetForm", handleSetForm);
+  HTTP.on("/SetFormMode", handleSetFormMode);
+  HTTP.on("/SetFormIndex", handleSetFormIndex);
   HTTP.on("/DelS", handleDeltaSteam); // обрашение к уставке steam_temp через web интерфейс
   HTTP.on("/DelP", handleDeltaPipe);  // обрашение к уставке pipe_temp(2/3) через web интерфейс
   HTTP.on("/data.json", handleData);   // формирование json файла для передачи данных в web интерфейс
@@ -14,11 +16,28 @@ void HTTP_Init(void) // функция инициализации HTTP
   HTTP.begin();                        // Запускаем HTTP сервер
 }
 
+
+
+void handleSetFormMode()
+{
+  autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
+  EEPROM_Write(autosam_mode_addr, autosam_mode);
+
+}
+
+void handleSetFormIndex()
+{
+    ds_index = HTTP.arg("ds_index").toInt(); // получаем от клиента строку с режимом
+  saveDS();
+}
+
 void handleSetForm() // функция изменения настроек с web страницы
 { 
 
-  autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
-  EEPROM_Write(autosam_mode_addr, autosam_mode);
+
+
+
+
 
   min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat();
   EEPROM_Write(min_hot_temp_addr, min_hot_temp);
@@ -69,9 +88,10 @@ void handleButton()
   { // если передан номер кнопки 42 "reset"
     ESP.restart();
   }
-  if (button_state == 43)
-  { // если передан номер кнопки 43 "сохранить датчик"
-    saveDS();
+  if (button_state == 43) // если передан номер кнопки 43 "EEPROM_Reset"
+  { 
+    EEPROM_Reset();
+    ESP.restart();
   }
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ
@@ -144,7 +164,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"TT\":\"" + String(tank_temp);
   json += "\",\"TF\":\"" + String(tank_temp_alc_fl);
   json += "\",\"TS\":\"" + String(tank_temp_alc_st);
-  json += "\",\"WT\":\"" + String(water_temp);
+  json += "\",\"WT\":\"" + String(water_temp, 1);
   json += "\",\"SSS\":\"" + String(set_steam_temp_alc_st);
   
   json += "\",\"HS\":\"" + String(heating_rate_steam);

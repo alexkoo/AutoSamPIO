@@ -6,7 +6,7 @@
 
 
 
-const String VER = "1.6.1"; // Версия
+const String VER = "1.6.2"; // Версия
 
 // wifi
 #ifndef STASSID
