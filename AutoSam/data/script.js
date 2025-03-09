@@ -181,16 +181,15 @@ function send_form_settings() {
 }
 
 function sendbutton(button) {  //отправка значений кнопок
-  if (button = (42 || 43))
-  var result = confirm('Подтвердите действие');
-  if (!result) {
-        return;
-  }
+  //if (button = (42 || 43))
+ // var result = confirm('Подтвердите действие');
+  //if (!result) {
+       // return;
+  //}
   var server = "/button?state=" + button;
   request_new(server);
   if (button = 41) setTimeout(load_once, 3000);
-  i
-}
+  }
 
 function invis() //скрывет лишнее поле 
 {

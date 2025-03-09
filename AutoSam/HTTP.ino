@@ -21,7 +21,7 @@ void HTTP_Init(void) // функция инициализации HTTP
 void handleSetFormMode()
 {
   autosam_mode = HTTP.arg("autosam_mode_h").toInt(); // получаем от клиента строку с режимом
-  EEPROM_Write(autosam_mode_addr, autosam_mode);
+  EEPROM.put(autosam_mode_addr, autosam_mode);
 
 }
 
@@ -35,24 +35,20 @@ void handleSetForm() // функция изменения настроек с we
 { 
 
 
-
-
-
-
   min_hot_temp = HTTP.arg("min_hot_temp_h").toFloat();
-  EEPROM_Write(min_hot_temp_addr, min_hot_temp);
+  EEPROM.put(min_hot_temp_addr, min_hot_temp);
 
   max_tank_temp = HTTP.arg("max_tank_temp_h").toFloat();
-  EEPROM_Write(max_tank_temp_addr, max_tank_temp);
+  EEPROM.put(max_tank_temp_addr, max_tank_temp);
 
   max_steam_temp = HTTP.arg("max_steam_temp_h").toFloat();
-  EEPROM_Write(max_steam_temp_addr, max_steam_temp);
+  EEPROM.put(max_steam_temp_addr, max_steam_temp);
 
   heating_rate = HTTP.arg("heating_rate_h").toFloat();
-  EEPROM_Write(heating_rate_addr, heating_rate);
+  EEPROM.put(heating_rate_addr, heating_rate);
 
-  // press_correction = HTTP.arg("press_correction").toInt();
-  // EEPROM_write(press_corr_addr, press_correction);
+  press_correction = HTTP.arg("press_correction").toInt();
+  EEPROM.put(press_corr_addr, press_correction);
 
   HTTP.send(200, "text/plain", "OK"); // передаём ответ
   EEPROM.commit();
@@ -181,7 +177,7 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"MIT\":\"" + String(min_hot_temp, 1);
   json += "\",\"MST\":\"" + String(max_steam_temp, 1);
   json += "\",\"MTT\":\"" + String(max_tank_temp, 1);
-  json += "\",\"HR\":\"" + String(heating_rate, 0);
+  json += "\",\"HR\":\"" + String(heating_rate, 1);
   //json += "\",\"VS\":\"" + String(readValve());
   json += "\",\"ADDR\":\"" + String(addr_str);
    json += "\"}";                     // не забудем закрыть фигурную скобку!

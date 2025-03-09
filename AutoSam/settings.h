@@ -6,7 +6,7 @@
 
 
 
-const String VER = "1.6.2"; // Версия
+const String VER = "1.7.0"; // Версия
 
 // wifi
 #ifndef STASSID
@@ -25,15 +25,15 @@ const uint8_t min_hot_temp_addr = 20;
 const uint8_t heating_rate_addr = 30;
 const uint8_t max_tank_temp_addr = 40;
 const uint8_t max_steam_temp_addr = 50;
-const uint8_t sens0_addr = 60;
-const uint8_t sens1_addr = 70;
-const uint8_t sens2_addr = 80;
-const uint8_t sens3_addr = 90;
+const uint8_t steam_addr = 60;
+const uint8_t pipe_addr = 70;
+const uint8_t tank_addr = 80;
+const uint8_t water_addr = 90;
 
 uint8_t autosam_mode = 1;     // режим работы 1 ректификация 2 дистилляция 3 погода
 uint8_t press_correction = 1; // коррекция давления
 float min_hot_temp = 70.0;    // мин температура, при которой элемент считается горячим
-float heating_rate = 1;       // заданная скорость нагрева, гр/мин
+float heating_rate = 5.5;       // заданная скорость нагрева, гр/мин
 float max_tank_temp = 95.0;   // макс температура в кубе
 float max_steam_temp = 90.0;  // макс температура  пара
 

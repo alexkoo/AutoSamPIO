@@ -77,13 +77,23 @@ MicroDS18B20<ds_pin, DS_ADDR_MODE, 4> ds_; // пин, (DS_ADDR_MODE) что бу
 */
 
 
-uint8_t ds_index;
+uint8_t ds_index; // номер элемента
+uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
+    0x0000000000000000,
+    0x0000000000000000,
+    0x0000000000000000,
+    0x0000000000000000,
+};
+/*
+
 uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
     0xDE020992460AA828,
     0x3A00189843120F28,
     0x2F020F924697A828,
     0x0000000000000000,
 };
+*/
+
 GyverDS18Single ds_single(ds_pin);  
 GyverDS18Array ds_sensors(ds_pin, ds_address, 4);
 OneWire ds_reset(ds_pin);

@@ -6,4 +6,6 @@ void handleDeltaPipe();
 void handleButton();
 void handleSetForm();
 void handleData();
+void handleSetFormMode();
+void handleSetFormIndex();
 

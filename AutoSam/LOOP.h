@@ -3,9 +3,10 @@
 
 void loop0()
 {
+
   if (debug >= 1)
     timeloop_start = micros();
-  //free_mem = (ESP.getFreeHeap()); // свободная память
+  // free_mem = (ESP.getFreeHeap()); // свободная память
 
   ArduinoOTA.handle();
   HTTP.handleClient();
@@ -15,7 +16,7 @@ void loop0()
 
   yield(); // прервание для работы wifi
 
-  //*************************************************************************** // считываем температуры с датчиков
+  //*************************************************************************** // считываем BMX
   static uint32_t bmx_timer; // таймер опроса датчика давления
   if (millis() - bmx_timer > bmx_time_set)
   {
@@ -26,13 +27,13 @@ void loop0()
   }
   yield(); // прервание для работы wifi
 
-  uint32_t ds_timer =0 ; // таймер опроса датчиков
+  //*************************************************************************** // считываем DS
+  uint32_t ds_timer = 0; // таймер опроса датчиков
   uint32_t ds_time = (millis() - ds_timer);
   if (ds_time > ds_time_set)
-  {                                          //   DS18 timer
+  { //   DS18 timer
 
     ds_timer = millis();
-
 
     float steam_temp_nc, pipe_temp_nc, tank_temp_nc, water_temp_nc; // температуры сырые
     yield();                                                        // прервание для работы wifi
@@ -63,7 +64,7 @@ void loop0()
     float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
     float tank_temp_f = TankFilter.filtered(tank_temp_nc); //
     float pipe_temp_f = PipeFilter.filtered(pipe_temp_nc); //
-    water_temp = round(water_temp_nc * 10) / 10; // округление до 0.1
+    water_temp = round(water_temp_nc * 10) / 10;           // округление до 0.1
 
     // поправки на давление и ручные 1-2mc
     steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет
@@ -82,9 +83,9 @@ void loop0()
     set_steam_temp_alc_st = concSteam(set_temp_steam);
     //}
 
-    // вычисление скорости отбора
-   
-    uint32_t heating_rate_timer =0 ;                           // таймер скорости изменения deltaT
+    //*************************************************************************** // Скорость отбора
+
+    uint32_t heating_rate_timer = 0;                                                            // таймер скорости изменения deltaT
     float steam_temp_prev = steam_temp, pipe_temp_prev = pipe_temp, tank_temp_prev = tank_temp; // предыдущая температура
 
     if (millis() - heating_rate_timer >= ds_time)
@@ -103,10 +104,7 @@ void loop0()
       heating_rate_tank = tank_rate.filtered(heating_rate_tank);
       tank_temp_prev = tank_temp;
     }
-
-    //telnet.print("ds_time");
-    //telnet.println(ds_time);
-  } //DS18 timer
+  }
 
   yield(); // прервание для работы wifi
 
@@ -115,12 +113,12 @@ void loop0()
   case 1:
     rectification(); // логика ректификации
     temp_status();
-    lcdRect();       // вызываем функцию вывода на дисплей 60mc
+    lcdRect(); // вызываем функцию вывода на дисплей 60mc
     lcd_max_num = 2;
     break;
   case 2:
     temp_status(); // логика самогонного аппарата
-    lcdSam();  // вызываем функцию вывода на дисплей
+    lcdSam();      // вызываем функцию вывода на дисплей
     lcd_max_num = 1;
     break;
   case 3:
@@ -129,19 +127,14 @@ void loop0()
     break;
   }
 
-
-      auto_status = 99; 
-      auto_status +=status_process;
-      auto_status +=status_auto;
-      auto_status += status_valve;
-      auto_status += autosam_mode;
-    // telnet.println(auto_status);
-     
+  auto_status = 99;
+  auto_status += status_process;
+  auto_status += status_auto;
+  auto_status += status_valve;
+  auto_status += autosam_mode;
+  // telnet.println(auto_status);
 
   if (debug >= 1)
     timeloop_stop = micros() - timeloop_start;
-
-      
-
 
 } // loop0

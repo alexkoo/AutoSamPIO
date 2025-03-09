@@ -23,28 +23,25 @@ void setup0()
   lcd.print(VER);         // пишем версию ПО
 
   EEPROM.begin(512);
-  autosam_mode = EEPROM_Read(autosam_mode_addr);
-  press_correction = EEPROM_Read(press_corr_addr);
-  min_hot_temp = EEPROM_Read(min_hot_temp_addr);
-  heating_rate = EEPROM_Read(heating_rate_addr);
-  max_tank_temp = EEPROM_Read(max_tank_temp_addr);
-  max_steam_temp = EEPROM_Read(max_steam_temp_addr);
+  EEPROM.get(autosam_mode_addr, autosam_mode);
+  EEPROM.get(press_corr_addr, press_correction);
+  EEPROM.get(min_hot_temp_addr, min_hot_temp);
+  EEPROM.get(heating_rate_addr, heating_rate);
+  EEPROM.get(max_tank_temp_addr, max_tank_temp);
+  EEPROM.get(max_steam_temp_addr, max_steam_temp);
 
-  /*for (byte f = 0; f < 8; f++)
-  {
-    sens0[f] = EEPROM.read(sens0_addr + f);
-    sens1[f] = EEPROM.read(sens1_addr + f);
-    sens2[f] = EEPROM.read(sens2_addr + f);
-    sens3[f] = EEPROM.read(sens3_addr + f);
-  }
-  */
+  EEPROM.get(steam_addr, ds_address[0]);
+  EEPROM.get(pipe_addr, ds_address[1]);
+  EEPROM.get(tank_addr, ds_address[2]);
+  EEPROM.get(water_addr, ds_address[3]);
+
+
+  
+  
 
   WiFiManager wifiManager; // Включаем WiFiManager
-  // Сначала модуль пытается подключиться к существующей сети.
-  // Если не удалось подключиться, (например, неизвестны SSID и пароль),
-  // модуль запускается в режиме AP (точки доступа).
-  // Доступ к настройкам по адресу http://192.168.4.1
-
+  // Сначала модуль пытается подключиться к существующей сети. Если не удалось подключиться, (например, неизвестны SSID и пароль),
+  // модуль запускается в режиме AP (точки доступа). Доступ к настройкам по адресу http://192.168.4.1
   wifiManager.autoConnect("AutoSamAP"); // задаём имя новой WiFi сети без пароля
   // wifiManager.autoConnect("AutoSamAP", "password"); // задаём имя новой WiFi сети c паролем (минимум 8 символов!)
   Serial.println("Connected! :)"); // если подключение произошло, сообщаем
@@ -106,9 +103,6 @@ void setup0()
   // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
   // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
 
-
-
-  
   ArduinoOTA.onStart([]()
                      {
     String type;

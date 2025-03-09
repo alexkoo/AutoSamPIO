@@ -108,9 +108,6 @@ float corrTemp(float temp) // корректировка по давлению h
   return temp0;
 }
 
-
-
-
 float concFluid(float t) // Определение содержания спирта в кипящей жидкости,%об методом аппроксимации взята с форума http://labspirt.com/forum/index.php/topic,2403.15.html //70-90mc
 {
   float Ti, f;
@@ -134,33 +131,10 @@ float concSteam(float t) // Определение содержания спир
   return s;
 }
 
-//*******************************************************// eeprom
-
-
-float EEPROM_Read(int addr) // чтение данных из EEPROM (адрес)
+void EEPROM_Reset()
 {
-  byte raw[4];
-  for (byte i = 0; i < 4; i++)
-    raw[i] = EEPROM.read(addr + i);
-  float &num = (float &)raw;
-  return num;
-}
-
-void EEPROM_Write(int addr, float num) // Запись данных в EEPROM (адрес, значение)
-{
-  if (EEPROM_Read(addr) != num)
-  { // если сохраняемое отличается
-    byte raw[4];
-    (float &)raw = num;
-    for (byte i = 0; i < 4; i++)
-      EEPROM.write(addr + i, raw[i]);
-  }
-  EEPROM.commit();
-}
-
-
-void EEPROM_Reset() {
-  for (int i = 0; i < 512; i++) {
+  for (int i = 0; i < 512; i++)
+  {
     EEPROM.write(i, 0);
   }
   EEPROM.commit();
@@ -168,101 +142,56 @@ void EEPROM_Reset() {
   delay(500);
 }
 
-static uint64_t addr_64 = 0 ;
+static uint64_t addr_64 = 00000000000000000000; 
 static String addr_str = "0x0000000000000000";
 
 void findDS()
 {
   ds_reset.reset();
-   addr_64 = ds_single.readAddress();
- if (addr_64)
+  addr_64 = ds_single.readAddress();
+  if (addr_64)
   {
-
-  telnet.print("address: ");
-  addr_str = gds::addressToString(addr_64);
-  //static String addr_str = gds::addressToString(addr_64);
-  telnet.print(addr_str);
+    telnet.print("address find: ");
+    addr_str = gds::addressToString(addr_64);
+    // static String addr_str = gds::addressToString(addr_64);
+    telnet.println(addr_str);
+    beep();
   }
   else
   {
-    telnet.println("error searsh");
+    telnet.println("address find");
   }
 }
+
 
 
 void saveDS()
 {
   ds_address[ds_index] = addr_64;
-
-}
-
-/*
-
-void findDS() { //ПОДКЛюЧИТЬ ОДИН ДАТТЧИК
-
-uint8_t address[8];       // Создаем массив для адреса
-
-  // читаем адрес термометра в указанный массив
-  if (ds_sensors.readAddress(ds_address)) {  // если успешно, выводим
-    telnet.print('{');
-    for (uint8_t i = 0; i < 8; i++) {
-      telnet.print("0x");
-      telnet.print(address[i], HEX);  // Выводим адрес
-      if (i < 7) telnet.print(", ");
-    }
-    telnet.println('}');
-
-  } else telnet.println("Not connected");
-  delay(1000);
-}
-*/
-/*
-void findDS()
-{
-  byte i;
-  // byte j;
-  byte addr[8];
-  byte numDS = sensors.getDeviceCount();
-  telnet.println("Поиск датчиков ");
-  telnet.print("Найдено датчиков ");
-  telnet.println(numDS); // вывод на экран общего количества найденых датчиков
-  if (numDS == 0)
+ 
+  switch (ds_index)
   {
-    telnet.print("Error, no sensors found, please check");
-    return;
+  case 0:
+   // addr = steam_addr;
+  EEPROM.put(steam_addr, ds_address[0]);
+    case 1:
+   // addr = pipe_addr;
+    EEPROM.put(pipe_addr, ds_address[1]);
+  case 2:
+    //addr = tank_addr;
+    EEPROM.put(tank_addr, ds_address[2]);
+  case 3:
+    //addr = water_addr;
+    EEPROM.put(water_addr, ds_address[3]);
   }
-  for (i = 0; i < numDS; i++)
-  {
-    if (!oneWire.search(addr))
-    {
-      telnet.println(" No more addresses.");
-      telnet.println();
-      oneWire.reset_search();
-      delay(250);
-      return;
-    }
-    telnet.print(" ROM =");
-    for (i = 0; i < 8; i++)
-    {
-      telnet.write(' ');
-      telnet.print(addr[i], HEX);
-    }
-  }
+  EEPROM.commit(); 
+  
+   beep();
+  uint64_t read = 64;
+ // EEPROM.get(addr, read);
+  telnet.print(" addr64 ");
+  telnet.print(addr_64);
+  telnet.print(" index ");
+  telnet.print(ds_index);
+  telnet.println();
 }
-
-
-
-*/
-
-/*
-
-void printAddress(DeviceAddress deviceAddress) // функция печати адреса DS18B20
-{
-  for (uint8_t i = 0; i < 8; i++)
-  {
-    if (deviceAddress[i] < 16)
-      Serial.print("0"); // вставляем незначащие нули
-    Serial.print(deviceAddress[i], HEX);
-  }
-}
-*/
