@@ -56,7 +56,6 @@ function handleServerResponse() {
     document.getElementById("RUNTIME").value = allData.RTIM;
     document.getElementById("VERSION").value = allData.VER;
     st_mode = Number(allData.MOD);
-    //document.getElementById("MODEI").value = allData.MOD;
     //dist
     if (indexLoad == 1) {
       document.getElementById("STEAMTEMP").value = allData.ST;
@@ -66,23 +65,25 @@ function handleServerResponse() {
       document.getElementById("PIPETEMP").value = allData.PT;
       document.getElementById("PIPETEMPF").value = allData.PF;
       document.getElementById("PIPETEMPS").value = allData.PS;
+
       document.getElementById("TANKTEMP").value = allData.TT;
       document.getElementById("TANKTEMPF").value = allData.TF;
       document.getElementById("TANKTEMPS").value = allData.TS;
+
       document.getElementById("WATERTEMP").value = allData.WT;
       document.getElementById("SETSTEAMS").value = allData.SSS;
+
       document.getElementById("DELTAS").value = allData.HS;
       document.getElementById("DELTAP").value = allData.HP;
       document.getElementById("DELTAT").value = allData.HT;
       document.getElementById("SETTEMPS").value = allData.STS;
       document.getElementById("SETTEMPP").value = allData.STP;
+
       document.getElementById("APRESS2").value = allData.AP;
       document.getElementById("AIRTEMP").value = allData.AT;
-      //document.getElementById("AUTOSTATUS").value = allData.AS;
-      //document.getElementById("MEMFREE").value = allData.FM;
+    //document.getElementById("MEMFREE").value = allData.FM;
       autoStatus = allData.AS;
-      //valveStatus = allData.VS;
-      //modeVisible = allData.MOD;
+  
 
     }
     // settings
@@ -90,20 +91,6 @@ function handleServerResponse() {
   }
 }
 
-/*
-function mode_inf() {
-  if (modeVisible = 1) {
-    document.getElementById("MODEI").value = " Рект ";
-  }
-  else if (modeVisible == 2) {
-    document.getElementById("MODEI").value = " Дист ";
-  }
-  else {
-    document.getElementById("MODEI").value = "ERR";
-  }
-}
-
-*/
 
 function mode_inf() {
   st_mode = String(autoStatus)[5];
@@ -150,6 +137,7 @@ function load_once() {
     document.getElementById("HEATR").value = allData.HR;
     document.getElementById("ADDR").value = allData.ADDR;
   } else setTimeout(load_once, 1000);
+  
 }
 
 
@@ -160,6 +148,11 @@ function send_form_mode() {
   request_new(server);
 }
 function send_form_index() {
+  var result = confirm('Подтвердите действие');
+  if (!result) {
+        return;
+  }
+
   var ds_index = document.form_index.DS_IND.value;
   server = "/SetFormIndex?ds_index=" + ds_index;
   request_new(server);
@@ -187,11 +180,16 @@ function send_form_settings() {
   setTimeout(load_once, 5000);
 }
 
-function sendbutton(button) {
-  //отправка значений кнопок
+function sendbutton(button) {  //отправка значений кнопок
+  if (button = (42 || 43))
+  var result = confirm('Подтвердите действие');
+  if (!result) {
+        return;
+  }
   var server = "/button?state=" + button;
   request_new(server);
   if (button = 41) setTimeout(load_once, 3000);
+  i
 }
 
 function invis() //скрывет лишнее поле 
@@ -204,17 +202,15 @@ function invis() //скрывет лишнее поле
   }
 }
 
-function sendDelS() {
-  // отправка уставки steam на сервер
+function sendDelS() {  // отправка уставки steam на сервер
   var delta_s = document.getElementById("DELTA_S").value;
   var delay_s = document.getElementById("DELAY_S").value;
   var server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
   request_new(server);
 }
 
-function sendDelP() {
-  // отправка уставки pipe на сервер
-  var delta_p = document.getElementById("DELTA_P").value;
+function sendDelP() {// отправка уставки pipe на сервер
+    var delta_p = document.getElementById("DELTA_P").value;
   var delay_p = document.getElementById("DELAY_P").value;
   var server = "/DelP?delta_p=" + delta_p + "&delay_p=" + delay_p;
   request_new(server);
