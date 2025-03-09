@@ -23,6 +23,22 @@ void setup0()
   lcd.print(VER);         // пишем версию ПО
 
   EEPROM.begin(512);
+
+  uint8_t flag_1;
+  EEPROM.get(flag_load_addr, flag_1); // при первой загрузке загружает в EEPROM переменные по-умолчанию
+  if (flag_load != flag_1)
+  {
+    EEPROM.put(autosam_mode_addr, autosam_mode);
+    EEPROM.put(press_corr_addr, press_correction);
+    EEPROM.put(min_hot_temp_addr, min_hot_temp);
+    EEPROM.put(heating_rate_addr, heating_rate);
+    EEPROM.put(max_tank_temp_addr, max_tank_temp);
+    EEPROM.put(max_steam_temp_addr, max_steam_temp);
+
+    EEPROM.put(flag_load_addr, flag_load);
+    EEPROM.commit();
+  }
+
   EEPROM.get(autosam_mode_addr, autosam_mode);
   EEPROM.get(press_corr_addr, press_correction);
   EEPROM.get(min_hot_temp_addr, min_hot_temp);
@@ -34,10 +50,6 @@ void setup0()
   EEPROM.get(pipe_addr, ds_address[1]);
   EEPROM.get(tank_addr, ds_address[2]);
   EEPROM.get(water_addr, ds_address[3]);
-
-
-  
-  
 
   WiFiManager wifiManager; // Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети. Если не удалось подключиться, (например, неизвестны SSID и пароль),

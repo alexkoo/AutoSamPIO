@@ -20,6 +20,7 @@ const char *password = STAPSK;
 
 //**************************************************** EEPROM
 const uint8_t autosam_mode_addr = 0;
+const uint8_t flag_load_addr = 5;
 const uint8_t press_corr_addr = 10;
 const uint8_t min_hot_temp_addr = 20;
 const uint8_t heating_rate_addr = 30;
@@ -30,6 +31,7 @@ const uint8_t pipe_addr = 70;
 const uint8_t tank_addr = 80;
 const uint8_t water_addr = 90;
 
+const uint8_t flag_load = 5;
 uint8_t autosam_mode = 1;     // режим работы 1 ректификация 2 дистилляция 3 погода
 uint8_t press_correction = 1; // коррекция давления
 float min_hot_temp = 70.0;    // мин температура, при которой элемент считается горячим

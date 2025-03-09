@@ -142,7 +142,7 @@ void EEPROM_Reset()
   delay(500);
 }
 
-static uint64_t addr_64 = 00000000000000000000; 
+static uint64_t addr_64 = 00000000000000000000;
 static String addr_str = "0x0000000000000000";
 
 void findDS()
@@ -163,35 +163,50 @@ void findDS()
   }
 }
 
-
-
 void saveDS()
 {
   ds_address[ds_index] = addr_64;
- 
+
   switch (ds_index)
   {
   case 0:
-   // addr = steam_addr;
-  EEPROM.put(steam_addr, ds_address[0]);
-    case 1:
-   // addr = pipe_addr;
+    // addr = steam_addr;
+    EEPROM.put(steam_addr, ds_address[0]);
+  case 1:
+    // addr = pipe_addr;
     EEPROM.put(pipe_addr, ds_address[1]);
   case 2:
-    //addr = tank_addr;
+    // addr = tank_addr;
     EEPROM.put(tank_addr, ds_address[2]);
   case 3:
-    //addr = water_addr;
+    // addr = water_addr;
     EEPROM.put(water_addr, ds_address[3]);
   }
-  EEPROM.commit(); 
-  
-   beep();
+  EEPROM.commit();
+
+  beep();
   uint64_t read = 64;
- // EEPROM.get(addr, read);
+  // EEPROM.get(addr, read);
   telnet.print(" addr64 ");
   telnet.print(addr_64);
   telnet.print(" index ");
   telnet.print(ds_index);
   telnet.println();
+}
+
+void first_load()
+{
+  if (EEPROM.get(flag_load_addr, flag_load) != 5)
+  {
+
+    EEPROM.put(autosam_mode_addr, autosam_mode);
+    EEPROM.put(press_corr_addr, press_correction);
+    EEPROM.put(min_hot_temp_addr, min_hot_temp);
+    EEPROM.put(heating_rate_addr, heating_rate);
+    EEPROM.put(max_tank_temp_addr, max_tank_temp);
+    EEPROM.put(max_steam_temp_addr, max_steam_temp);
+
+    EEPROM.put(flag_load_addr, flag_load);
+    EEPROM.commit();
+  }
 }
