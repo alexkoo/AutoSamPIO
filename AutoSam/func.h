@@ -52,6 +52,10 @@ void debugTimePrint()
   DEBSTOP
   timeloop_start = micros();
   timeloop_stop = micros() - timeloop_start;
+
+ telnet.print("Причина перезагрузки");
+telnetln.print(ESP.getResetReason());
+
   */
 
   if (debug >= 1)
@@ -192,21 +196,4 @@ void saveDS()
   telnet.print(" index ");
   telnet.print(ds_index);
   telnet.println();
-}
-
-void first_load()
-{
-  if (EEPROM.get(flag_load_addr, flag_load) != 5)
-  {
-
-    EEPROM.put(autosam_mode_addr, autosam_mode);
-    EEPROM.put(press_corr_addr, press_correction);
-    EEPROM.put(min_hot_temp_addr, min_hot_temp);
-    EEPROM.put(heating_rate_addr, heating_rate);
-    EEPROM.put(max_tank_temp_addr, max_tank_temp);
-    EEPROM.put(max_steam_temp_addr, max_steam_temp);
-
-    EEPROM.put(flag_load_addr, flag_load);
-    EEPROM.commit();
-  }
 }
