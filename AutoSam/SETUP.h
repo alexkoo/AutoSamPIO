@@ -9,6 +9,8 @@ void setup0()
   digitalWrite(valve_pin, 0);
   digitalWrite(buzzer_pin, 0);
 
+  //
+
   // Wire.begin();
   Serial.begin(115200); // Настраиваем вывод отладки
   // delay(500);           // пауза небольшая
@@ -24,7 +26,7 @@ void setup0()
 
   EEPROM.begin(512);
 
-  uint8_t flag_1;
+  uint8_t flag_1 = 0;
   EEPROM.get(flag_load_addr, flag_1); // при первой загрузке загружает в EEPROM переменные по-умолчанию
   if (flag_load != flag_1)
   {
@@ -51,6 +53,8 @@ void setup0()
   EEPROM.get(tank_addr, ds_address[2]);
   EEPROM.get(water_addr, ds_address[3]);
 
+  //
+
   WiFiManager wifiManager; // Включаем WiFiManager
   // Сначала модуль пытается подключиться к существующей сети. Если не удалось подключиться, (например, неизвестны SSID и пароль),
   // модуль запускается в режиме AP (точки доступа). Доступ к настройкам по адресу http://192.168.4.1
@@ -61,11 +65,9 @@ void setup0()
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
 
-  
-
   delay(500);
   WiFi.hostname(HOSTNAME);
-  //NBNS.begin(HOSTNAME);
+  NBNS.begin(HOSTNAME);
   MDNS.begin(HOSTNAME);
   MDNS.addService("http", "tcp", 80);
 
@@ -77,8 +79,10 @@ void setup0()
   telnetServer.setNoDelay(true);
   Serial.println("Please connect Telnet Client, exit with ^] and 'quit'");
 
-  ds_sensors.requestTemp();
-  ds_sensors.setResolution(12);
+  //
+
+  dsSensors.requestTemp();
+  dsSensors.setResolution(12);
 
   // sensors.setAddress((uint8_t *)sensor_address); // устанавливаем адреса DS18B20
   // sensors.setResolutionAll(12);                  // Установить разрешение 9-12 бит у всех датчиков на линии
@@ -111,7 +115,7 @@ void setup0()
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
   // Hostname defaults to esp8266-[ChipID]
-  ArduinoOTA.setHostname("autosamotg.local");
+  ArduinoOTA.setHostname("autosamotg");
 
   // No authentication by default
   // ArduinoOTA.setPassword("1122");

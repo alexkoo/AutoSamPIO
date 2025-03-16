@@ -151,8 +151,8 @@ static String addr_str = "0x0000000000000000";
 
 void findDS()
 {
-  ds_reset.reset();
-  addr_64 = ds_single.readAddress();
+  dsReset.reset();
+  addr_64 = dsSingle.readAddress();
   if (addr_64)
   {
     telnet.print("address find: ");

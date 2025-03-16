@@ -38,28 +38,28 @@ void loop0()
 
     float steam_temp_nc, pipe_temp_nc, tank_temp_nc, water_temp_nc; // температуры сырые
     yield();                                                        // прервание для работы wifi
-    if (ds_sensors.readTemp(steam_sensor_num))
-      steam_temp_nc = ds_sensors.getTemp(); // считываем темппературу с датчикака     ; // получаем считанную температуру //13ms со всех 50ms//
+    if (dsSensors.readTemp(STEAM_SENSOR_NUM))
+      steam_temp_nc = dsSensors.getTemp(); // считываем темппературу с датчикака     ; // получаем считанную температуру //13ms со всех 50ms//
     else
       steam_temp_nc = -127;
     yield();
-    if (ds_sensors.readTemp(pipe_sensor_num))
-      pipe_temp_nc = ds_sensors.getTemp();
+    if (dsSensors.readTemp(PIPE_SENSOR_NUM))
+      pipe_temp_nc = dsSensors.getTemp();
     else
       pipe_temp_nc = -127;
     yield(); // прервание для работы wifi
-    if (ds_sensors.readTemp(tank_sensor_num))
-      tank_temp_nc = ds_sensors.getTemp();
+    if (dsSensors.readTemp(TANK_SENSOR_NUM))
+      tank_temp_nc = dsSensors.getTemp();
     else
       tank_temp_nc = -127;
     yield(); // прервание для работы wifi
-    if (ds_sensors.readTemp(water_sensor_num))
-      water_temp_nc = ds_sensors.getTemp();
+    if (dsSensors.readTemp(WATER_SENSOR_NUM))
+      water_temp_nc = dsSensors.getTemp();
     else
       water_temp_nc = -127;
     yield(); // прервание для работы wifi
 
-    ds_sensors.requestTemp(); // запрашиваем новые температуры 26-1200ms
+    dsSensors.requestTemp(); // запрашиваем новые температуры 26-1200ms
     yield();                  // прервание для работы wifi
 
     float steam_temp_f = SteamFilter.filtered(steam_temp_nc);

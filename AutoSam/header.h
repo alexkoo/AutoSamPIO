@@ -1,70 +1,99 @@
 #pragma once
 
 //**************************************************************************************************// LIB
-//#include <Arduino.h>
-//#include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
-//#include <ESP8266SSDP.h>          //esp8266 core убран в исходнике
-//#include <DNSServer.h>            //esp8266 core  https://github.com/esp8266/Arduino
-#include <ESP8266mDNS.h>          //esp8266 core
-//#include <ESP8266NetBIOS.h>
-//#include <WiFiUdp.h>              //esp8266 core
-//#include <Wire.h>                 //esp8266 core i2c
-//#include <SPI.h>                  //esp8266 core, нужен в platformio для BMx280I2C
-//#include <FS.h>                   //esp8266 core
-//#include <WString.h>              //esp8266 core
-// #include <DallasTemperature.h>   //https://github.com/milesburton/Arduino-Temperature-Control-Library
-//#include <microDS18B20.h>         //https://github.com/GyverLibs/microDS18B20
+// #include <Arduino.h>
+// #include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
+// #include <ESP8266SSDP.h>          //esp8266 core убран в исходнике
+// #include <DNSServer.h>            //esp8266 core  https://github.com/esp8266/Arduino
+// #include <WiFiUdp.h>              //esp8266 core
+// #include <Wire.h>                 //esp8266 core i2c
+// #include <SPI.h>                  //esp8266 core, нужен в platformio для BMx280I2C
+// #include <FS.h>                   //esp8266 core
+// #include <WString.h>              //esp8266 core
+//  #include <DallasTemperature.h>   //https://github.com/milesburton/Arduino-Temperature-Control-Library
+// #include <microDS18B20.h>         //https://github.com/GyverLibs/microDS18B20
 
-#include <ESP8266WebServer.h>        //esp8266 core
-#include <EEPROM.h>                 //esp8266 core
-#include <LittleFS.h>               //esp8266 core 
-#include <ArduinoOTA.h>             //esp8266 core
-#include <WiFiManager.h>            //https://github.com/tzapu/WiFiManager
-#include <LiquidCrystal_I2C.h>      //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
-#include <BMx280I2C.h>              //https://bitbucket.org/christandlg/bmx280mi/
-#include <OneWire.h>                //https://github.com/PaulStoffregen/OneWire        нужен для reset
+#include <ESP8266WebServer.h>  //esp8266 core
+#include <ESP8266mDNS.h>       //esp8266 core
+#include <ESP8266NetBIOS.h>    //esp8266 core
+#include <EEPROM.h>            //esp8266 core
+#include <LittleFS.h>          //esp8266 core
+#include <ArduinoOTA.h>        //esp8266 core
+#include <WiFiManager.h>       //https://github.com/tzapu/WiFiManager
+#include <LiquidCrystal_I2C.h> //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
+#include <BMx280I2C.h>         //https://bitbucket.org/christandlg/bmx280mi/
+#include <OneWire.h>           //https://github.com/PaulStoffregen/OneWire        нужен для reset ds18
 
-#include <GyverFilters.h>           //https://alexgyver.ru/gyverfilters/
-#include <GyverIO.h>                //https://github.com/GyverLibs/GyverIO?tab=readme-ov-file //нуден для GyverDS18
-#include <GyverDS18.h>              // https://github.com/GyverLibs/GyverDS18
-#include <GyverDS18Array.h>         // https://github.com/GyverLibs/GyverDS18
+#include <GyverFilters.h>   //https://alexgyver.ru/gyverfilters/
+#include <GyverIO.h>        //https://github.com/GyverLibs/GyverIO?tab=readme-ov-file //нуден для GyverDS18
+#include <GyverDS18.h>      // https://github.com/GyverLibs/GyverDS18
+#include <GyverDS18Array.h> // https://github.com/GyverLibs/GyverDS18
 #include <GyverNTP.h>
 GyverNTP ntp(3);
 
-
-
-
-
 //**************************************************************************************************// GPIO
-#define buzzer_pin (16)         // (d0) Динамик GPIO 16  бел
+#define buzzer_pin (16) // (d0) Динамик GPIO 16  бел
 // i2c scl (d1) син;
 // i2c sda (d2) зел;
-#define button (0)              // (d3, FLASH) GPIO0 кнопка (отпущена - HIGH, нажата - LOW)
-#define ds_pin (2)             // (d4) GPIO 2   шина OneWire
-#define valve_pin (14)              // (d5) GPIO 14  клапан отбора 
-#define I2C_ADDRESS_BMx 0x76    //BMx280I2C
-#define I2C_ADDRESS_LCD 0x27    //LCD
+#define button (0)           // (d3, FLASH) GPIO0 кнопка (отпущена - HIGH, нажата - LOW)
+#define ds_pin (2)           // (d4) GPIO 2   шина OneWire
+#define valve_pin (14)       // (d5) GPIO 14  клапан отбора
+#define I2C_ADDRESS_BMx 0x76 // BMx280I2C
+#define I2C_ADDRESS_LCD 0x27 // LCD
 //**************************************************************************************************// INIT
 
-#define ON HIGH  //настройки для инвертирования клапапна
-#define OFF LOW
 
-//#define ON LOW  //настройки для инвертирования клапапна
-//#define OFF HIGH
+#define DEBSTART                     \
+    if (debug == 1)                  \
+    {                                \
+        debug_time_start = micros(); \
+    }
+#define DEBSTOP                                        \
+    if (debug == 1)                                    \
+    {                                                  \
+        debug_time_stop = micros() - debug_time_start; \
+        debugTimePrint();                              \
+    }
 
+//
 
-#define DEBSTART if (debug==1) {debug_time_start = micros();}
-#define DEBSTOP if (debug==1) {debug_time_stop = micros() - debug_time_start; debugTimePrint();} 
-
-
-BMx280I2C bme(I2C_ADDRESS_BMx);         // с моим датчиком Adafruit_BMP280 работать не захотел
+BMx280I2C bme(I2C_ADDRESS_BMx);                // с моим датчиком Adafruit_BMP280 работать не захотел
 LiquidCrystal_I2C lcd(I2C_ADDRESS_LCD, 16, 2); // адрес дисплея на шине I2C, количество знаков, количество строк
-ESP8266WebServer HTTP(80);          // Web интерфейс для устройства
-File fsUploadFile;                  // Для файловой системы
+ESP8266WebServer HTTP(80);                     // Web интерфейс для устройства
+File fsUploadFile;                             // Для файловой системы
 WiFiServer telnetServer(23);
 WiFiClient telnet;
 
+//
 
+uint8_t ds_index; // номер элемента
+uint64_t ds_address[] = {
+    // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
+    0x0000000000000000,
+    0x0000000000000000,
+    0x0000000000000000,
+    0x0000000000000000,
+};
+
+GyverDS18Single dsSingle(ds_pin);
+GyverDS18Array dsSensors(ds_pin, ds_address, 4);
+OneWire dsReset(ds_pin);
+
+// uint16_t getConversionTime();  // получить текущее время измерения температуры, мс
+
+const uint8_t STEAM_SENSOR_NUM = 0;
+const uint8_t PIPE_SENSOR_NUM = 1;
+const uint8_t TANK_SENSOR_NUM = 2;
+const uint8_t WATER_SENSOR_NUM = 3;
+
+/*
+uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
+    0xDE020992460AA828,
+    0x3A00189843120F28,
+    0x2F020F924697A828,
+    0x0000000000000000,
+};
+*/
 
 /*
 uint8_t sensor_address[][8] = {
@@ -74,45 +103,9 @@ uint8_t sensor_address[][8] = {
     {0x28, 0xA8, 0x97, 0x46, 0x92, 0xF, 0x2, 0x2F},
     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 };
-MicroDS18B20<ds_pin, DS_ADDR_MODE, 4> ds_; // пин, (DS_ADDR_MODE) что будем работать с адресацией. Сам адрес передадим позже (в setAddress()), количество датчиков
 */
 
-
-uint8_t ds_index; // номер элемента
-uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
-    0x0000000000000000,
-    0x0000000000000000,
-    0x0000000000000000,
-    0x0000000000000000,
-};
-/*
-
-uint64_t ds_address[] = {     // массив адресов датчиков SteamSensor, PipeSensor, WaterSensor, TankSensor НОВЫЙ формат;
-    0xDE020992460AA828,
-    0x3A00189843120F28,
-    0x2F020F924697A828,
-    0x0000000000000000,
-};
-*/
-
-GyverDS18Single ds_single(ds_pin);  
-GyverDS18Array ds_sensors(ds_pin, ds_address, 4);
-OneWire ds_reset(ds_pin);
-
-
-
-// uint16_t getConversionTime();  // получить текущее время измерения температуры, мс
-
-
-uint8_t steam_sensor_num = 0;
-uint8_t pipe_sensor_num = 1;
-uint8_t tank_sensor_num = 2;
-uint8_t water_sensor_num = 3;
-
-
-
-
-
+//
 
 #include "settings.h"
 #include "time_fs.h"
@@ -123,6 +116,4 @@ uint8_t water_sensor_num = 3;
 #include "setup.h"
 #include "loop.h"
 
-
-
-//debug
+// debug

@@ -51,7 +51,7 @@ void temp_status()
 
         // telnet.println(" process_status ");
         // telnet.print(process_status);
-        if (status_process = (3 || 4))
+        if ((status_process = (3 || 4)))
         {
             for (int i = 0; i < 4; i++)
             {
