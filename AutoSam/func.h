@@ -189,7 +189,7 @@ void saveDS()
   EEPROM.commit();
 
   beep();
-  uint64_t read = 64;
+  //uint64_t read = 64;
   // EEPROM.get(addr, read);
   telnet.print(" addr64 ");
   telnet.print(addr_64);

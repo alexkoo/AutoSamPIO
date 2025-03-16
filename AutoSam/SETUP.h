@@ -60,9 +60,14 @@ void setup0()
   lcd.setCursor(0, 1);
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
-  WiFi.hostname("HOSTNAME");
+
+  
 
   delay(500);
+  WiFi.hostname(HOSTNAME);
+  //NBNS.begin(HOSTNAME);
+  MDNS.begin(HOSTNAME);
+  MDNS.addService("http", "tcp", 80);
 
   HTTP_Init(); // настраиваем HTTP интерфейс
   Serial.println("HTTP Ready, Starting UDP");

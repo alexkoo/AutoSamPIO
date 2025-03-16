@@ -10,6 +10,7 @@ void loop0()
 
   ArduinoOTA.handle();
   HTTP.handleClient();
+  MDNS.update();
   ntp.tick();   // guiverNTP
   telnetLoop(); // обработчик telnet
   lcdChange();  // таймер переключения экранов

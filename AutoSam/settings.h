@@ -16,7 +16,8 @@ const String VER = "1.7.0"; // Версия
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-#define HOSTNAME "autosam.local"
+#define HOSTNAME "autosam"
+//const String hostt = "autos";
 
 //**************************************************** EEPROM
 const uint8_t autosam_mode_addr = 0;

@@ -5,7 +5,8 @@
 //#include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
 //#include <ESP8266SSDP.h>          //esp8266 core убран в исходнике
 //#include <DNSServer.h>            //esp8266 core  https://github.com/esp8266/Arduino
-//#include <ESP8266mDNS.h>          //esp8266 core
+#include <ESP8266mDNS.h>          //esp8266 core
+//#include <ESP8266NetBIOS.h>
 //#include <WiFiUdp.h>              //esp8266 core
 //#include <Wire.h>                 //esp8266 core i2c
 //#include <SPI.h>                  //esp8266 core, нужен в platformio для BMx280I2C
