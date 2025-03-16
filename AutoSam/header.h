@@ -13,9 +13,20 @@
 //  #include <DallasTemperature.h>   //https://github.com/milesburton/Arduino-Temperature-Control-Library
 // #include <microDS18B20.h>         //https://github.com/GyverLibs/microDS18B20
 
+
+
+#ifdef ESP32dev
+#include <WebServer.h>  //esp8266 core
+#include <ESPmDNS.h>       //esp8266 core
+#include <NetBIOS.h>    //esp8266 core
+#endif
+
+#ifdef NodeMCU
 #include <ESP8266WebServer.h>  //esp8266 core
 #include <ESP8266mDNS.h>       //esp8266 core
 #include <ESP8266NetBIOS.h>    //esp8266 core
+#endif
+
 #include <EEPROM.h>            //esp8266 core
 #include <LittleFS.h>          //esp8266 core
 #include <ArduinoOTA.h>        //esp8266 core
@@ -42,7 +53,6 @@ GyverNTP ntp(3);
 #define I2C_ADDRESS_LCD 0x27 // LCD
 //**************************************************************************************************// INIT
 
-
 #define DEBSTART                     \
     if (debug == 1)                  \
     {                                \
@@ -59,7 +69,13 @@ GyverNTP ntp(3);
 
 BMx280I2C bme(I2C_ADDRESS_BMx);                // с моим датчиком Adafruit_BMP280 работать не захотел
 LiquidCrystal_I2C lcd(I2C_ADDRESS_LCD, 16, 2); // адрес дисплея на шине I2C, количество знаков, количество строк
-ESP8266WebServer HTTP(80);                     // Web интерфейс для устройства
+#ifdef NodeMCU
+ ESP8266WebServer HTTP(80);                     // Web интерфейс для устройства
+ #endif
+
+#ifdef ESP32dev
+WebServer HTTP(80);
+#endif
 File fsUploadFile;                             // Для файловой системы
 WiFiServer telnetServer(23);
 WiFiClient telnet;
