@@ -13,27 +13,29 @@
 //  #include <DallasTemperature.h>   //https://github.com/milesburton/Arduino-Temperature-Control-Library
 // #include <microDS18B20.h>         //https://github.com/GyverLibs/microDS18B20
 
-
+#ifdef NodeMCU
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h> //esp8266 core
+#include <ESP8266mDNS.h>      //esp8266 core
+#include <ESP8266NetBIOS.h>   //esp8266 core
+#include <LittleFS.h>         //esp8266 core
+#endif
 
 #ifdef ESP32dev
-#include <WebServer.h>  //esp8266 core
-#include <ESPmDNS.h>       //esp8266 core
-#include <NetBIOS.h>    //esp8266 core
+#include <WiFi.h>
+#include <WebServer.h> //esp8266 core
+#include <ESPmDNS.h>   //esp8266 core
+#include <NetBIOS.h>   //esp8266 core
+#include <LittleFS.h>  //esp8266 core
 #endif
 
-#ifdef NodeMCU
-#include <ESP8266WebServer.h>  //esp8266 core
-#include <ESP8266mDNS.h>       //esp8266 core
-#include <ESP8266NetBIOS.h>    //esp8266 core
-#endif
-
-#include <EEPROM.h>            //esp8266 core
-#include <LittleFS.h>          //esp8266 core
+#include <EEPROM.h> //esp8266 core
+// #include <LittleFS.h>          //esp8266 core
 #include <ArduinoOTA.h>        //esp8266 core
 #include <WiFiManager.h>       //https://github.com/tzapu/WiFiManager
 #include <LiquidCrystal_I2C.h> //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
 #include <BMx280I2C.h>         //https://bitbucket.org/christandlg/bmx280mi/
-#include <OneWire.h>           //https://github.com/PaulStoffregen/OneWire        нужен для reset ds18
+// #include <OneWire.h>           //https://github.com/PaulStoffregen/OneWire        нужен для reset ds18
 
 #include <GyverFilters.h>   //https://alexgyver.ru/gyverfilters/
 #include <GyverIO.h>        //https://github.com/GyverLibs/GyverIO?tab=readme-ov-file //нуден для GyverDS18
@@ -70,13 +72,13 @@ GyverNTP ntp(3);
 BMx280I2C bme(I2C_ADDRESS_BMx);                // с моим датчиком Adafruit_BMP280 работать не захотел
 LiquidCrystal_I2C lcd(I2C_ADDRESS_LCD, 16, 2); // адрес дисплея на шине I2C, количество знаков, количество строк
 #ifdef NodeMCU
- ESP8266WebServer HTTP(80);                     // Web интерфейс для устройства
- #endif
+ESP8266WebServer HTTP(80); // Web интерфейс для устройства
+#endif
 
 #ifdef ESP32dev
 WebServer HTTP(80);
 #endif
-File fsUploadFile;                             // Для файловой системы
+File fsUploadFile; // Для файловой системы
 WiFiServer telnetServer(23);
 WiFiClient telnet;
 
@@ -91,9 +93,9 @@ uint64_t ds_address[] = {
     0x0000000000000000,
 };
 
-GyverDS18Single dsSingle(ds_pin);
 GyverDS18Array dsSensors(ds_pin, ds_address, 4);
-OneWire dsReset(ds_pin);
+// GyverDS18Single dsSingle(ds_pin);
+// OneWire dsReset(ds_pin);
 
 // uint16_t getConversionTime();  // получить текущее время измерения температуры, мс
 

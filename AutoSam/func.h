@@ -151,19 +151,21 @@ static String addr_str = "0x0000000000000000";
 
 void findDS()
 {
-  dsReset.reset();
+  GyverDS18Single dsSingle(ds_pin);
+  dsSingle.reset();
+
   addr_64 = dsSingle.readAddress();
+
   if (addr_64)
   {
-    telnet.print("address find: ");
+    telnet.print("  address find: ");
     addr_str = gds::addressToString(addr_64);
-    // static String addr_str = gds::addressToString(addr_64);
     telnet.println(addr_str);
     beep();
   }
   else
   {
-    telnet.println("address find");
+    telnet.println("address no_find");
   }
 }
 
@@ -189,8 +191,8 @@ void saveDS()
   EEPROM.commit();
 
   beep();
-  //uint64_t read = 64;
-  // EEPROM.get(addr, read);
+  // uint64_t read = 64;
+  //  EEPROM.get(addr, read);
   telnet.print(" addr64 ");
   telnet.print(addr_64);
   telnet.print(" index ");
