@@ -27,6 +27,11 @@ const uint8_t steam_addr = 60;
 const uint8_t pipe_addr = 70;
 const uint8_t tank_addr = 80;
 const uint8_t water_addr = 90;
+const uint8_t steam_corr_addr = 100;
+const uint8_t pipe_corr_addr = 110;
+const uint8_t tank_corr_addr = 120;
+const uint8_t water_corr_addr = 130;
+
 
 const uint8_t flag_load = 17; // флаг первичной загрузки
 uint8_t autosam_mode = 1;     // режим работы 1 ректификация 2 дистилляция 3 погода
@@ -35,6 +40,10 @@ float min_hot_temp = 70.0;    // мин температура, при кото�
 float heating_rate = 5.5;     // заданная скорость нагрева, гр/мин
 float max_tank_temp = 95.0;   // макс температура в кубе
 float max_steam_temp = 90.0;  // макс температура  пара
+float steam_corr = 0;
+float pipe_corr = 0;
+float tank_corr = 0;
+float water_corr = 0;
 
 //**************************************************************************************************// Управление
 

@@ -168,7 +168,7 @@ void findDS()
   }
 }
 
-void saveDS()
+void saveDS() // сохранение адреса датчика
 {
   ds_address[ds_index] = addr_64;
 

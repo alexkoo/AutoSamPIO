@@ -36,6 +36,10 @@ void setup0()
     EEPROM.put(heating_rate_addr, heating_rate);
     EEPROM.put(max_tank_temp_addr, max_tank_temp);
     EEPROM.put(max_steam_temp_addr, max_steam_temp);
+    EEPROM.put(steam_corr_addr, steam_corr);
+    EEPROM.put(pipe_corr_addr, pipe_corr);
+    EEPROM.put(tank_corr_addr, tank_corr);
+    EEPROM.put(water_corr_addr, water_corr);
 
     EEPROM.put(flag_load_addr, flag_load);
     EEPROM.commit();
@@ -47,6 +51,11 @@ void setup0()
   EEPROM.get(heating_rate_addr, heating_rate);
   EEPROM.get(max_tank_temp_addr, max_tank_temp);
   EEPROM.get(max_steam_temp_addr, max_steam_temp);
+
+  EEPROM.get(steam_corr_addr, steam_corr);
+  EEPROM.get(pipe_corr_addr, pipe_corr);
+  EEPROM.get(tank_corr_addr, tank_corr);
+  EEPROM.get(water_corr_addr, water_corr);
 
   EEPROM.get(steam_addr, ds_address[0]);
   EEPROM.get(pipe_addr, ds_address[1]);

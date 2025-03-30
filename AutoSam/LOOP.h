@@ -26,8 +26,8 @@ void loop0()
   if (millis() - bmx_timer > bmx_time_set)
   {
     bmx_timer = millis();
-    //while (bme.isMeasuring())
-    air_temp = bme.readTemperature();   // и температуру воздуха 104ms
+    // while (bme.isMeasuring())
+    air_temp = bme.readTemperature();     // и температуру воздуха 
     air_temp = round(air_temp * 10) / 10; // округляем до 0,1
     atm_pressure = pressureToMmHg(bme.readPressure());
     bme.oneMeasurement();
@@ -74,9 +74,9 @@ void loop0()
     water_temp = round(water_temp_nc * 10) / 10;           // округление до 0.1
 
     // поправки на давление и ручные 1-2mc
-    steam_temp = corrTemp(steam_temp_f); //  поправка. У меня  один из датчиков брешет
-    pipe_temp = corrTemp(pipe_temp_f);
-    tank_temp = corrTemp(tank_temp_f); //
+    steam_temp = corrTemp(steam_temp_f) + steam_corr; //  поправка. У меня  один из датчиков брешет
+    pipe_temp = corrTemp(pipe_temp_f) + pipe_corr;
+    tank_temp = corrTemp(tank_temp_f) + tank_corr; //
 
     // вычисление крепости 0-2000мс
     steam_temp_alc_st = concSteam(steam_temp); // 0,1mc

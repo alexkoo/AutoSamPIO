@@ -130,12 +130,22 @@ function valve_status() {
 
 */
 function load_once() {
+  
+ // xmlHttp.open("PUT", "/dataset.json", true);
+
   if (loaded == 1) {
     document.getElementById("MINT").value = allData.MIT;
     document.getElementById("MAXT").value = allData.MTT;
     document.getElementById("MAXS").value = allData.MST;
     document.getElementById("HEATR").value = allData.HR;
+
+    document.getElementById("SCI").value = allData.SC;
+    document.getElementById("PCI").value = allData.PC;
+    document.getElementById("TCI").value = allData.TC;
+    document.getElementById("WCI").value = allData.WC;
+
     document.getElementById("ADDR").value = allData.ADDR;
+
   } else setTimeout(load_once, 1000);
   
 }
@@ -166,15 +176,34 @@ function send_form_settings() {
   var max_steam_temp = document.getElementById("MAXS").value;
   var heating_rate = document.getElementById("HEATR").value;
 
+
+  var steam_corr= document.getElementById("SCI").value;
+  var pipe_corr= document.getElementById("PCI").value;
+  var tank_corr= document.getElementById("TCI").value;
+  var water_corr = document.getElementById("WCI").value;
+
+
+
   var s_min_hot_temp = "&min_hot_temp_h=" + min_hot_temp;
   var s_max_tank_temp = "&max_tank_temp_h=" + max_tank_temp;
   var s_max_steam_temp = "&max_steam_temp_h=" + max_steam_temp;
   var s_heating_rate = "&heating_rate_h=" + heating_rate;
+ // var s_press_corr = "&press_corr=" + heating_rate;
+ var s_steam_corr = "&steam_correction=" + steam_corr;
+ var s_pipe_corr = "&pipe_correction=" + pipe_corr;
+ var s_tank_corr = "&tank_correction=" + tank_corr;
+ var s_water_corr = "&water_correction=" + water_corr;
+
   server =
     "/SetForm?" +
     s_min_hot_temp +
     s_max_tank_temp +
     s_max_steam_temp +
+    //s_press_corr +
+    s_steam_corr +
+    s_pipe_corr +
+    s_tank_corr +
+    s_water_corr +
     s_heating_rate;
   request_new(server);
   setTimeout(load_once, 5000);
