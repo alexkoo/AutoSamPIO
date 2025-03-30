@@ -10,10 +10,10 @@ void loop0()
 
   ArduinoOTA.handle();
   HTTP.handleClient();
-  
-  #ifdef NodeMCU
+
+#ifdef NodeMCU
   MDNS.update();
-  #endif
+#endif
 
   ntp.tick();   // guiverNTP
   telnetLoop(); // обработчик telnet
@@ -26,9 +26,11 @@ void loop0()
   if (millis() - bmx_timer > bmx_time_set)
   {
     bmx_timer = millis();
-    atm_pressure = bme.readPressure() * 0.00750063; // считываем атмосферное давление  104ms
-    air_temp = bme.readTemperature();               // и температуру воздуха 104ms
-    air_temp = round(air_temp * 10) / 10;           // округляем до 0,1
+    //while (bme.isMeasuring())
+    air_temp = bme.readTemperature();   // и температуру воздуха 104ms
+    air_temp = round(air_temp * 10) / 10; // округляем до 0,1
+    atm_pressure = pressureToMmHg(bme.readPressure());
+    bme.oneMeasurement();
   }
   yield(); // прервание для работы wifi
 
@@ -64,7 +66,7 @@ void loop0()
     yield(); // прервание для работы wifi
 
     dsSensors.requestTemp(); // запрашиваем новые температуры 26-1200ms
-    yield();                  // прервание для работы wifi
+    yield();                 // прервание для работы wifi
 
     float steam_temp_f = SteamFilter.filtered(steam_temp_nc);
     float tank_temp_f = TankFilter.filtered(tank_temp_nc); //

@@ -94,22 +94,13 @@ void setup0()
                                                  9 бит    | 93 мс 0.5
 */
 
-  if (!bme.begin()) // Инициализируем BMP280
-  {
-    telnet.println(F("Could not find a valid BMP280 sensor, check wiring!"));
-    BMP280_used = false;
-  }
-  else
-  {
-    telnet.println("Find a valid BMP280 sensor");
-    BMP280_used = true;
-  }
-  if (BMP280_used == true)
-  {
-    bme.resetToDefaults();
-    bme.writeOversamplingPressure(BMx280MI::OSRS_P_x16);
-    bme.writeOversamplingTemperature(BMx280MI::OSRS_T_x16);
-  }
+  bme.setMode(FORCED_MODE);
+  bme.setHumOversampling(MODULE_DISABLE);
+  // bme.setFilter(FILTER_COEF_16);
+  bme.begin(I2C_ADDRESS_BMx);
+  bme.oneMeasurement();
+
+  //
 
   Serial.println("OTA start");
   // Port defaults to 8266

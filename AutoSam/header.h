@@ -34,9 +34,8 @@
 #include <ArduinoOTA.h>        //esp8266 core
 #include <WiFiManager.h>       //https://github.com/tzapu/WiFiManager
 #include <LiquidCrystal_I2C.h> //https://github.com/marcoschwartz/LiquidCrystal_I2C.git
-#include <BMx280I2C.h>         //https://bitbucket.org/christandlg/bmx280mi/
-// #include <OneWire.h>           //https://github.com/PaulStoffregen/OneWire        нужен для reset ds18
 
+#include <GyverBME280.h>
 #include <GyverFilters.h>   //https://alexgyver.ru/gyverfilters/
 #include <GyverIO.h>        //https://github.com/GyverLibs/GyverIO?tab=readme-ov-file //нуден для GyverDS18
 #include <GyverDS18.h>      // https://github.com/GyverLibs/GyverDS18
@@ -69,7 +68,7 @@ GyverNTP ntp(3);
 
 //
 
-BMx280I2C bme(I2C_ADDRESS_BMx);                // с моим датчиком Adafruit_BMP280 работать не захотел
+GyverBME280 bme;
 LiquidCrystal_I2C lcd(I2C_ADDRESS_LCD, 16, 2); // адрес дисплея на шине I2C, количество знаков, количество строк
 #ifdef NodeMCU
 ESP8266WebServer HTTP(80); // Web интерфейс для устройства

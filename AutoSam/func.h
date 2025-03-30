@@ -153,7 +153,6 @@ void findDS()
 {
   GyverDS18Single dsSingle(ds_pin);
   dsSingle.reset();
-
   addr_64 = dsSingle.readAddress();
 
   if (addr_64)

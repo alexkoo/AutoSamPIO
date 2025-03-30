@@ -3,7 +3,7 @@
 
 // Настройки
 
-const String VER = "1.8.1"; // Версия
+const String VER = "1.8.2"; // Версия
 
 // wifi
 #ifndef STASSID
