@@ -168,11 +168,12 @@ void handleDeltaPipe()
 void handleData() // функция передачи файла data.json клиенту
 {
   String json = "{";                                // начинаем с открывающейся фигурной скобки
+  // head
   json += "\"TIME\":\"" + String(CurrentTime());    // кавычки экранируются!
   json += "\",\"RTIM\":\"" + String(millis2time()); // только 2 символа
   json += "\",\"VER\":\"" + String(VER);
   // json += "\",\"MOD\":\"" + String(autosam_mode);
-  // head
+  // index
   json += "\",\"ST\":\"" + String(steam_temp);
   json += "\",\"SF\":\"" + String(steam_temp_alc_fl);
   json += "\",\"SS\":\"" + String(steam_temp_alc_st);
@@ -184,11 +185,9 @@ void handleData() // функция передачи файла data.json кли
   json += "\",\"TS\":\"" + String(tank_temp_alc_st);
   json += "\",\"WT\":\"" + String(water_temp, 1);
   json += "\",\"SSS\":\"" + String(set_steam_temp_alc_st);
-
   json += "\",\"HS\":\"" + String(heating_rate_steam);
   json += "\",\"HP\":\"" + String(heating_rate_pipe);
   json += "\",\"HT\":\"" + String(heating_rate_tank);
-
   json += "\",\"STS\":\"" + String(set_temp_steam);
   json += "\",\"STP\":\"" + String(set_temp_pipe);
   json += "\",\"AP\":\"" + String(atm_pressure, 1);
@@ -213,25 +212,4 @@ void handleData() // функция передачи файла data.json кли
   HTTP.send(200, "text/json", json); // передаём json
 }
 
-/*
-// передача файла dataset.json (настройки) клиенту
-void handleDataSet()
-{
-  String json = "{";
 
-  //  SETTINGS
-  json += "\",\"MIT\":\"" + String(min_hot_temp, 1);
-  json += "\",\"MST\":\"" + String(max_steam_temp, 1);
-  json += "\",\"MTT\":\"" + String(max_tank_temp, 1);
-  json += "\",\"HR\":\"" + String(heating_rate, 1);
-
-  json += "\",\"SC\":\"" + String(steam_corr);
-  json += "\",\"PC\":\"" + String(pipe_corr);
-  json += "\",\"TC\":\"" + String(tank_corr);
-  json += "\",\"WC\":\"" + String(water_corr);
-  json += "\",\"ADDR\":\"" + String(addr_str);
-
-  json += "\"}";                     // не забудем закрыть фигурную скобку!
-  HTTP.send(200, "text/json", json); // передаём json
-}
-*/

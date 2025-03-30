@@ -5,8 +5,8 @@
 String millis2time() // функция формирования строки "время работы модуля"
 {
   String Time = ""; // начинаем с пустой строки
-  unsigned long ss;
-  byte mm, hh;
+  uint32_t ss;
+  uint8_t mm, hh;
   ss = millis() / 1000;            // вычисляем количество секунд с начала работы модуля
   hh = ss / 3600;                  // вычисляем количество часов
   mm = (ss - hh * 3600) / 60;      // вычисляем количество минут
@@ -174,17 +174,13 @@ void saveDS() // сохранение адреса датчика
 
   switch (ds_index)
   {
-  case 0:
-    // addr = steam_addr;
+  case 0: // addr = steam_addr;
     EEPROM.put(steam_addr, ds_address[0]);
-  case 1:
-    // addr = pipe_addr;
+  case 1: // addr = pipe_addr;
     EEPROM.put(pipe_addr, ds_address[1]);
-  case 2:
-    // addr = tank_addr;
+  case 2: // addr = tank_addr;
     EEPROM.put(tank_addr, ds_address[2]);
-  case 3:
-    // addr = water_addr;
+  case 3: // addr = water_addr;
     EEPROM.put(water_addr, ds_address[3]);
   }
   EEPROM.commit();

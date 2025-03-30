@@ -1,4 +1,6 @@
 ﻿//<!--
+// "use strict" // строгий режим
+
 var xmlHttp = createXmlHttpObject(); //запрос
 var allData;
 var st_mode = 0;
