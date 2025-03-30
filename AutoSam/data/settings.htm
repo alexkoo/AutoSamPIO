@@ -6,9 +6,7 @@
     <title>AutoSam</title>
     <link rel="stylesheet" href="style.css">
     <script src="/script.js"></script>
-    <script>
-        var indexLoad = 0;
-    </script>
+
 </head>
 
 <BODY onload=" process() ">
@@ -38,7 +36,7 @@
             </tr>
 
             <tr>
-                <td> Минимальная температур</td>
+                <td> Минимальная температура</td>
                 <td> <input type="number" id="MINT" value="78" min="0" max="100" step="0.5" size="2"> </td>
             </tr>
 
@@ -134,9 +132,9 @@
             <br> Клапан d5 (14)
             <br>DS18B20: d4 (2)
             <br>
-            <br> Узел отбора SteamSensor ЧЕРНЫЙ             (0xDE020992460AA828)
-            <br> Бак TankSensor БЕЛЫЙ             (0x2F020F924697A828)
-            <br>  2/3 царги PipeSensor ЗЕЛЕНЫЙ             (0x3A00189843120F28)
+            <br> Узел отбора SteamSensor ЧЕРНЫЙ (0xDE020992460AA828)
+            <br> Бак TankSensor БЕЛЫЙ (0x2F020F924697A828)
+            <br> 2/3 царги PipeSensor ЗЕЛЕНЫЙ (0x3A00189843120F28)
             <br>
             <br> Калибровка крана:
             <br> 30' = 0 мл/ч
@@ -170,6 +168,8 @@
 
 <script>
     load_once();
+    indexLoad = 0;
+    settingsLoad = 1;
 </script>
 
 </html>

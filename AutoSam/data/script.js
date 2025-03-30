@@ -3,12 +3,12 @@ var xmlHttp = createXmlHttpObject(); //запрос
 var allData;
 var st_mode = 0;
 var loaded = 0;
-var indexLoad = 1; // индикатор что загружен индекс
+var indexLoad = 0; // индикатор что загружен индекс
+var settingsLoad = 0;
 //var valveStatus;
 var autoStatus;
 
-function process() {
-  //цикл выполнения
+function process() {   //цикл выполнения
   if (xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
     xmlHttp.open("PUT", "/data.json", true);
     xmlHttp.send(null);
@@ -81,9 +81,9 @@ function handleServerResponse() {
 
       document.getElementById("APRESS2").value = allData.AP;
       document.getElementById("AIRTEMP").value = allData.AT;
-    //document.getElementById("MEMFREE").value = allData.FM;
+      //document.getElementById("MEMFREE").value = allData.FM;
       autoStatus = allData.AS;
-  
+
 
     }
     // settings
@@ -93,132 +93,96 @@ function handleServerResponse() {
 
 
 function mode_inf() {
-  st_mode = String(autoStatus)[5];
-  st_mode_arr = ["ERR", "Рект", "Дист", "Погода"]
-  st_mode_val = st_mode_arr[st_mode];
-  document.getElementById("MODEI").value = st_mode_val;
+  var st_mode = String(autoStatus)[5];
+  var st_mode_arr = ["ERR", "Рект", "Дист", "Погода"]
+  document.getElementById("MODEI").value = st_mode_arr[st_mode];
 }
 
 
 function auto_status() {
+  var st_proc = String(autoStatus)[2];
+  var st_auto = String(autoStatus)[3];
+  var st_valve = String(autoStatus)[4];
 
-  st_proc = String(autoStatus)[2];
-  st_auto = String(autoStatus)[3];
-  st_valve = String(autoStatus)[4];
+  var st_proc_arr = [" ", "Бак нагревается  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "конец отбора ",];
+  var st_auto_arr = ["MAN ", "Auto  Pipe ", "Auto Steam "];
+  var st_valve_arr = ["Closed ", "Open "];
 
-  st_proc_arr = [" ", "Бак нагревается  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "конец отбора ",];
-  st_auto_arr = ["MAN ", "Auto  Pipe ", "Auto Steam "];
-  st_valve_arr = ["Closed ", "Open "];
-
-  st_proc_val = st_proc_arr[st_proc];
-  st_auto_val = st_auto_arr[st_auto];
-  st_valve_val = st_valve_arr[st_valve];
-
-  status_str = st_proc_val + st_valve_val + st_auto_val;
+  var status_str =
+    st_proc_arr[st_proc] +
+    st_auto_arr[st_auto] +
+    st_valve_arr[st_valve];
 
   document.getElementById("AUTOSTATUS").value = status_str;
-
-}
-/*
-function valve_status() {
-  if (valveStatus == 1) {
-    document.getElementById("VALVE").value = "Открыт";
-  } else {
-    document.getElementById("VALVE").value = "Закрыт";
-  }
 }
 
-*/
+
+
 function load_once() {
-  
- // xmlHttp.open("PUT", "/dataset.json", true);
 
-  if (loaded == 1) {
+  // xmlHttp.open("PUT", "/dataset.json", true);
+
+  if (loaded == 1 && settingsLoad == 1) {
     document.getElementById("MINT").value = allData.MIT;
     document.getElementById("MAXT").value = allData.MTT;
     document.getElementById("MAXS").value = allData.MST;
     document.getElementById("HEATR").value = allData.HR;
-
     document.getElementById("SCI").value = allData.SC;
     document.getElementById("PCI").value = allData.PC;
     document.getElementById("TCI").value = allData.TC;
     document.getElementById("WCI").value = allData.WC;
-
     document.getElementById("ADDR").value = allData.ADDR;
 
   } else setTimeout(load_once, 1000);
-  
+
 }
 
 
-function send_form_mode() {
-  //отправка значения статуса
-  var autosam_mode = document.form_mode.MODE.value;
-  server = "/SetFormMode?autosam_mode_h=" + autosam_mode;
+function send_form_mode() { // отправка индекса статуса
+  var server = "/SetFormMode?autosam_mode_h=" + document.form_mode.MODE.value;
   request_new(server);
 }
-function send_form_index() {
+
+
+
+function send_form_index() { //отравка индекса адреса
   var result = confirm('Подтвердите действие');
-  if (!result) {
-        return;
-  }
-
-  var ds_index = document.form_index.DS_IND.value;
-  server = "/SetFormIndex?ds_index=" + ds_index;
+  if (!result) return;
+  var server = "/SetFormIndex?ds_index=" + document.form_index.DS_IND.value;
   request_new(server);
 }
 
 
 
-function send_form_settings() {
-  var min_hot_temp = document.getElementById("MINT").value;
-  var max_tank_temp = document.getElementById("MAXT").value;
-  var max_steam_temp = document.getElementById("MAXS").value;
-  var heating_rate = document.getElementById("HEATR").value;
-
-
-  var steam_corr= document.getElementById("SCI").value;
-  var pipe_corr= document.getElementById("PCI").value;
-  var tank_corr= document.getElementById("TCI").value;
-  var water_corr = document.getElementById("WCI").value;
-
-
-
-  var s_min_hot_temp = "&min_hot_temp_h=" + min_hot_temp;
-  var s_max_tank_temp = "&max_tank_temp_h=" + max_tank_temp;
-  var s_max_steam_temp = "&max_steam_temp_h=" + max_steam_temp;
-  var s_heating_rate = "&heating_rate_h=" + heating_rate;
- // var s_press_corr = "&press_corr=" + heating_rate;
- var s_steam_corr = "&steam_correction=" + steam_corr;
- var s_pipe_corr = "&pipe_correction=" + pipe_corr;
- var s_tank_corr = "&tank_correction=" + tank_corr;
- var s_water_corr = "&water_correction=" + water_corr;
-
-  server =
+function send_form_settings() { // отправка формы настроек
+  var server =
     "/SetForm?" +
-    s_min_hot_temp +
-    s_max_tank_temp +
-    s_max_steam_temp +
-    //s_press_corr +
-    s_steam_corr +
-    s_pipe_corr +
-    s_tank_corr +
-    s_water_corr +
-    s_heating_rate;
+    "&min_hot_temp_h=" + document.getElementById("MINT").value +
+    "&max_tank_temp_h=" + document.getElementById("MAXT").value +
+    "&max_steam_temp_h=" + document.getElementById("MAXS").value +
+    "&heating_rate_h=" + document.getElementById("HEATR").value +
+    "&steam_correction=" + document.getElementById("SCI").value +
+    "&pipe_correction=" + document.getElementById("PCI").value +
+    "&tank_correction=" + document.getElementById("TCI").value +
+    "&water_correction=" + document.getElementById("WCI").value;
+  // "&press_corr=" + 
   request_new(server);
   setTimeout(load_once, 5000);
 }
 
+
 function sendbutton(button) {  //отправка значений кнопок
   //if (button = (42 || 43))
- // var result = confirm('Подтвердите действие');
+  // var result = confirm('Подтвердите действие');
   //if (!result) {
-       // return;
+  // return;
   //}
   var server = "/button?state=" + button;
   request_new(server);
   if (button = 41) setTimeout(load_once, 3000);
-  }
+}
+
+
 
 function invis() //скрывет лишнее поле 
 {
@@ -230,18 +194,24 @@ function invis() //скрывет лишнее поле
   }
 }
 
+
+
 function sendDelS() {  // отправка уставки steam на сервер
-  var delta_s = document.getElementById("DELTA_S").value;
-  var delay_s = document.getElementById("DELAY_S").value;
-  var server = "/DelS?delta_s=" + delta_s + "&delay_s=" + delay_s;
+  var server = "/DelS?delta_s=" +
+    document.getElementById("DELTA_S").value +
+    "&delay_s=" +
+    document.getElementById("DELAY_S").value;
   request_new(server);
 }
 
-function sendDelP() {// отправка уставки pipe на сервер
-    var delta_p = document.getElementById("DELTA_P").value;
-  var delay_p = document.getElementById("DELAY_P").value;
-  var server = "/DelP?delta_p=" + delta_p + "&delay_p=" + delay_p;
+
+
+function sendDelP() {// отправка уставки pipe на сервер 
+
+  var server = "/DelP?delta_p=" +
+    document.getElementById("DELTA_P").value +
+    "&delay_p=" +
+    document.getElementById("DELAY_P").value;
   request_new(server);
 }
-
 
