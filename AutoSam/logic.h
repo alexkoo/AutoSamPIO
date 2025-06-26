@@ -2,55 +2,61 @@
 #pragma once
 #include "header.h"
 
+ uint8_t process_status_prev = 0;
 void temp_status()
 {
     // Управление самогонным аппаратом
 
-    uint8_t process_status_prev = 0;
+   
 
     if (tank_temp < 35)
     {
-        status_process = 0;
+        status_process = 0; //
     }
 
+
+    //" ", "  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "конец отбора "
     if (tank_temp >= 35 && tank_temp < min_hot_temp)
     {
-        status_process = 1;
+        status_process = 1; //Бак нагревается
     }
     if ((tank_temp >= min_hot_temp && (steam_temp || pipe_temp) < min_hot_temp && (heating_rate_steam || heating_rate_pipe) < heating_rate))
     {
-        status_process = 2;
+        status_process = 2; //Бак нагрет 
     }
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) < min_hot_temp && (heating_rate_steam || heating_rate_pipe) >= heating_rate)
     {
-        status_process = 3;
+        status_process = 3; //Нагрев узла
     }
 
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && (heating_rate_steam || heating_rate_pipe) >= heating_rate)
     {
-        status_process = 4;
+        status_process = 4; //Узел нагревается
     }
 
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && (heating_rate_steam || heating_rate_pipe) < heating_rate)
     {
-        status_process = 5;
+        status_process = 5; // Узел нагрет
     }
 
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && steam_temp_alc_st < 45)
     {
-        status_process = 6;
+        status_process = 6; //Отбор хвостов
     }
     if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 20)
     {
-        status_process = 7;
+        status_process = 7; //Конец отбора
     }
 
     if (process_status_prev != status_process)
     {
         tone(buzzer_pin, 400, 200);
 
-        // telnet.println(" process_status ");
-        // telnet.print(process_status);
+         telnet.println(" process_status ");
+         telnet.print(status_process);
+         telnet.println(" prevprocess_status ");
+         telnet.print(process_status_prev);
+
         if ((status_process = (3 || 4)))
         {
             for (int i = 0; i < 4; i++)

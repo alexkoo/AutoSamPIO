@@ -106,7 +106,7 @@ function auto_status() {
   var st_auto = String(autoStatus)[3];
   var st_valve = String(autoStatus)[4];
 
-  var st_proc_arr = [" ", "Бак нагревается  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "конец отбора ",];
+  var st_proc_arr = [" ", "Бак нагревается  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "Конец отбора ",];
   var st_auto_arr = ["MAN ", "Auto  Pipe ", "Auto Steam "];
   var st_valve_arr = ["Closed ", "Open "];
 
