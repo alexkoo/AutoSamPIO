@@ -1,6 +1,9 @@
 #pragma once
 #include "header.h"
+uint32_t ds_timer = 0; // таймер опроса датчиков
+uint32_t heating_rate_timer = 0;                                                            // таймер скорости изменения deltaT
 
+float steam_temp_prev = steam_temp, pipe_temp_prev = pipe_temp, tank_temp_prev = tank_temp; // предыдущая температура
 void loop0()
 {
 
@@ -35,8 +38,8 @@ void loop0()
   yield(); // прервание для работы wifi
 
   //*************************************************************************** // считываем DS
-  uint32_t ds_timer = 0; // таймер опроса датчиков
-  uint32_t ds_time = (millis() - ds_timer);
+  
+  uint32_t ds_time = (millis() - ds_timer); //период опроса DS
   if (ds_time > ds_time_set)
   { //   DS18 timer
 
@@ -92,25 +95,40 @@ void loop0()
 
     //*************************************************************************** // Скорость отбора
 
-    uint32_t heating_rate_timer = 0;                                                            // таймер скорости изменения deltaT
-    float steam_temp_prev = steam_temp, pipe_temp_prev = pipe_temp, tank_temp_prev = tank_temp; // предыдущая температура
+  
 
-    if (millis() - heating_rate_timer >= ds_time)
-    {
-      heating_rate_timer = millis();
+    //if (millis() - heating_rate_timer >= ds_time)
+    //{
+      
 
-      heating_rate_steam = (steam_temp - steam_temp_prev) * (60 / ds_time);
+     // heating_rate_timer = millis();
+
+      telnet.print(" rate 2");
+     /// telnet.print(" heating_rate_timer ");
+     // telnet.print(heating_rate_timer);
+      telnet.print(" ds_time ");
+      telnet.print(ds_time);
+      telnet.print("mint");
+      telnet.print(min_hot_temp);
+      telnet.println();
+
+
+      heating_rate_steam = (steam_temp - steam_temp_prev) * (60000 / ds_time);
       heating_rate_steam = steam_rate.filtered(heating_rate_steam);
       steam_temp_prev = steam_temp;
 
-      heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60 / ds_time);
+      heating_rate_pipe = (pipe_temp - pipe_temp_prev) * (60000 / ds_time);
       heating_rate_pipe = pipe_rate.filtered(heating_rate_pipe);
       pipe_temp_prev = pipe_temp;
 
-      heating_rate_tank = (tank_temp - tank_temp_prev) * (60 / ds_time);
+      heating_rate_tank = (tank_temp - tank_temp_prev) * (60000 / ds_time);
+      telnet.print(heating_rate_tank);
       heating_rate_tank = tank_rate.filtered(heating_rate_tank);
+      telnet.print(heating_rate_tank);
       tank_temp_prev = tank_temp;
-    }
+      telnet.println();
+   // }
+    
   }
 
   yield(); // прервание для работы wifi

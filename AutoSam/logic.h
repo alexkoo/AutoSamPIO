@@ -2,36 +2,34 @@
 #pragma once
 #include "header.h"
 
- uint8_t process_status_prev = 0;
+
+
+uint8_t process_status_prev = 0;
+uint8_t status_process = 0; // 0 начало 1 бак нагревается 2  бак нагрет 3 нагрев узла 4 узел нагревается!! 5 узел нагрет 6 отбор хвостов 7 конец отбора
 void temp_status()
 {
     // Управление самогонным аппаратом
-
-   
 
     if (tank_temp < 35)
     {
         status_process = 0; //
     }
-
-
-    //" ", "  ", "Бак нагрет ", "Нагрев узла ", "Узел нагревается ", "Узел нагрет ", "Отбор хвостов ", "конец отбора "
     if (tank_temp >= 35 && tank_temp < min_hot_temp)
     {
-        status_process = 1; //Бак нагревается
+        status_process = 1; // Бак нагревается
     }
     if ((tank_temp >= min_hot_temp && (steam_temp || pipe_temp) < min_hot_temp && (heating_rate_steam || heating_rate_pipe) < heating_rate))
     {
-        status_process = 2; //Бак нагрет 
+        status_process = 2; // Бак нагрет
     }
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) < min_hot_temp && (heating_rate_steam || heating_rate_pipe) >= heating_rate)
     {
-        status_process = 3; //Нагрев узла
+        status_process = 3; // Нагрев узла
     }
 
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && (heating_rate_steam || heating_rate_pipe) >= heating_rate)
     {
-        status_process = 4; //Узел нагревается
+        status_process = 4; // Узел нагревается
     }
 
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && (heating_rate_steam || heating_rate_pipe) < heating_rate)
@@ -41,21 +39,17 @@ void temp_status()
 
     if (tank_temp >= min_hot_temp && (steam_temp || pipe_temp) >= min_hot_temp && steam_temp_alc_st < 45)
     {
-        status_process = 6; //Отбор хвостов
+        status_process = 6; // Отбор хвостов
     }
     if (tank_temp >= min_hot_temp && steam_temp >= min_hot_temp && steam_temp_alc_st < 20)
     {
-        status_process = 7; //Конец отбора
+        status_process = 7; // Конец отбора
     }
 
     if (process_status_prev != status_process)
     {
+        process_status_prev = status_process;
         tone(buzzer_pin, 400, 200);
-
-         telnet.println(" process_status ");
-         telnet.print(status_process);
-         telnet.println(" prevprocess_status ");
-         telnet.print(process_status_prev);
 
         if ((status_process = (3 || 4)))
         {
@@ -65,7 +59,8 @@ void temp_status()
             }
         }
 
-        process_status_prev = status_process;
+        telnet.print(" process_status ");
+        telnet.println(status_process);
     }
 
 } // void samogon

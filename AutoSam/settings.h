@@ -81,7 +81,7 @@ uint32_t valve_pause = 0;                    // минимальное врем�
 bool valve_auto_mode = false;                // ручное управление клапаном
 
 String auto_status = "990000"; //(status_process) (status_auto) (status_valve) (autosam_mode) предупреждения
-uint8_t status_process = 0;    // 0 начало 1 бак нагревается 2  бак нагрет 3 нагрев узла 4 узел нагревается!! 5 узел нагрет 6 отбор хвостов 7 конец отбора
+
 uint8_t status_auto = 0;       // 0 man 1auto, steam 2 auto, pipe
 uint8_t status_valve = 0;      // 0 close 1 open
 
