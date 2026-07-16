@@ -74,6 +74,9 @@ void setup0()
   lcd.print(WiFi.localIP());
   Serial.print(WiFi.localIP());
 
+  //WiFi.mode(WIFI_NONE_SLEEP);
+
+
   delay(500);
   WiFi.hostname(HOSTNAME);
   NBNS.begin(HOSTNAME);
